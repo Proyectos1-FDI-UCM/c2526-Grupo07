@@ -29,7 +29,7 @@ public class ControllerTest : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    
+
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 

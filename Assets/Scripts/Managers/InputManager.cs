@@ -41,7 +41,6 @@ public class InputManager : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -66,6 +65,7 @@ public class InputManager : MonoBehaviour
     /// conocer el estado del botón)
     /// </summary>
     private InputAction _fire;
+    private InputAction jumpAction;
 
     #endregion
 
@@ -75,7 +75,6 @@ public class InputManager : MonoBehaviour
 
     /// <summary>
     /// Método llamado en un momento temprano de la inicialización.
-    /// 
     /// En el momento de la carga, si ya hay otra instancia creada,
     /// nos destruimos (al GameObject completo)
     /// </summary>
@@ -186,6 +185,15 @@ public class InputManager : MonoBehaviour
         return _fire.WasReleasedThisFrame();
     }
 
+    public bool JumpIsPressed()
+    {
+        return jumpAction.IsPressed();
+    }
+    public bool JumpWasPressedThisFrame()
+    {
+        return jumpAction.WasPressedThisFrame();
+    }
+
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -213,6 +221,7 @@ public class InputManager : MonoBehaviour
         // tenemos (FireIsPressed, FireWasPressedThisFrame 
         // y FireWasReleasedThisFrame)
         _fire = _theController.Player.Fire;
+        jumpAction = _theController.Player.Jump;
     }
 
     /// <summary>
