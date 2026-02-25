@@ -151,7 +151,6 @@ public class InputManager : MonoBehaviour
     /// es un vector normalizado 
     /// </summary>
     public Vector2 MovementVector { get; private set; }
-
     /// <summary>
     /// Método para saber si el botón de disparo (Fire) está pulsado
     /// Devolverá true en todos los frames en los que se mantenga pulsado
@@ -192,6 +191,10 @@ public class InputManager : MonoBehaviour
     public bool JumpWasPressedThisFrame()
     {
         return jumpAction.WasPressedThisFrame();
+    }
+    public bool JumpWasReleasedThisFrame()
+    {
+        return jumpAction.WasReleasedThisFrame();
     }
 
     #endregion
