@@ -82,17 +82,11 @@ public class PlayerController : MonoBehaviour
                 }
                 if (InputManager.Instance.RunWasPressedThisFrame())
                 {
-                    float horizontalInput = Input.GetAxis("Horizontal");
-                    Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
-
-                    transform.Translate(movement);
+                    transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
                 }
                 if (InputManager.Instance.RunIsPressed())
                 {
-                    float horizontalInput = Input.GetAxis("Horizontal");
-                    Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
-
-                    transform.Translate(movement);
+                    transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
                 }
                 
             }
