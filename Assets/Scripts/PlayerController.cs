@@ -25,20 +25,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer spriteRenderer;
     [SerializeField]
-<<<<<<< HEAD
-<<<<<<< HEAD
     private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
+    private float Velocity; //Velocidad para correr
     public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-
     [SerializeField]
-    private float Velocity;
-
-=======
-    private float SaltoMax;
->>>>>>> parent of ed967bf (Salto terminado)
-=======
-    private float SaltoMax;
->>>>>>> parent of ed967bf (Salto terminado)
+    
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -49,7 +40,7 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb;
+    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -77,20 +68,33 @@ public class PlayerController : MonoBehaviour
         {
             if (spriteRenderer != null)
             {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down * 0.5f, 0.5f);
-                Debug.DrawRay(transform.position, Vector2.down * 0.5f, Color.blue);
-                if (hit.collider !=null)
+                //El raycast guarda la info en "hit"
+                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f); 
+                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
+                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
                 {
-                    Debug.Log("Estoy detectando suelo");
-                    if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                    {
-                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                    }
-                    if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                    {
-                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                    }
+                   //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
+                   rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
                 }
+                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                }
+                if (InputManager.Instance.RunWasPressedThisFrame())
+                {
+                    float horizontalInput = Input.GetAxis("Horizontal");
+                    Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
+
+                    transform.Translate(movement);
+                }
+                if (InputManager.Instance.RunIsPressed())
+                {
+                    float horizontalInput = Input.GetAxis("Horizontal");
+                    Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
+
+                    transform.Translate(movement);
+                }
+                
             }
         }
     }
