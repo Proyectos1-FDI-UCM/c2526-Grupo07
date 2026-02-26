@@ -25,12 +25,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer spriteRenderer;
     [SerializeField]
+<<<<<<< HEAD
     private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
     public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
 
     [SerializeField]
     private float Velocity;
 
+=======
+    private float SaltoMax;
+>>>>>>> parent of ed967bf (Salto terminado)
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -41,7 +45,7 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
+    private Rigidbody2D rb;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -69,14 +73,21 @@ public class PlayerController : MonoBehaviour
         {
             if (spriteRenderer != null)
             {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f); 
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down * 0.5f, 0.5f);
+                Debug.DrawRay(transform.position, Vector2.down * 0.5f, Color.blue);
+                if (hit.collider !=null)
                 {
-                   //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                   rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    Debug.Log("Estoy detectando suelo");
+                    if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
+                    {
+                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    }
+                    if (hit.collider != null && InputManager.Instance.JumpIsPressed())
+                    {
+                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    }
                 }
+<<<<<<< HEAD
                 if (hit.collider != null && InputManager.Instance.JumpIsPressed())
                 {
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
@@ -98,6 +109,8 @@ public class PlayerController : MonoBehaviour
                         transform.Translate(movement);
                     }
                 }
+=======
+>>>>>>> parent of ed967bf (Salto terminado)
             }
         }
     }
