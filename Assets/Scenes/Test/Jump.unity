@@ -424,6 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1420801306}
   SaltoMax: 8
+  Velocity: 7
 --- !u!212 &1420801306
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -832,6 +833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1866898201}
   SaltoMax: 8
+  Velocity: 0
 --- !u!212 &1866898201
 SpriteRenderer:
   m_ObjectHideFlags: 0

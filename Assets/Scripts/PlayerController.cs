@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private float SaltoMax;
+    [SerializeField]
+    private float Velocity;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -76,6 +78,23 @@ public class PlayerController : MonoBehaviour
                     if (hit.collider != null && InputManager.Instance.JumpIsPressed())
                     {
                         rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    }
+                }
+                if (hit.collider != null)
+                {
+                    if (hit.collider != null && InputManager.Instance.RunWasPressedThisFrame())
+                    {
+                        float horizontalInput = Input.GetAxis("Horizontal");
+                        Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
+
+                        transform.Translate(movement);
+                    }
+                    if (hit.collider != null && InputManager.Instance.RunIsPressed())
+                    {
+                        float horizontalInput = Input.GetAxis("Horizontal");
+                        Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
+
+                        transform.Translate(movement);
                     }
                 }
             }

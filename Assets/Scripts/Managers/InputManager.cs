@@ -66,6 +66,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private InputAction _fire;
     private InputAction jumpAction;
+    private InputAction Run;
 
     #endregion
 
@@ -196,6 +197,19 @@ public class InputManager : MonoBehaviour
     {
         return jumpAction.WasReleasedThisFrame();
     }
+
+    public bool RunIsPressed()
+    {
+        return Run.IsPressed();
+    }
+    public bool RunWasPressedThisFrame()
+    {
+        return Run.WasPressedThisFrame();
+    }
+    public bool RunWasReleasedThisFrame()
+    {
+        return Run.WasReleasedThisFrame();
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -224,6 +238,7 @@ public class InputManager : MonoBehaviour
         // y FireWasReleasedThisFrame)
         _fire = _theController.Player.Fire;
         jumpAction = _theController.Player.Jump;
+        Run = _theController.Player.Move;
     }
 
     /// <summary>

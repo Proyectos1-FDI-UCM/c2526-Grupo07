@@ -98,6 +98,14 @@ public class ControllerTest : MonoBehaviour
                 {
                     spriteRenderer.color = this._spriteColor;
                 }
+                if (InputManager.Instance.RunWasPressedThisFrame())
+                {
+                    spriteRenderer.color = Color.blue;
+                }
+                if (InputManager.Instance.RunWasReleasedThisFrame())
+                {
+                    spriteRenderer.color = this._spriteColor;
+                }
             }
         }        
     }
