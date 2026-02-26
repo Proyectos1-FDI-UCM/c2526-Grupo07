@@ -75,22 +75,26 @@ public class PlayerController : MonoBehaviour
                 //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
                 if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
                 {
-                   //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                   rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
                 }
                 if (hit.collider != null && InputManager.Instance.JumpIsPressed())
                 {
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
                 }
-                //mover cuando tenga el boton pulsado
+
                 if (InputManager.Instance.RunWasPressedThisFrame())
                 {
                     //objeto mueve en la dirección correspondiente con velocidad determinada
-                    transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
+                    //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
+                    Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
+                    rb.MovePosition(rb.position + movement);
                 }
                 if (InputManager.Instance.RunIsPressed())
                 {
-                    transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
+                    //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
+                    Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
+                    rb.MovePosition(rb.position + movement);
                 }
             }
         }
@@ -106,7 +110,7 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
