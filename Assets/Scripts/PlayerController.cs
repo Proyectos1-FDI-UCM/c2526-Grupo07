@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
+    [SerializeField]
     private float Velocity; //Velocidad para correr
     public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    [SerializeField]
     
     #endregion
 
