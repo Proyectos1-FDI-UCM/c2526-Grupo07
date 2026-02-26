@@ -6,7 +6,6 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,7 +13,7 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class BulletBehaviour : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -23,14 +22,8 @@ public class PlayerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
-    [SerializeField]
-    private float Velocity; //Velocidad para correr
-    public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    
+    [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -41,7 +34,7 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
+    private float createBulletMoment; //Cuanto tiempo lleva la bala x creada
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -55,9 +48,10 @@ public class PlayerController : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
+    
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        createBulletMoment = Time.time; //Time.time es el tiempo desde empieza la simulacion, en este caso desde que se dispara
     }
 
     /// <summary>
@@ -65,35 +59,21 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (InputManager.Instance)
+        if (Time.time - createBulletMoment > vidaMaxima) //Destruccion si la bala pasa un tiempo determinado, si el Time.time - el momento creacion bala es mayor que su vida
         {
-            if (spriteRenderer != null)
-            {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                   //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                   rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                //mover cuando tenga el boton pulsado
-                if (InputManager.Instance.RunWasPressedThisFrame())
-                {
-                    //objeto mueve en la dirección correspondiente con velocidad determinada
-                    transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-                }
-                if (InputManager.Instance.RunIsPressed())
-                {
-                    transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-                }
-            }
+            Destroy(gameObject);
         }
+
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Destruir la bala que choca con mi bala
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(other.gameObject);
+        }
+        // Destruir mi bala siempre que choque con algo
+        Destroy(gameObject);
     }
     #endregion
 
@@ -106,7 +86,7 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -114,7 +94,7 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion   
+    #endregion
 
-} // class PlayerController 
+} // class BulletBehaviour 
 // namespace
