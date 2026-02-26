@@ -412,6 +412,9 @@ GameObject:
   m_IsActive: 1
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of ed967bf (Salto terminado)
 =======
 >>>>>>> parent of ed967bf (Salto terminado)
 --- !u!114 &1420801305
@@ -429,9 +432,12 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1420801306}
   SaltoMax: 8
 <<<<<<< HEAD
+<<<<<<< HEAD
   Velocity: 7
 =======
 >>>>>>> ed967bf9d7575a48e0951fd74a6558c9bb25c93b
+=======
+>>>>>>> parent of ed967bf (Salto terminado)
 =======
 >>>>>>> parent of ed967bf (Salto terminado)
 --- !u!212 &1420801306
@@ -747,6 +753,9 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of ed967bf (Salto terminado)
 =======
 >>>>>>> parent of ed967bf (Salto terminado)
 --- !u!1 &1866898197
@@ -847,7 +856,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1866898201}
   SaltoMax: 8
 <<<<<<< HEAD
+<<<<<<< HEAD
   Velocity: 0
+=======
+>>>>>>> parent of ed967bf (Salto terminado)
 =======
 >>>>>>> parent of ed967bf (Salto terminado)
 --- !u!212 &1866898201
@@ -921,8 +933,11 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ed967bf9d7575a48e0951fd74a6558c9bb25c93b
+=======
+>>>>>>> parent of ed967bf (Salto terminado)
 =======
 >>>>>>> parent of ed967bf (Salto terminado)
 --- !u!1 &1999537637

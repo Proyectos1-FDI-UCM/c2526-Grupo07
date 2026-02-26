@@ -26,12 +26,16 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField]
 <<<<<<< HEAD
+<<<<<<< HEAD
     private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
     public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
 
     [SerializeField]
     private float Velocity;
 
+=======
+    private float SaltoMax;
+>>>>>>> parent of ed967bf (Salto terminado)
 =======
     private float SaltoMax;
 >>>>>>> parent of ed967bf (Salto terminado)
@@ -87,30 +91,6 @@ public class PlayerController : MonoBehaviour
                         rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
                     }
                 }
-<<<<<<< HEAD
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null)
-                {
-                    if (hit.collider != null && InputManager.Instance.RunWasPressedThisFrame())
-                    {
-                        float horizontalInput = Input.GetAxis("Horizontal");
-                        Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
-
-                        transform.Translate(movement);
-                    }
-                    if (hit.collider != null && InputManager.Instance.RunIsPressed())
-                    {
-                        float horizontalInput = Input.GetAxis("Horizontal");
-                        Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
-
-                        transform.Translate(movement);
-                    }
-                }
-=======
->>>>>>> parent of ed967bf (Salto terminado)
             }
         }
     }
