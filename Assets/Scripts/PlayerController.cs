@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private float SaltoMax;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-
+    private Rigidbody2D rb;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     /// <summary>
@@ -62,13 +64,19 @@ public class PlayerController : MonoBehaviour
         {
             if (spriteRenderer != null)
             {
-                if (InputManager.Instance.JumpWasPressedThisFrame())
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down * 0.5f, 0.5f);
+                Debug.DrawRay(transform.position, Vector2.down * 0.5f, Color.blue);
+                if (hit.collider !=null)
                 {
-                    spriteRenderer.transform.position = Vector2.Lerp(transform.position, Vector2.up * 5, 0.5f);
-                }
-                if (InputManager.Instance.JumpWasReleasedThisFrame())
-                {
-
+                    Debug.Log("Estoy detectando suelo");
+                    if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
+                    {
+                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    }
+                    if (hit.collider != null && InputManager.Instance.JumpIsPressed())
+                    {
+                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                    }
                 }
             }
         }

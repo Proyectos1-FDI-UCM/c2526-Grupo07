@@ -196,7 +196,6 @@ public class InputManager : MonoBehaviour
     {
         return jumpAction.WasReleasedThisFrame();
     }
-
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
