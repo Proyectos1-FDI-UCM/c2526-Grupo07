@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 // Añadir aquí el resto de directivas using
 
 
@@ -69,7 +70,8 @@ public class PlayerController : MonoBehaviour
             if (spriteRenderer != null)
             {
                 //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f); 
+                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
+                
                 //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
                 if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
                 {
@@ -80,21 +82,22 @@ public class PlayerController : MonoBehaviour
                 {
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
                 }
+
+                float horizontalInput = 0;
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){ horizontalInput = -1f; }
+                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)){ horizontalInput = 1f; }
+
                 if (InputManager.Instance.RunWasPressedThisFrame())
                 {
-                    float horizontalInput = Input.GetAxis("Horizontal");
-                    Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
-
+                    Vector2 movement = new Vector2(horizontalInput, 0f) * Velocity * Time.deltaTime;
                     transform.Translate(movement);
                 }
                 if (InputManager.Instance.RunIsPressed())
                 {
-                    float horizontalInput = Input.GetAxis("Horizontal");
-                    Vector2 movement = new Vector3(horizontalInput, 0f) * Velocity * Time.deltaTime;
-
+                    Vector2 movement = new Vector2(horizontalInput, 0f) * Velocity * Time.deltaTime;
                     transform.Translate(movement);
                 }
-                
+
             }
         }
     }
