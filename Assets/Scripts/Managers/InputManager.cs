@@ -66,6 +66,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private InputAction _fire;
     private InputAction jumpAction;
+    private InputAction Run;
 
     #endregion
 
@@ -151,7 +152,6 @@ public class InputManager : MonoBehaviour
     /// es un vector normalizado 
     /// </summary>
     public Vector2 MovementVector { get; private set; }
-
     /// <summary>
     /// Método para saber si el botón de disparo (Fire) está pulsado
     /// Devolverá true en todos los frames en los que se mantenga pulsado
@@ -193,7 +193,23 @@ public class InputManager : MonoBehaviour
     {
         return jumpAction.WasPressedThisFrame();
     }
+    public bool JumpWasReleasedThisFrame()
+    {
+        return jumpAction.WasReleasedThisFrame();
+    }
 
+    public bool RunIsPressed()
+    {
+        return Run.IsPressed();
+    }
+    public bool RunWasPressedThisFrame()
+    {
+        return Run.WasPressedThisFrame();
+    }
+    public bool RunWasReleasedThisFrame()
+    {
+        return Run.WasReleasedThisFrame();
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -222,6 +238,7 @@ public class InputManager : MonoBehaviour
         // y FireWasReleasedThisFrame)
         _fire = _theController.Player.Fire;
         jumpAction = _theController.Player.Jump;
+        Run = _theController.Player.Move;
     }
 
     /// <summary>

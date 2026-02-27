@@ -86,8 +86,23 @@ public class ControllerTest : MonoBehaviour
                 {
                     spriteRenderer.color = Color.green;
                 }
-
                 if (InputManager.Instance.FireWasReleasedThisFrame())
+                {
+                    spriteRenderer.color = this._spriteColor;
+                }
+                if (InputManager.Instance.JumpWasPressedThisFrame())
+                {
+                    spriteRenderer.color = Color.blue;
+                }
+                if (InputManager.Instance.JumpWasReleasedThisFrame())
+                {
+                    spriteRenderer.color = this._spriteColor;
+                }
+                if (InputManager.Instance.RunWasPressedThisFrame())
+                {
+                    spriteRenderer.color = Color.red;
+                }
+                if (InputManager.Instance.RunWasReleasedThisFrame())
                 {
                     spriteRenderer.color = this._spriteColor;
                 }
