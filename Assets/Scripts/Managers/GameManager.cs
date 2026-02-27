@@ -7,6 +7,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 
 /// <summary>
@@ -31,6 +32,12 @@ public class GameManager : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
+    [SerializeField]
+    private int MaxHealthPoints; //Puntos de vida máximos del personaje
+    [SerializeField]
+    private TMPro.TextMeshProUGUI Health; //Texto del canvas
+    [SerializeField]
+    private GameObject Menu;
 
     #endregion
 
@@ -151,7 +158,20 @@ public class GameManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(index);
         System.GC.Collect();
     } // ChangeScene
-
+    private void Start()
+    {
+        UpdateGUI();
+        Menu.SetActive(false);
+    }
+    public void HealthPoints(int Damage)
+    {
+        MaxHealthPoints -= Damage;
+        UpdateGUI();
+        if (MaxHealthPoints < 1)
+        {
+            Menu.SetActive(true);
+        }
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -170,6 +190,10 @@ public class GameManager : MonoBehaviour
     {
         // De momento no hay que transferir ningún setup
         // a otro manager
+    }
+    private void UpdateGUI()
+    {
+        Health.text = "Vida: " + MaxHealthPoints;
     }
 
     #endregion

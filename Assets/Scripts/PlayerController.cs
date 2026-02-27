@@ -82,22 +82,24 @@ public class PlayerController : MonoBehaviour
                 {
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
                 }
-
-                if (InputManager.Instance.RunWasPressedThisFrame())
-                {
-                    //objeto mueve en la dirección correspondiente con velocidad determinada
-                    //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-                    Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
-                    rb.MovePosition(rb.position + movement);
-                }
-                if (InputManager.Instance.RunIsPressed())
-                {
-                    //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-                    Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
-                    rb.MovePosition(rb.position + movement);
-                }
             }
         }
+    }
+    void FixedUpdate()
+    {
+         if (InputManager.Instance.RunWasPressedThisFrame())
+         {
+            //objeto mueve en la dirección correspondiente con velocidad determinada
+            //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
+            Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + movement);
+         }
+         if (InputManager.Instance.RunIsPressed())
+         {
+            //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
+            Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + movement);
+         }
     }
     #endregion
 
@@ -118,7 +120,7 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion   
+    #endregion
 
 } // class PlayerController 
 // namespace
