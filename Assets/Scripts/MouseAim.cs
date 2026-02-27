@@ -56,9 +56,8 @@ public class MouseAim : MonoBehaviour
         Vector3 direction = cursorWorldPosition - transform.position;
         Debug.DrawRay(transform.position, direction, Color.yellow);
 
-        float angle = Mathf.Atan2(transform.position.x - cursorWorldPosition.x, transform.position.y - cursorWorldPosition.y);
-        float grades = (180/Mathf.PI) * angle + 180;
-        transform.rotation = Quaternion.Euler(0, 0, grades);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0,0,angle);
     }
     #endregion
 
