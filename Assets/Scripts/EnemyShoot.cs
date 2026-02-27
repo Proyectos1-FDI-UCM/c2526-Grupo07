@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 // Añadir aquí el resto de directivas using
 
 
@@ -13,7 +14,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class BulletBehaviour : MonoBehaviour
+public class EnemyShoot : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,9 +23,15 @@ public class BulletBehaviour : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
     [SerializeField]
-    private Vector2 velIn; // Velocidad de la bala
+    private Transform Target; //La posición del jugador
+    [SerializeField]
+    private GameObject PrefabBullet;
+    [SerializeField]
+    private float MaxBalasPorSeg = 3;
+    [SerializeField]
+    private float HoraDisparo;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -35,8 +42,9 @@ public class BulletBehaviour : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float createBulletMoment; //Cuanto tiempo lleva la bala x creada
-    Rigidbody2D rb;
+    private float minInterval;
+    Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -50,12 +58,9 @@ public class BulletBehaviour : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-    
     void Start()
     {
-        createBulletMoment = Time.time; //Time.time es el tiempo desde empieza la simulacion, en este caso desde que se dispara
-        rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = velIn;
+        minInterval = 1.0f / MaxBalasPorSeg;
     }
 
     /// <summary>
@@ -63,21 +68,20 @@ public class BulletBehaviour : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Time.time - createBulletMoment > vidaMaxima) //Destruccion si la bala pasa un tiempo determinado, si el Time.time - el momento creacion bala es mayor que su vida
+        float now = Time.time;
+
+        if (now - HoraDisparo < minInterval)
         {
-            Destroy(gameObject);
+            return;
         }
 
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // Destruir la bala que choca con mi bala
-        if (other.CompareTag("Bullet"))
+        if (now - HoraDisparo < minInterval)
         {
-            Destroy(other.gameObject);
+            GameObject bala = Instantiate(PrefabBullet);
+            BulletBehaviour balaDir = bala.GetComponent<BulletBehaviour>();
+            bala.transform.position = transform.position;
+            HoraDisparo = Time.time;
         }
-        // Destruir mi bala siempre que choque con algo
-        Destroy(gameObject);
     }
     #endregion
 
@@ -90,7 +94,7 @@ public class BulletBehaviour : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -98,7 +102,7 @@ public class BulletBehaviour : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion
+    #endregion   
 
-} // class BulletBehaviour 
+} // class EnemyShoot 
 // namespace
