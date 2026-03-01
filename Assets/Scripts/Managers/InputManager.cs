@@ -67,6 +67,14 @@ public class InputManager : MonoBehaviour
     private InputAction _fire;
     private InputAction jumpAction;
     private InputAction Run;
+    private InputAction _dash;
+    private InputAction _reload;
+    private InputAction _useObject;
+    private InputAction _knife;
+    private InputAction _changeObject;
+    private InputAction _changeWeapon;
+    private InputAction _aimController;
+    private InputAction _aimMouse;
 
     #endregion
 
@@ -210,6 +218,62 @@ public class InputManager : MonoBehaviour
     {
         return Run.WasReleasedThisFrame();
     }
+    //Dash
+    public bool DashWasPressedThisFrame()
+    {
+        return _dash.WasPressedThisFrame();
+    }
+    //Recargar
+    public bool ReloadWasPressedThisFrame()
+    {
+        return _reload.WasPressedThisFrame();
+    }
+    //Usar Objetos
+    public bool UseObjectWasPressedThisFrame()
+    {
+        return _useObject.WasPressedThisFrame();
+    }
+    //Cuchillo
+    public bool KnifeWasPressedThisFrame()
+    {
+        return _knife.WasPressedThisFrame();
+    }
+    //Cambiar Objeto
+    public bool ChangeObjectWasPressedThisFrame()
+    {
+        return _useObject.WasPressedThisFrame();
+    }
+    //Cambiar Arma
+    public bool ChangeWeaponWasPressedThisFrame()
+    {
+        return _changeWeapon.WasPressedThisFrame();
+    }
+    //Apuntado Mando
+    public bool AimControllerIsPressed()
+    {
+        return _aimController.IsPressed();
+    }
+    public bool AimControllerWasPressedThisFrame()
+    {
+        return _aimController.WasPressedThisFrame();
+    }
+    public bool AimControllerWasReleasedThisFrame()
+    {
+        return _aimController.WasReleasedThisFrame();
+    }
+    //Apuntado Raton
+    public bool AimMouseIsPressed()
+    {
+        return _aimMouse.IsPressed();
+    }
+    public bool AimMouseWasPressedThisFrame()
+    {
+        return _aimMouse.WasPressedThisFrame();
+    }
+    public bool AimMouseWasReleasedThisFrame()
+    {
+        return _aimMouse.WasReleasedThisFrame();
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -239,6 +303,14 @@ public class InputManager : MonoBehaviour
         _fire = _theController.Player.Fire;
         jumpAction = _theController.Player.Jump;
         Run = _theController.Player.Move;
+        _dash = _theController.Player.Dash;
+        _reload = _theController.Player.Reload;
+        _useObject = _theController.Player.UseObject;
+        _knife = _theController.Player.Knife;
+        _changeObject = _theController.Player.ChangeObject;
+        _changeWeapon = _theController.Player.ChangeWeapon;
+        _aimController = _theController.Player.AimController;
+        _aimMouse = _theController.Player.AimMouse;
     }
 
     /// <summary>
