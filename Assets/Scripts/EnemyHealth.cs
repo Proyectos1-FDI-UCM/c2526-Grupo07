@@ -6,7 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
+using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,7 +14,7 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -24,13 +24,10 @@ public class PlayerController : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
+    private int Vida;
     [SerializeField]
-    private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
-    [SerializeField]
-    private float Velocity; //Velocidad para correr
-    public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    
+    private Transform BarraVidaEnemy;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -41,23 +38,25 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
+    private int VidaInitial;
+    private float Scale; // la escala de la barra de vida inicial
     #endregion
-
+    
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-
+    
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-
+    
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        VidaInitial = Vida;
+        Scale = BarraVidaEnemy.localScale.x;
     }
 
     /// <summary>
@@ -65,41 +64,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (InputManager.Instance)
-        {
-            if (spriteRenderer != null)
-            {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-            }
-        }
-    }
-    void FixedUpdate()
-    {
-         if (InputManager.Instance.RunWasPressedThisFrame())
-         {
-            //objeto mueve en la dirección correspondiente con velocidad determinada
-            //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-            Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + movement);
-         }
-         if (InputManager.Instance.RunIsPressed())
-         {
-            //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-            Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + movement);
-         }
+        BarraVidaEnemy.position = new Vector2 (transform.position.x, transform.position.y + 1);
     }
     #endregion
 
@@ -110,16 +75,15 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    public void EnemyHealthPoint(int Damage)
+    {
+        Vida -= Damage;
+        BarraVidaEnemy.localScale = new Vector2((BarraVidaEnemy.localScale.x - (Scale * Damage / VidaInitial)), 0.3f); // cambiar la escala de la barra de vida
+        if (Vida < 1) { Destroy(this); }
+    }
 
     #endregion
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        EnemyHealth EH = GetComponent<EnemyHealth>();
-        if (collision.gameObject.CompareTag("muro"))
-        {
-            EH.EnemyHealthPoint(50);
-        }
-    }
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -127,7 +91,7 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion
+    #endregion   
 
-} // class PlayerController 
+} // class EnemyHealth 
 // namespace
