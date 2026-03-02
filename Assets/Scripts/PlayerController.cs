@@ -112,14 +112,7 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        EnemyHealth EH = GetComponent<EnemyHealth>();
-        if (collision.gameObject.CompareTag("muro"))
-        {
-            EH.EnemyHealthPoint(50);
-        }
-    }
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
