@@ -34,10 +34,14 @@ public class GameManager : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField]
     private int MaxHealthPoints; //Puntos de vida máximos del personaje
+    private int MaxHealthInitial;
     [SerializeField]
     private TMPro.TextMeshProUGUI Health; //Texto del canvas
     [SerializeField]
     private GameObject Menu;
+    [SerializeField]
+    private Transform BarraVida;
+    private float Scale;
 
     #endregion
 
@@ -161,14 +165,19 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateGUI();
-        Menu.SetActive(false);
+        //Menu.SetActive(false);
+        Scale = BarraVida.localScale.x;
+        MaxHealthInitial = MaxHealthPoints;
     }
     public void HealthPoints(int Damage)
     {
         MaxHealthPoints -= Damage;
+        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f);
+        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y);
         UpdateGUI();
         if (MaxHealthPoints < 1)
         {
+            BarraVida.localScale = new Vector2(0f,0f);
             Menu.SetActive(true);
         }
     }

@@ -54,7 +54,6 @@ public class MouseAim : MonoBehaviour
         Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
         Vector3 direction = cursorWorldPosition - transform.position;
-        Debug.DrawRay(transform.position, direction, Color.yellow);
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0,0,angle);
@@ -68,7 +67,11 @@ public class MouseAim : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public Vector3 AimDir()
+    {
+        Vector3 cursorWorldActPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        return cursorWorldActPosition - transform.position;
+    }
     #endregion
     
     // ---- MÉTODOS PRIVADOS ----
