@@ -3,13 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-<<<<<<< HEAD
-  - Pared
-=======
-  - Bullet
-  - suelo
->>>>>>> 4a171a231555af6b764b96701c1c29656fcf5cd0
+  tags: []
   layers:
   - Default
   - TransparentFX

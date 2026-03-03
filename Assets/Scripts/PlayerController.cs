@@ -87,19 +87,11 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-         if (InputManager.Instance.RunWasPressedThisFrame())
-         {
-            //objeto mueve en la dirección correspondiente con velocidad determinada
-            //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-            Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + movement);
-         }
-         if (InputManager.Instance.RunIsPressed())
-         {
-            //transform.Translate(InputManager.Instance.MovementVector * Time.deltaTime * Velocity);
-            Vector2 movement = InputManager.Instance.MovementVector * Velocity * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + movement);
-         }
+        if (InputManager.Instance)
+        {
+            //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+            rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+        }
     }
     #endregion
 
