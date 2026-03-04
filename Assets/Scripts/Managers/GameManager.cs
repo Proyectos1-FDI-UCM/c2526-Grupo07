@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateGUI();
-        //Menu.SetActive(false);
+        Menu.SetActive(false);
         Scale = BarraVida.localScale.x;
         MaxHealthInitial = MaxHealthPoints;
     }
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateGUI()
     {
-        Health.text = "Vida: " + MaxHealthPoints;
+        Health.text = "Vida:";
     }
 
     #endregion

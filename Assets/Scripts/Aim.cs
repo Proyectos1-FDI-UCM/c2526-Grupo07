@@ -6,7 +6,6 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,7 +13,7 @@ using UnityEngine.InputSystem;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class MouseAim : MonoBehaviour
+public class Aim : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -25,7 +24,7 @@ public class MouseAim : MonoBehaviour
     // Ejemplo: MaxHealthPoints
 
     #endregion
-    
+
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -34,29 +33,46 @@ public class MouseAim : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Vector3 mousePosition;
-
+    Vector3 direction;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Start()
+    {
+        direction = transform.position;
+    }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
-        Vector3 mousePosition = Mouse.current.position.ReadValue();
-        Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        if (InputManager.Instance.AimMouseIsPressed())
+        {
+            Vector3 mousePosition = InputManager.Instance.GetAimMouseValue();
+            Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        Vector3 direction = cursorWorldPosition - transform.position;
+            direction = cursorWorldPosition - transform.position;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0,0,angle);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+        else if (InputManager.Instance.AimControllerIsPressed())
+        {
+            Vector3 rStickdir = InputManager.Instance.GetAimControllerValue();
+            direction = rStickdir - transform.position;
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
     }
     #endregion
 
@@ -69,8 +85,7 @@ public class MouseAim : MonoBehaviour
     // Ejemplo: GetPlayerController
     public Vector3 AimDir()
     {
-        Vector3 cursorWorldActPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        return cursorWorldActPosition - transform.position;
+        return direction;
     }
     #endregion
     
@@ -83,5 +98,5 @@ public class MouseAim : MonoBehaviour
 
     #endregion   
 
-} // class MouseAim 
+} // class Aim 
 // namespace

@@ -160,6 +160,22 @@ public class InputManager : MonoBehaviour
     /// es un vector normalizado 
     /// </summary>
     public Vector2 MovementVector { get; private set; }
+
+    /// <summary>
+    /// Propiedad para acceder al vector de movimiento.
+    /// Según está configurado el InputActionController,
+    /// es un vector normalizado 
+    /// </summary>
+    public Vector2 GetAimControllerValue()
+    {
+        return _aimController.ReadValue<Vector2>();
+    }
+
+    // Obtener posición del ratón
+    public Vector2 GetAimMouseValue()
+    {
+        return _aimMouse.ReadValue<Vector2>();
+    }
     /// <summary>
     /// Método para saber si el botón de disparo (Fire) está pulsado
     /// Devolverá true en todos los frames en los que se mantenga pulsado

@@ -31,6 +31,8 @@ public class EnemyShoot : MonoBehaviour
     private float MaxBalasPorSeg = 3;
     [SerializeField]
     private float HoraDisparo;
+    [SerializeField]
+    private Transform SalidaBala;
 
     #endregion
 
@@ -70,16 +72,14 @@ public class EnemyShoot : MonoBehaviour
     {
         float now = Time.time;
 
-        if (now - HoraDisparo < minInterval)
+        if (now - HoraDisparo > minInterval)
         {
-            return;
-        }
+            //Guardo en offset la direccion entre el objeto y el target
+            offset = Target.position - transform.position;
+            GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
+            BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+            balaDir.Dir(offset);
 
-        if (now - HoraDisparo < minInterval)
-        {
-            GameObject bala = Instantiate(PrefabBullet);
-            BulletBehaviour balaDir = bala.GetComponent<BulletBehaviour>();
-            bala.transform.position = transform.position;
             HoraDisparo = Time.time;
         }
     }
