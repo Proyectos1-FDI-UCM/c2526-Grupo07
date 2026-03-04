@@ -26,6 +26,7 @@ public class BulletBehaviour : MonoBehaviour
     [SerializeField] private float speed = 10f; // Velocidad de la bala
     [SerializeField] private MouseAim aimVector;
     private Vector2 velIn; // Velocidad de la bala
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -111,7 +112,10 @@ public class BulletBehaviour : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void Direccion(Vector2 dir)
+    {
+        rb.linearVelocity = (dir * speed);
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

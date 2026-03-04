@@ -74,14 +74,12 @@ public class EnemyShoot : MonoBehaviour
         {
             return;
         }
-
-        if (now - HoraDisparo < minInterval)
-        {
-            GameObject bala = Instantiate(PrefabBullet);
-            BulletBehaviour balaDir = bala.GetComponent<BulletBehaviour>();
-            bala.transform.position = transform.position;
-            HoraDisparo = Time.time;
-        }
+        offset = transform.position - Target.position;
+        BulletBehaviour balaDir = PrefabBullet.GetComponent<BulletBehaviour>();
+        balaDir.Direccion(offset);
+        Instantiate(PrefabBullet, transform.position, transform.rotation);
+        PrefabBullet.transform.position = transform.position;
+        HoraDisparo = Time.time;
     }
     #endregion
 
