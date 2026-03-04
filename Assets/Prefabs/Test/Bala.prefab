@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vidaMaxima: 3
-  speed: 40
+  speed: 20
   aimVector: {fileID: 0}
   Damage: 10
 --- !u!50 &-6279652754209634581
