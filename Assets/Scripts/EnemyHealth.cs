@@ -78,7 +78,7 @@ public class EnemyHealth : MonoBehaviour
     {
         // si la bala colisiona con el enemigo llama a este metodo
         Vida -= Damage; // restar vida
-        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.x); // cambiar la escala de la barra de vida
+        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
         BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
         if (Vida < 1) { Destroy(this); } // destruye el enemigo a la que esta asignado la barra de vida
     }
