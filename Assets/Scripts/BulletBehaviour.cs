@@ -42,7 +42,7 @@ public class BulletBehaviour : MonoBehaviour
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
-     #region Métodos de MonoBehaviour
+    #region Métodos de MonoBehaviour
 
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
@@ -52,13 +52,11 @@ public class BulletBehaviour : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-
     void Start()
     {
         createBulletMoment = Time.time;
-        rb = GetComponent<Rigidbody2D>();
 
-        if (aimVector != null)
+        /*if (aimVector != null)
         {
             Vector3 dir = aimVector.AimDir(); // Usa tu método existente
             Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
@@ -79,7 +77,8 @@ public class BulletBehaviour : MonoBehaviour
         {
             Debug.LogWarning("¡No se ha asignado MouseAim! Usando velIn.");
             rb.linearVelocity = velIn;
-        }
+        }*/
+
     }
 
     /// <summary>
@@ -91,7 +90,6 @@ public class BulletBehaviour : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -100,8 +98,8 @@ public class BulletBehaviour : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
-        // Destruir mi bala siempre que choque con algo
-        Destroy(gameObject);
+            // Destruir mi bala siempre que choque con algo
+            Destroy(gameObject);
     }
     #endregion
 
@@ -112,9 +110,11 @@ public class BulletBehaviour : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void Direccion(Vector2 dir)
+    public void Dir(Vector2 dir)
     {
-        rb.linearVelocity = (dir * speed);
+        rb = GetComponent<Rigidbody2D>();
+        Debug.Log("Bala dir" + dir);
+        rb.linearVelocity = (dir.normalized * speed);
     }
     #endregion
 
