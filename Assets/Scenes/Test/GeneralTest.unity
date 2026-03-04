@@ -265,7 +265,6 @@ GameObject:
   - component: {fileID: 335125303}
   - component: {fileID: 335125302}
   - component: {fileID: 335125301}
-  - component: {fileID: 335125305}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -369,22 +368,6 @@ Transform:
   - {fileID: 1411522896}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &335125305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 335125300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e37cc3c0b9542045a53b8d2e65edb89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Bala: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
-  SalidaBala: {fileID: 1052704955}
-  Cadencia: 2
-  Cargador: 10
 --- !u!1 &363435086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,7 +1028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 821, y: -50}
+  m_AnchoredPosition: {x: 840, y: -50}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &863289117
@@ -1157,7 +1140,6 @@ GameObject:
   m_Component:
   - component: {fileID: 863859678}
   - component: {fileID: 863859677}
-  - component: {fileID: 863859679}
   m_Layer: 0
   m_Name: barraVida (1)
   m_TagString: Untagged
@@ -1235,20 +1217,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1813212282}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &863859679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 863859676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca732b1a97f061b43968d7d53a76f069, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Vida: 100
-  Enemy: {fileID: 863859676}
 --- !u!1 &1052704954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,9 +1381,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1207602207}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 888811dbde9b18646b5bad424cceb010, type: 3}
+  m_Script: {fileID: 11500000, guid: 99fd003d6d699564eb9bcc4befdf46b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Bala: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
+  SalidaBala: {fileID: 1052704955}
+  Cadencia: 3
+  Cargador: 10
 --- !u!1 &1257768612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,10 +1880,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1813212282}
   - component: {fileID: 1813212281}
-  - component: {fileID: 1813212280}
   - component: {fileID: 1813212284}
   - component: {fileID: 1813212283}
+  - component: {fileID: 1813212280}
   - component: {fileID: 1813212285}
+  - component: {fileID: 1813212286}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2095,6 +2068,20 @@ MonoBehaviour:
   MaxBalasPorSeg: 3
   HoraDisparo: 1
   SalidaBala: {fileID: 439757060}
+--- !u!114 &1813212286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813212279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca732b1a97f061b43968d7d53a76f069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Vida: 10000
+  BarraVida: {fileID: 863859678}
 --- !u!1 &1872491830
 GameObject:
   m_ObjectHideFlags: 0

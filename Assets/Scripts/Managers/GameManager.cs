@@ -187,10 +187,11 @@ public class GameManager : MonoBehaviour
             Menu.SetActive(true);
         }
     }
-    public void Municion(int BalasActuales, int Cargador1)
+    public void Municion(int balasMax, int balasAct)
     {
-        BalasMax = Cargador1;
-        Cargador = BalasActuales;
+        Cargador = balasAct;
+        BalasMax = balasMax;
+        UpdateGUI();
     }
     #endregion
 

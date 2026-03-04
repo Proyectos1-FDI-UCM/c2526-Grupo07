@@ -63,7 +63,7 @@ public class AimShoot : MonoBehaviour
 
         balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         Debug.Log("Balas: " + balasActuales);
-        GameManager.Instance.Municion(balasActuales, Cargador);
+        GameManager.Instance.Municion(Cargador, balasActuales);
     }
 
     /// <summary>
@@ -139,9 +139,9 @@ public class AimShoot : MonoBehaviour
         GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
         BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
         balaDir.Dir(direction);
-
         // Restamos una bala al cargador
         balasActuales--;
+        GameManager.Instance.Municion(Cargador, balasActuales);
         Debug.Log("Balas: " + balasActuales);
 
         // Reiniciamos el tiempo de disparo según la cadencia
@@ -151,6 +151,7 @@ public class AimShoot : MonoBehaviour
     private void Recargar()
     {
         balasActuales = Cargador;
+        GameManager.Instance.Municion(Cargador, balasActuales);
         Debug.Log("Balas: " + balasActuales);
     }
     #endregion
