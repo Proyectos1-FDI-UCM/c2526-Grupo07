@@ -563,8 +563,9 @@ GameObject:
   - component: {fileID: 2090582957}
   - component: {fileID: 2090582956}
   - component: {fileID: 2090582955}
-  - component: {fileID: 2090582958}
   - component: {fileID: 2090582959}
+  - component: {fileID: 2090582960}
+  - component: {fileID: 2090582961}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -632,18 +633,6 @@ Transform:
   - {fileID: 1099782925}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2090582958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090582953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45dd22b659ac7c9438d60e347d491cde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &2090582959
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -680,6 +669,31 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &2090582960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090582953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45dd22b659ac7c9438d60e347d491cde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mousePosition: {x: 0, y: 0, z: 0}
+--- !u!114 &2090582961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090582953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 888811dbde9b18646b5bad424cceb010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
