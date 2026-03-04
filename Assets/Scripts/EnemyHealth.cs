@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour
     void Start()
     {
         VidaInitial = Vida;
-        Scale = transform.localScale.x;
+        Scale = BarraVida.localScale.x;
     }
 
     /// <summary>
