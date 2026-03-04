@@ -24,7 +24,7 @@ public class BulletBehaviour : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
     [SerializeField] private float speed = 10f; // Velocidad de la bala
-    [SerializeField] private MouseAim aimVector;
+    [SerializeField] private Aim aimVector;
     private Vector2 velIn; // Velocidad de la bala
     #endregion
 
