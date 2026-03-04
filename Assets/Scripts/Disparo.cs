@@ -63,6 +63,7 @@ public class Disparo : MonoBehaviour
     {
         balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         Debug.Log("Balas: " + balasActuales);
+        GameManager.Instance.Municion(balasActuales, Cargador);
     }
 
     /// <summary>
@@ -118,6 +119,7 @@ public class Disparo : MonoBehaviour
 
         // Reiniciamos el tiempo de disparo según la cadencia
         tiempoDisparo = 1f / Cadencia;
+        GameManager.Instance.Municion(balasActuales, Cargador);
     }
     //Recargar==La munición disponible es la misma que la del cargador
     private void Recargar()

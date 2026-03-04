@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
+    private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -71,7 +72,6 @@ public class PlayerController : MonoBehaviour
             {
                 //El raycast guarda la info en "hit"
                 RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                
                 //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
                 if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
                 {
@@ -87,10 +87,24 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (InputManager.Instance)
+        if (InputManager.Instance && !tocandoPared)
         {
             //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
             rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pared"))
+        {
+            tocandoPared = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pared"))
+        {
+            tocandoPared = false;
         }
     }
     #endregion
@@ -104,7 +118,7 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí

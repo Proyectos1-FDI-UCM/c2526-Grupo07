@@ -35,7 +35,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int MaxHealthPoints; //Puntos de vida máximos del personaje
     [SerializeField]
-    private TMPro.TextMeshProUGUI Health; //Texto del canvas
+    private TMPro.TextMeshProUGUI Health;//Texto del canvas
+    [SerializeField]
+    private TMPro.TextMeshProUGUI Ammo;
     [SerializeField]
     private GameObject Menu;
     [SerializeField]
@@ -52,7 +54,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private static GameManager _instance;
     private float Scale;
-    private int MaxHealthInitial;
+    private int MaxHealthInitial; //Vida máxima del jugador
+    private int Cargador; //Ver la situación del cargador
+    private int BalasMax = 0; //Ver las balas maximas de esa arma
 
     #endregion
 
@@ -181,6 +185,11 @@ public class GameManager : MonoBehaviour
             Menu.SetActive(true);
         }
     }
+    public void Municion(int BalasActuales, int Cargador1)
+    {
+        BalasMax = Cargador1;
+        Cargador = BalasActuales;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -203,6 +212,7 @@ public class GameManager : MonoBehaviour
     private void UpdateGUI()
     {
         Health.text = "Vida:";
+        Ammo.text = Cargador + "/" + BalasMax;
     }
 
     #endregion
