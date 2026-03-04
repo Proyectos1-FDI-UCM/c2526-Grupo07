@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
     private GameObject Menu;
     [SerializeField]
     private Transform BarraVida;
-   
 
     #endregion
 
@@ -203,7 +202,7 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateGUI()
     {
-        Health.text = "Vida: ";
+        Health.text = "Vida: " + MaxHealthPoints;
     }
 
     #endregion
