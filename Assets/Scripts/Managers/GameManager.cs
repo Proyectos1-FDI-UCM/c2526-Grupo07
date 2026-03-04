@@ -34,14 +34,13 @@ public class GameManager : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField]
     private int MaxHealthPoints; //Puntos de vida máximos del personaje
-    private int MaxHealthInitial;
     [SerializeField]
     private TMPro.TextMeshProUGUI Health; //Texto del canvas
     [SerializeField]
     private GameObject Menu;
     [SerializeField]
     private Transform BarraVida;
-    private float Scale;
+   
 
     #endregion
 
@@ -53,6 +52,8 @@ public class GameManager : MonoBehaviour
     /// Instancia única de la clase (singleton).
     /// </summary>
     private static GameManager _instance;
+    private float Scale;
+    private int MaxHealthInitial;
 
     #endregion
 
