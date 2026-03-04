@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateGUI()
     {
-        Health.text = "Vida: " + MaxHealthPoints;
+        Health.text = "Vida: ";
     }
 
     #endregion

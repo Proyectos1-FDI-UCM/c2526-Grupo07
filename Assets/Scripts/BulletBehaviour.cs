@@ -23,7 +23,8 @@ public class BulletBehaviour : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
-    [SerializeField]
+    [SerializeField] private float speed = 10f; // Velocidad de la bala
+    [SerializeField] private MouseAim aimVector;
     private Vector2 velIn; // Velocidad de la bala
     #endregion
 
@@ -40,7 +41,7 @@ public class BulletBehaviour : MonoBehaviour
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
-    #region Métodos de MonoBehaviour
+     #region Métodos de MonoBehaviour
 
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
@@ -50,12 +51,34 @@ public class BulletBehaviour : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-    
+
     void Start()
     {
-        createBulletMoment = Time.time; //Time.time es el tiempo desde empieza la simulacion, en este caso desde que se dispara
+        createBulletMoment = Time.time;
         rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = velIn;
+
+        if (aimVector != null)
+        {
+            Vector3 dir = aimVector.AimDir(); // Usa tu método existente
+            Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
+            rb.linearVelocity = dir2D * speed;
+
+            float length = Mathf.Sqrt(dir.x * dir.x + dir.y * dir.y);
+
+            // Evitar división por cero si el cursor esta encima del jugador, porque la magnitud es 0
+            if (length > 0.01f)
+            {
+                // Escalar para que la velocidad sea siempre sea la misma
+                float factor = speed / length;
+                Vector2 velocity = new Vector2(dir.x * factor, dir.y * factor);
+                rb.linearVelocity = velocity;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("¡No se ha asignado MouseAim! Usando velIn.");
+            rb.linearVelocity = velIn;
+        }
     }
 
     /// <summary>
