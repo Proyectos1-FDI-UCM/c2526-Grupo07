@@ -135,7 +135,10 @@ public class AimShoot : MonoBehaviour
     private void Disparar()
     {
         //Crea la bala en su posición de salida
-        Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+        balaDir.Dir(direction);
 
         // Restamos una bala al cargador
         balasActuales--;
