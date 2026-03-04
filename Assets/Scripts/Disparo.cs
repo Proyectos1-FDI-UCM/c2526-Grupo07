@@ -119,7 +119,6 @@ public class Disparo : MonoBehaviour
 
         // Reiniciamos el tiempo de disparo según la cadencia
         tiempoDisparo = 1f / Cadencia;
-        GameManager.Instance.Municion(balasActuales, Cargador);
     }
     //Recargar==La munición disponible es la misma que la del cargador
     private void Recargar()

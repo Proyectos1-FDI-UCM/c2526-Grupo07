@@ -93,20 +93,6 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Pared"))
-        {
-            tocandoPared = true;
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Pared"))
-        {
-            tocandoPared = false;
-        }
-    }
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -125,7 +111,6 @@ public class PlayerController : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    
 
     #endregion
 
