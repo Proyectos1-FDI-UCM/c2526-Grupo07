@@ -57,7 +57,7 @@ public class BulletBehaviour : MonoBehaviour
     {
         createBulletMoment = Time.time;
 
-        /*if (aimVector != null)
+        if (aimVector != null)
         {
             Vector3 dir = aimVector.AimDir(); // Usa tu método existente
             Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
@@ -74,12 +74,13 @@ public class BulletBehaviour : MonoBehaviour
                 rb.linearVelocity = velocity;
             }
         }
-        else
+    }
+    void OnCollisionEnter2D(Collision2D colision)
+    {
+        if (colision != null)
         {
-            Debug.LogWarning("¡No se ha asignado MouseAim! Usando velIn.");
-            rb.linearVelocity = velIn;
-        }*/
-
+            Destruccion(colision);
+        }
     }
 
     /// <summary>
@@ -102,10 +103,12 @@ public class BulletBehaviour : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
+    //Método llamado por disparo y apuntado para determinar la dirección de la bala
     public void Dir(Vector2 dir)
     {
         rb = GetComponent<Rigidbody2D>();
-        Debug.Log("Bala dir" + dir);
+        transform.right = dir;
         rb.linearVelocity = (dir.normalized * speed);
     }
     #endregion
@@ -116,19 +119,20 @@ public class BulletBehaviour : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void OnCollisionEnter2D(Collision2D colision)
-    {
-        if (colision != null)
-        {
-            Destruccion(colision);
-        }
-    }
+    
+    //Método llamado cuando hay colision, si choca con Player le resta vida y después destruye la bala
     private void Destruccion(Collision2D colision)
     {
         PlayerController player = colision.gameObject.GetComponent<PlayerController>();
+        EnemyHealth enemy = colision.gameObject.GetComponent<EnemyHealth>();
         if (player != null)
         {
+            //Llama al GameManager para bajar vida
             GameManager.Instance.HealthPoints(Damage);
+        }
+        else if (enemy != null)
+        {
+            enemy.EnemyHealthPoint(Damage);
         }
         Destroy(gameObject);
     }

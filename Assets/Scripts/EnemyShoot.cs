@@ -72,19 +72,16 @@ public class EnemyShoot : MonoBehaviour
     {
         float now = Time.time;
 
-        if (now - HoraDisparo < minInterval)
+        if (now - HoraDisparo > minInterval)
         {
-            return;
+            //Guardo en offset la direccion entre el objeto y el target
+            offset = Target.position - transform.position;
+            GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
+            BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+            balaDir.Dir(offset);
+
+            HoraDisparo = Time.time;
         }
-
-        //Guardo en offset la direccion entre el objeto y el target
-        offset = Target.position - transform.position;
-
-        GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
-        BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
-        balaDir.Dir(offset);
-
-        HoraDisparo = Time.time;
     }
     #endregion
 
