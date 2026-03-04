@@ -105,6 +105,7 @@ MonoBehaviour:
   vidaMaxima: 3
   speed: 40
   aimVector: {fileID: 0}
+  Damage: 10
 --- !u!50 &-6279652754209634581
 Rigidbody2D:
   serializedVersion: 5
@@ -139,7 +140,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3495812759742759153}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}

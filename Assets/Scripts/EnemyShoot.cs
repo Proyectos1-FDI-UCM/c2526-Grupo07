@@ -31,6 +31,8 @@ public class EnemyShoot : MonoBehaviour
     private float MaxBalasPorSeg = 3;
     [SerializeField]
     private float HoraDisparo;
+    [SerializeField]
+    private Transform SalidaBala;
 
     #endregion
 
@@ -78,7 +80,7 @@ public class EnemyShoot : MonoBehaviour
         //Guardo en offset la direccion entre el objeto y el target
         offset = Target.position - transform.position;
 
-        GameObject nuevaBala = Instantiate(PrefabBullet, transform.position, transform.rotation);
+        GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
         BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
         balaDir.Dir(offset);
 

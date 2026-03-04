@@ -25,6 +25,7 @@ public class BulletBehaviour : MonoBehaviour
     [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
     [SerializeField] private float speed = 10f; // Velocidad de la bala
     [SerializeField] private Aim aimVector;
+    [SerializeField] private int Damage;
     private Vector2 velIn; // Velocidad de la bala
 
     #endregion
@@ -91,16 +92,7 @@ public class BulletBehaviour : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // Destruir la bala que choca con mi bala
-        if (other.CompareTag("Bullet"))
-        {
-            Destroy(other.gameObject);
-        }
-            // Destruir mi bala siempre que choque con algo
-            Destroy(gameObject);
-    }
+
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -124,7 +116,22 @@ public class BulletBehaviour : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void OnCollisionEnter2D(Collision2D colision)
+    {
+        if (colision != null)
+        {
+            Destruccion(colision);
+        }
+    }
+    private void Destruccion(Collision2D colision)
+    {
+        PlayerController player = colision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            GameManager.Instance.HealthPoints(Damage);
+        }
+        Destroy(gameObject);
+    }
     #endregion
 
 } // class BulletBehaviour 
