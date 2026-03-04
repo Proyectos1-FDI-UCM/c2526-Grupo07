@@ -73,7 +73,7 @@ public class MoveEnemigo : MonoBehaviour
     }
     void Update()
     {
-        //movimiento horrizontal automatico
+        //movimiento horizontal automatico
         if (movDer) //si va en direccion derecha
         {
             transform.Translate(Vector3.right * vel * Time.deltaTime);      //aplicar movimiento derecha

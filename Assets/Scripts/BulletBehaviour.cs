@@ -41,7 +41,7 @@ public class BulletBehaviour : MonoBehaviour
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
-    #region Métodos de MonoBehaviour
+     #region Métodos de MonoBehaviour
 
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
