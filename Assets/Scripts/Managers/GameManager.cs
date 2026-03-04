@@ -171,11 +171,13 @@ public class GameManager : MonoBehaviour
     }
     public void HealthPoints(int Damage)
     {
-        MaxHealthPoints -= Damage;
-        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f);
-        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y);
+        //si la bala colisiona con el jugador llama a este metodo
+        MaxHealthPoints -= Damage; // restar la vida del jugador
+        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f); //acortar la barra de vida
+        // como se acorta en los dos extremos, muevo la barra de vida hacia la izquierda
+        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y); 
         UpdateGUI();
-        if (MaxHealthPoints < 1)
+        if (MaxHealthPoints < 1) // si llega a cero, muere
         {
             BarraVida.localScale = new Vector2(0f,0f);
             Menu.SetActive(true);

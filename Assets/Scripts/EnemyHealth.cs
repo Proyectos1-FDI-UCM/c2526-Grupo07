@@ -76,10 +76,11 @@ public class EnemyHealth : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void EnemyHealthPoint(int Damage)
     {
-        Vida -= Damage;
+        // si la bala colisiona con el enemigo llama a este metodo
+        Vida -= Damage; // restar vida
         transform.localScale = new Vector2((transform.localScale.x - (Scale * Damage / VidaInitial)), transform.localScale.x); // cambiar la escala de la barra de vida
-        transform.position = new Vector2(transform.position.x - ((Scale * Damage / VidaInitial) / 2f), transform.position.y);
-        if (Vida < 1) { Destroy(Enemy); }
+        transform.position = new Vector2(transform.position.x - ((Scale * Damage / VidaInitial) / 2f), transform.position.y); // moverlo hacia la izquierda
+        if (Vida < 1) { Destroy(Enemy); } // destruye el enemigo a la que esta asignado la barra de vida
     }
 
     #endregion
