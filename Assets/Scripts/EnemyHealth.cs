@@ -26,7 +26,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private int Vida;
     [SerializeField]
-    private GameObject Enemy;
+    private Transform BarraVida;
 
     #endregion
 
@@ -78,9 +78,9 @@ public class EnemyHealth : MonoBehaviour
     {
         // si la bala colisiona con el enemigo llama a este metodo
         Vida -= Damage; // restar vida
-        transform.localScale = new Vector2((transform.localScale.x - (Scale * Damage / VidaInitial)), transform.localScale.x); // cambiar la escala de la barra de vida
-        transform.position = new Vector2(transform.position.x - ((Scale * Damage / VidaInitial) / 2f), transform.position.y); // moverlo hacia la izquierda
-        if (Vida < 1) { Destroy(Enemy); } // destruye el enemigo a la que esta asignado la barra de vida
+        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.x); // cambiar la escala de la barra de vida
+        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
+        if (Vida < 1) { Destroy(this); } // destruye el enemigo a la que esta asignado la barra de vida
     }
 
     #endregion
