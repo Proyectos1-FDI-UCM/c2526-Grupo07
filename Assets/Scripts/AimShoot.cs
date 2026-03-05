@@ -122,7 +122,7 @@ public class AimShoot : MonoBehaviour
     }
     public Vector3 MousePos()
     {
-        return mousePosition;
+        return Camera.main.ScreenToWorldPoint(mousePosition);
     }
     #endregion
 

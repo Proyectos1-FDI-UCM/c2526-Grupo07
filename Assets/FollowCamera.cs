@@ -23,7 +23,7 @@ public class FollowCamera : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private Transform target;
-    public AimShoot Apuntado;
+    [SerializeField] AimShoot Apuntado;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -60,7 +60,8 @@ public class FollowCamera : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 Apunt = Apuntado.MousePos();
-        transform.position = target.position /*- Apunt*/ + offset;
+        Vector3 late = (Apunt - transform.position) / 2;
+        transform.position = target.position + late + offset;
     }
     #endregion
 
