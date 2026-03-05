@@ -15,7 +15,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class MoveEnemigo : MonoBehaviour
+public class EnemyMove2 : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -26,7 +26,6 @@ public class MoveEnemigo : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField] private float duracion;    //duracion de tiempo en movimiento 
     [SerializeField] private float vel; //velocidad para el movimiento del enemigo
-    [SerializeField] private Transform player;  //jugador para realizar las acciones
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -37,10 +36,12 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private bool isChasing = false;  //controlar si está persiguiendo al jugador
-    private bool isShooting = false;  //controlar si está disparando al jugador
-    private int direction = 1;  //direccion del enemigo
-    private float tiempoInicio = 0; //tiempo iniciado para el movimiento
+    private bool movDer = true;    //direccion movimiento a la derecha para aplicar un movimiento automatico
+    private bool movIzq = true;
+    private bool canMove = true;  //controlar si se puede mover
+    private Vector3 direccion = Vector3.zero;  //direccion de persecucion-
+    private float tiempoInicio; //tiempo iniciado para el movimiento
+    private float restante;     //tiempo restante del movimiento para cambiar de direccion
     private Rigidbody2D rb;
     #endregion
 
@@ -56,36 +57,57 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Start()
     {
+        //inicio de una corrutina para cambiar la direcion del enemigo
+        //cuando el movimiento llega hasta un limite de tiempo
+        //o al colisionar con un objeto
         rb = GetComponent<Rigidbody2D>();
+
+        //iniciar el tiempo
+        tiempoInicio = Time.time;
+        movDer = true;
+        movIzq = false;
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
-        if (isShooting)
+        if (canMove && direccion != Vector3.zero)
         {
-            //cuando dispara se deja de mover
-            rb.linearVelocity = Vector2.zero;
-            return;
+            transform.Translate(direccion * vel * Time.deltaTime);
         }
-        if (isChasing)
+
+        else
         {
-            Perseguir();
-            tiempoInicio = 0;
+            if (movDer) //si va en direccion derecha
+            {
+                transform.Translate(Vector3.right * vel * Time.deltaTime);      //aplicar movimiento derecha
+            }
+            else if (movIzq)
+            {
+                transform.Translate(Vector3.left * vel * Time.deltaTime);      //movimiento izquierda
+                transform.TransformDirection(-1, 0, 0);
+            }
         }
-        else MovAuto();
+        if (Time.time - tiempoInicio >= duracion)
+        {
+            CambioDireccion();
+            tiempoInicio = Time.time;
+        }
     }
-    void OnCollisionEnter2D(Collision2D collision)
+    private void FixedUpdate()
+    {
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         //si se colisiona con un objeto(pared)
         //se cambia de direccion
         //y reinicia el tiempo de movimiento
         if (collision.gameObject.CompareTag("Pared"))
         {
-            direction *= -1;
             CambioDireccion();
-            tiempoInicio = 0;
+            Debug.Log("detecion pared");
         }
     }
     #endregion
@@ -97,19 +119,25 @@ public class MoveEnemigo : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public int GetDirection()
+    public void StopMovement()
     {
-        return direction;   //devolver la direccion del enemigo para detectar con el jugador
+        canMove = false;
     }
 
-    //devolver el valor booleano si está realizando esta acción
-    public void SetChasing(bool chasing)
+    ///<summary>Reanudar el movimiento normal del enemigo</summary>
+    public void ResumeMovement()
     {
-        isChasing = chasing;
+        canMove = true;
+        direccion = Vector3.zero; // volver a patrullar automático
     }
-    public void SetShooting(bool shooting)
+
+    ///<summary>Mover al enemigo hacia una posición (persecución)</summary>
+    public void FollowPlayer(Vector3 targetPosition)
     {
-        isShooting = shooting;
+        canMove = true;
+        float dirX = targetPosition.x - transform.position.x;
+        movDer = dirX > 0;  // actualizar dirección
+        direccion = new Vector3(Mathf.Sign(dirX), 0, 0); // movimiento hacia el jugador
     }
     #endregion
 
@@ -119,29 +147,12 @@ public class MoveEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void Perseguir()
-    {
-        float dir = player.position.x - transform.position.x;  //calcular la posicion para ver en qué direcion va el jugador
-        if (dir > 0) direction = 1;  //derecha
-        else direction = -1;    //izquierda
-        CambioDireccion();
-        rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-    }
-    private void MovAuto()
-    {
-        tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-        rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-        if (tiempoInicio > duracion)
-        {
-            direction *= -1;    //cambio de direccion, invertir
-            rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-            tiempoInicio = 0;   //vuelve a sincronizar el tiempo
-        }
-    }
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(direction, 1, 1);
+        movDer = !movDer;
+        movIzq = !movIzq;
+        tiempoInicio = Time.time;       //reinicio de tiempo al cambiar de direcion
     }
     #endregion
 } // class MoveEnemigo 
