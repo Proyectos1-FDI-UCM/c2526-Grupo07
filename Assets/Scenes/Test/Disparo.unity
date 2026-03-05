@@ -159,7 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 962782617}
-  - component: {fileID: 962782616}
+  - component: {fileID: 962782618}
   m_Layer: 0
   m_Name: Disparo
   m_TagString: Untagged
@@ -167,23 +167,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &962782616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962782615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e37cc3c0b9542045a53b8d2e65edb89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Bala: {fileID: 1770134771}
-  SalidaBala: {fileID: 652306198}
-  Cadencia: 57.65
-  Cargador: 10
-  TiempoRecarga: 0
 --- !u!4 &962782617
 Transform:
   m_ObjectHideFlags: 0
@@ -199,6 +182,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &962782618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962782615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e37cc3c0b9542045a53b8d2e65edb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bala: {fileID: 1770134771}
+  SalidaBala: {fileID: 652306198}
+  Cadencia: 1
+  Cargador: 10
+  TiempoRecarga: 1
 --- !u!1 &1583544495
 GameObject:
   m_ObjectHideFlags: 0
