@@ -542,6 +542,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9149388496513041272, guid: bdaeee04a68fe4283b8789c48055f778, type: 3}
+      propertyPath: nextScene
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -680,9 +684,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f59f329bc0b4a36bc8d02c6710a226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealthPoints: 0
+  MaxHealthPoints: 100
   Health: {fileID: 0}
+  Ammo: {fileID: 0}
   Menu: {fileID: 0}
+  BarraVida: {fileID: 0}
 --- !u!4 &1392553939
 Transform:
   m_ObjectHideFlags: 0

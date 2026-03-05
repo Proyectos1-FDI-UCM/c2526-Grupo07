@@ -6,7 +6,6 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 // Añadir aquí el resto de directivas using
 
 
