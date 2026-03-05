@@ -82,11 +82,12 @@ public class MoveEnemigo : MonoBehaviour
             if (movDer) //si va en direccion derecha
             {
                 transform.Translate(Vector3.right * vel * Time.deltaTime);      //aplicar movimiento derecha
+                transform.localScale = new Vector3(1, 1, 1);
             }
             else if (movIzq)
             {
                 transform.Translate(Vector3.left * vel * Time.deltaTime);      //movimiento izquierda
-                transform.TransformDirection(-1, 0, 0);
+                transform.localScale = new Vector3(-1, 1, 1);
             }
         }
         if (Time.time - tiempoInicio >= duracion)
@@ -107,7 +108,6 @@ public class MoveEnemigo : MonoBehaviour
         if (collision.gameObject.CompareTag("Pared"))
         {
             CambioDireccion();
-            Debug.Log("detecion pared");
         }
     }
     #endregion
