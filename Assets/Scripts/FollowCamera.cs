@@ -51,7 +51,6 @@ public class FollowCamera : MonoBehaviour
     void Start()
     {
         offset = new Vector3(0, 0, -10);
-        
     }
 
     /// <summary>
