@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Permite disparar balas, según el tamaño del cargador(asignable) y también la recarga de esas balas
+// Carlos Alberto Ovando Barrios
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -10,8 +10,10 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Permite que el jugador cree las balas, siguiendo los intervalos de la cadencia.
+/// Tiene una posición asignable de donde saldrán las balas.
+/// La cantidad de balas es asignable desde el editor y esa cantidad se podrá reiniciar cuando se recargue.
+/// El tiempo que tarde en recargar, también será ajustable.
 /// </summary>
 public class Disparo : MonoBehaviour
 {
@@ -23,13 +25,15 @@ public class Disparo : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    public GameObject Bala; //Objeto Bala que se crea al Dispara
+    private GameObject Bala; //Objeto Bala que se crea al Dispara
     [SerializeField]
-    public Transform SalidaBala; //Posición donde saldrá la bala
+    private Transform SalidaBala; //Posición donde saldrá la bala
     [SerializeField]
-    public float Cadencia = 0f; //Balas por segundo
+    private float Cadencia = 0f; //Balas por segundo
     [SerializeField]
-    public int Cargador = 10; //Número de balas que se pueden disparar
+    private int Cargador = 10; //Número de balas que se pueden disparar
+    [SerializeField]
+    private float TiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar
 
     #endregion
 
@@ -42,9 +46,9 @@ public class Disparo : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
 
-    private float tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
+    private float _tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
 
-    private int balasActuales; //Balas disponibles en el cargador
+    private int _balasActuales; //Balas disponibles en el cargador
 
     #endregion
 
@@ -61,8 +65,8 @@ public class Disparo : MonoBehaviour
     /// </summary>
     void Start()
     {
-        balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
-        Debug.Log("Balas: " + balasActuales);
+        _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
+        Debug.Log("Balas: " + _balasActuales);
     }
 
     /// <summary>
@@ -70,18 +74,26 @@ public class Disparo : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //1 El tiempo para poder volver a disparar se reduce con el delta time
-        if (tiempoDisparo > 0)
+        bool CargadorLleno=false;
+        if (_balasActuales==Cargador)
         {
-            tiempoDisparo -= Time.deltaTime;
+            CargadorLleno = true;
+        }
+        bool recargando = false;
+        //1 El tiempo para poder volver a disparar se reduce con el delta time
+        if (_tiempoDisparo > 0)
+        {
+            _tiempoDisparo -= Time.deltaTime;
         }
         //2 Comprueba si se recarga
-        if (InputManager.Instance.ReloadWasPressedThisFrame())
+        if (InputManager.Instance.ReloadWasPressedThisFrame() && !CargadorLleno)
         {
+            recargando = true;
             Recargar();
+            recargando = false;
         }
         //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
-        if (InputManager.Instance.FireIsPressed() && tiempoDisparo <= 0f && balasActuales > 0)
+        if (InputManager.Instance.FireIsPressed() && _tiempoDisparo <= 0f && _balasActuales > 0 && !recargando)
         {
             Disparar();
         }
@@ -113,17 +125,20 @@ public class Disparo : MonoBehaviour
         Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
 
         // Restamos una bala al cargador
-        balasActuales--;
-        Debug.Log("Balas: " + balasActuales);
+        _balasActuales--;
+        Debug.Log("Balas: " + _balasActuales);
 
         // Reiniciamos el tiempo de disparo según la cadencia
-        tiempoDisparo = 1f / Cadencia;
+        _tiempoDisparo = 1f / Cadencia;
     }
-    //Recargar==La munición disponible es la misma que la del cargador
+    //Recargar==La munición disponible se vuelve la misma que la del cargador
     private void Recargar()
     {
-        balasActuales = Cargador;
-        Debug.Log("Balas: " + balasActuales);
+        Debug.Log("Recargando");
+        //Espera a que el tiempo de recarga termine para que se llenen las balas(Aún no terminado)
+
+        _balasActuales = Cargador;
+        Debug.Log("Balas: " + _balasActuales);
     }
 
     #endregion   
