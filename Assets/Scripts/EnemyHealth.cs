@@ -26,7 +26,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private int Vida;
     [SerializeField]
-    private Transform BarraVidaEnemy;
+    private Transform BarraVida;
 
     #endregion
 
@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour
     void Start()
     {
         VidaInitial = Vida;
-        Scale = BarraVidaEnemy.localScale.x;
+        Scale = BarraVida.localScale.x;
     }
 
     /// <summary>
@@ -64,7 +64,6 @@ public class EnemyHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        BarraVidaEnemy.position = new Vector2 (transform.position.x, transform.position.y + 1);
     }
     #endregion
 
@@ -77,13 +76,15 @@ public class EnemyHealth : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void EnemyHealthPoint(int Damage)
     {
-        Vida -= Damage;
-        BarraVidaEnemy.localScale = new Vector2((BarraVidaEnemy.localScale.x - (Scale * Damage / VidaInitial)), 0.3f); // cambiar la escala de la barra de vida
-        if (Vida < 1) { Destroy(this); }
+        // si la bala colisiona con el enemigo llama a este metodo
+        Vida -= Damage; // restar vida
+        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
+        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
+        if (Vida < 1) { Destroy(gameObject); } // destruye el enemigo a la que esta asignado la barra de vida
     }
 
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -92,6 +93,6 @@ public class EnemyHealth : MonoBehaviour
     // mayúscula, incluida la primera letra)
 
     #endregion   
-
+    
 } // class EnemyHealth 
 // namespace
