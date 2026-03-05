@@ -8,6 +8,7 @@
 
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
             // Somos el primer GameManager.
             // Queremos sobrevivir a cambios de escena.
             _instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no.
     }
@@ -192,6 +193,10 @@ public class GameManager : MonoBehaviour
         Cargador = balasAct;
         BalasMax = balasMax;
         UpdateGUI();
+    }
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     #endregion
 
