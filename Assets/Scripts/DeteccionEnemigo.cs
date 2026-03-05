@@ -7,7 +7,6 @@
 
 using UnityEditor;
 using UnityEditor.Analytics;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.EventSystems;
 // Añadir aquí el resto de directivas using

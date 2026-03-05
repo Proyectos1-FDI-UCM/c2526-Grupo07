@@ -83,6 +83,16 @@ public class MoveEnemigo : MonoBehaviour
         if (isChasing)
         {
             Perseguir();
+            if (offset.x > 0 && direction != 1)
+            {
+                direction *= -1;
+                CambioDireccion();
+            }
+            if (offset.x < 0 && direction != -1)
+            {
+                direction *= -1;
+                CambioDireccion();
+            }
             tiempoInicio = 0;
         }
         else MovAuto();

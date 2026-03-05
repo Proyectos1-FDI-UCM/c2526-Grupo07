@@ -31,7 +31,9 @@ public class AimShoot : MonoBehaviour
     [SerializeField]
     private int Cargador = 10; //Número de balas que se pueden disparar
     [SerializeField]
-    private float TiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar
+    private float TiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar>
+    [SerializeField]
+    private GameObject recarga;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -64,9 +66,9 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Start()
     {
+        recarga.SetActive(false);
         direction = transform.position;
         mousePosition = InputManager.Instance.GetAimMouseValue();
-
         balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         Debug.Log("Balas: " + balasActuales);
         GameManager.Instance.Municion(Cargador, balasActuales);
@@ -124,7 +126,6 @@ public class AimShoot : MonoBehaviour
         if (InputManager.Instance.ReloadWasPressedThisFrame() && !cargadorLleno)
         {
             EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
-
             return; //Sale del Update para que no dispare
         }
         //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
@@ -180,6 +181,7 @@ public class AimShoot : MonoBehaviour
         recargando = true;
         tiempoRecarga = TiempoRecarga;
         Debug.Log("Recargando");
+        recarga.SetActive(true);
     }
     //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
     private void TerminarRecarga()
@@ -188,6 +190,7 @@ public class AimShoot : MonoBehaviour
         balasActuales = Cargador;
         GameManager.Instance.Municion(Cargador, balasActuales);
         Debug.Log("Balas: " + balasActuales);
+        recarga.SetActive(false);
     }
     #endregion
 
