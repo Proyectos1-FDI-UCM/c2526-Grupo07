@@ -7,6 +7,8 @@ TagManager:
   - suelo
   - Bullet
   - muro
+  - Pared
+  - Enemigo
   layers:
   - Default
   - TransparentFX

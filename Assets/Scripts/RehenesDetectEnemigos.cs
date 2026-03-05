@@ -1,38 +1,31 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Detecta si los enemigos asignados para el rehén son destruidos, en ese caso, el rehén queda libre
+// Carlos Alberto Ovando Barrios
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Permite al rehén detectar si los enemigos asignados en su lista siguen o han desaparecido,
+/// si es es el caso, será libre.
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class RehenesDetectEnemigos : MonoBehaviour
 {
-    // ---- ATRIBUTOS DEL INSPECTOR ---- 
+    // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
     // Documentar cada atributo que aparece aquí.
     // El convenio de nombres de Unity recomienda que los atributos
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
+
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
-    [SerializeField]
-    private float Velocity; //Velocidad para correr
-    [SerializeField]
-    private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    [SerializeField]
-    private GameObject Player;
+    private GameObject[] Enemigos; //Lista de enemigos que hay que eliminar para que el rehén esté libre
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -43,8 +36,9 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
-    private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
+
+    private bool _rehenLibre = false; //Asumimos que el rehén no está libre
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -58,41 +52,37 @@ public class PlayerController : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
-
-    }
-    void FixedUpdate()
-    {
-        if (InputManager.Instance)
+        //Si el rehén está libre, sale del Update
+        if (_rehenLibre)
         {
-            if (spriteRenderer != null)
+            return;
+        }
+        //Axumimos que en cada frame no quedan enemigos
+        bool QuedanEnemigos = false;
+        //Buscamos que la lista de enemigos no está vacía
+        for (int i = 0; i < Enemigos.Length; i++)
+        {
+            //Si encuentra algún enemigo en la lista, aún quedan enemigos y se termina el bucle
+            if(Enemigos[i] != null)
             {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-
-                }
-                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+                QuedanEnemigos = true;
+                break;
             }
         }
+        //Si no quedan enemigos, el rehén está libre, y en el primer if, se saldrá del Update
+        if (!QuedanEnemigos)
+        {
+            Debug.Log("Rehén Libre");
+            _rehenLibre = true;
+        }
+
     }
     #endregion
 
@@ -105,7 +95,7 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -113,7 +103,7 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion
+    #endregion   
 
-} // class PlayerController 
+} // class RehenesDetectEnemigos 
 // namespace

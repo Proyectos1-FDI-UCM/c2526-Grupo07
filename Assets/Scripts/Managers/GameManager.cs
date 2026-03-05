@@ -8,6 +8,7 @@
 
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
@@ -34,14 +35,14 @@ public class GameManager : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField]
     private int MaxHealthPoints; //Puntos de vida máximos del personaje
-    private int MaxHealthInitial;
     [SerializeField]
-    private TMPro.TextMeshProUGUI Health; //Texto del canvas
+    private TMPro.TextMeshProUGUI Health;//Texto del canvas
+    [SerializeField]
+    private TMPro.TextMeshProUGUI Ammo;
     [SerializeField]
     private GameObject Menu;
-    [SerializeField]
-    private Transform BarraVida;
-    private float Scale;
+    //[SerializeField]
+    //private Transform BarraVida;
 
     #endregion
 
@@ -53,6 +54,10 @@ public class GameManager : MonoBehaviour
     /// Instancia única de la clase (singleton).
     /// </summary>
     private static GameManager _instance;
+    private float Scale;
+    private int MaxHealthInitial; //Vida máxima del jugador
+    private int Cargador; //Ver la situación del cargador
+    private int BalasMax = 0; //Ver las balas maximas de esa arma
 
     #endregion
 
@@ -91,7 +96,7 @@ public class GameManager : MonoBehaviour
             // Somos el primer GameManager.
             // Queremos sobrevivir a cambios de escena.
             _instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no.
     }
@@ -165,21 +170,33 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateGUI();
-        //Menu.SetActive(false);
-        Scale = BarraVida.localScale.x;
+        Menu.SetActive(false);
+        //Scale = BarraVida.localScale.x;
         MaxHealthInitial = MaxHealthPoints;
     }
     public void HealthPoints(int Damage)
     {
-        MaxHealthPoints -= Damage;
-        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f);
-        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y);
+        //si la bala colisiona con el jugador llama a este metodo
+        MaxHealthPoints -= Damage; // restar la vida del jugador
+        //BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f); //acortar la barra de vida
+        // como se acorta en los dos extremos, muevo la barra de vida hacia la izquierda
+        //BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y); 
         UpdateGUI();
-        if (MaxHealthPoints < 1)
+        if (MaxHealthPoints < 1) // si llega a cero, muere
         {
-            BarraVida.localScale = new Vector2(0f,0f);
+            //BarraVida.localScale = new Vector2(0f,0f);
             Menu.SetActive(true);
         }
+    }
+    public void Municion(int balasMax, int balasAct)
+    {
+        Cargador = balasAct;
+        BalasMax = balasMax;
+        UpdateGUI();
+    }
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     #endregion
 
@@ -203,6 +220,7 @@ public class GameManager : MonoBehaviour
     private void UpdateGUI()
     {
         Health.text = "Vida: " + MaxHealthPoints;
+        Ammo.text = Cargador + "/" + BalasMax;
     }
 
     #endregion

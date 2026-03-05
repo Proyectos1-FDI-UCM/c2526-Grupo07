@@ -5,8 +5,8 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System.Xml.Schema;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,25 +14,16 @@ using UnityEngine.TextCore.Text;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class Aim : MonoBehaviour
 {
-    // ---- ATRIBUTOS DEL INSPECTOR ---- 
+    // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
     // Documentar cada atributo que aparece aquí.
     // El convenio de nombres de Unity recomienda que los atributos
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
-    [SerializeField]
-    private float Velocity; //Velocidad para correr
-    [SerializeField]
-    private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    [SerializeField]
-    private GameObject Player;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -43,8 +34,7 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
-    private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
+    Vector3 direction, lastMousePos, mousePosition;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -55,43 +45,36 @@ public class PlayerController : MonoBehaviour
     // - Hay que borrar los que no se usen 
 
     /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
+    /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        direction = transform.position;
+        mousePosition = InputManager.Instance.GetAimMouseValue();
     }
-
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
-
-    }
-    void FixedUpdate()
-    {
-        if (InputManager.Instance)
+        mousePosition = InputManager.Instance.GetAimMouseValue();
+        if (InputManager.Instance.AimControllerIsPressed())
         {
-            if (spriteRenderer != null)
-            {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+            Vector3 rStickdir = InputManager.Instance.GetAimControllerValue();
+            direction = rStickdir;
 
-                }
-                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
-            }
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+        else if (mousePosition != lastMousePos)
+        {
+            Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+            direction = cursorWorldPosition - transform.position;
+            lastMousePos = mousePosition;
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
     #endregion
@@ -103,9 +86,17 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    public Vector3 AimDir()
+    {
+        return direction;
+    }
 
+    public Vector3 MousePos()
+    { 
+        return mousePosition;
+    }
     #endregion
-
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -113,7 +104,7 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion
+    #endregion   
 
-} // class PlayerController 
+} // class Aim 
 // namespace

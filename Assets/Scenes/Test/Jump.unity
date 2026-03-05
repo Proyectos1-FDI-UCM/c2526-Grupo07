@@ -557,7 +557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 2094154587}
   SaltoMax: 15
-  Velocity: 0
+  Velocity: 5
   Pies: {fileID: 2123780791}
 --- !u!50 &1370098325
 Rigidbody2D:

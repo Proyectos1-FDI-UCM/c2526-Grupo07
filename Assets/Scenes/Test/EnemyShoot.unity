@@ -532,7 +532,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &488712373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,9 +680,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee6c77d1908cd246b401797204ed435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 488712370}
+  Target: {fileID: 0}
   PrefabBullet: {fileID: 1763307312}
-  maxBalasPorSeg: 3
+  MaxBalasPorSeg: 3
   HoraDisparo: -1
 --- !u!1 &1763307312
 GameObject:
@@ -694,6 +694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1763307314}
   - component: {fileID: 1763307313}
+  - component: {fileID: 1763307315}
   m_Layer: 0
   m_Name: Bala
   m_TagString: Untagged
@@ -771,6 +772,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1763307315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763307312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4160c59e287f3ce47af34a0cddd6fee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 3
+  speed: 10
+  aimVector: {fileID: 0}
 --- !u!1 &1846304056
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
 
 
@@ -13,7 +14,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class BulletBehaviour : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,11 +23,10 @@ public class BulletBehaviour : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
-    [SerializeField] private float speed = 10f; // Velocidad de la bala
-    [SerializeField] private Aim aimVector;
-    [SerializeField] private int Damage;
-    private Vector2 velIn; // Velocidad de la bala
+    [SerializeField]
+    private int Vida;
+    [SerializeField]
+    private Transform BarraVida;
 
     #endregion
 
@@ -38,49 +38,25 @@ public class BulletBehaviour : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float createBulletMoment; //Cuanto tiempo lleva la bala x creada
-    Rigidbody2D rb;
+    private int VidaInitial;
+    private float Scale; // la escala de la barra de vida inicial
     #endregion
-
+    
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-
+    
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-
+    
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
-        createBulletMoment = Time.time;
-
-        if (aimVector != null)
-        {
-            Vector3 dir = aimVector.AimDir(); // Usa tu método existente
-            Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
-            rb.linearVelocity = dir2D * speed;
-
-            float length = Mathf.Sqrt(dir.x * dir.x + dir.y * dir.y);
-
-            // Evitar división por cero si el cursor esta encima del jugador, porque la magnitud es 0
-            if (length > 0.01f)
-            {
-                // Escalar para que la velocidad sea siempre sea la misma
-                float factor = speed / length;
-                Vector2 velocity = new Vector2(dir.x * factor, dir.y * factor);
-                rb.linearVelocity = velocity;
-            }
-        }
-    }
-    void OnCollisionEnter2D(Collision2D colision)
-    {
-        if (colision != null)
-        {
-            Destruccion(colision);
-        }
+        VidaInitial = Vida;
+        Scale = BarraVida.localScale.x;
     }
 
     /// <summary>
@@ -88,12 +64,7 @@ public class BulletBehaviour : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Time.time - createBulletMoment > vidaMaxima) //Destruccion si la bala pasa un tiempo determinado, si el Time.time - el momento creacion bala es mayor que su vida
-        {
-            Destroy(gameObject);
-        }
     }
-
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -103,14 +74,15 @@ public class BulletBehaviour : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
-    //Método llamado por disparo y apuntado para determinar la dirección de la bala
-    public void Dir(Vector2 dir)
+    public void EnemyHealthPoint(int Damage)
     {
-        rb = GetComponent<Rigidbody2D>();
-        transform.right = dir;
-        rb.linearVelocity = (dir.normalized * speed);
+        // si la bala colisiona con el enemigo llama a este metodo
+        Vida -= Damage; // restar vida
+        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
+        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
+        if (Vida < 1) { Destroy(gameObject); } // destruye el enemigo a la que esta asignado la barra de vida
     }
+
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -119,24 +91,8 @@ public class BulletBehaviour : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    
-    //Método llamado cuando hay colision, si choca con Player le resta vida y después destruye la bala
-    private void Destruccion(Collision2D colision)
-    {
-        PlayerController player = colision.gameObject.GetComponent<PlayerController>();
-        EnemyHealth enemy = colision.gameObject.GetComponent<EnemyHealth>();
-        if (player != null)
-        {
-            //Llama al GameManager para bajar vida
-            GameManager.Instance.HealthPoints(Damage);
-        }
-        else if (enemy != null)
-        {
-            enemy.EnemyHealthPoint(Damage);
-        }
-        Destroy(gameObject);
-    }
-    #endregion
 
-} // class BulletBehaviour 
+    #endregion   
+    
+} // class EnemyHealth 
 // namespace

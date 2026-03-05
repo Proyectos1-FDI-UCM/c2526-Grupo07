@@ -6,7 +6,6 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,7 +13,7 @@ using UnityEngine.InputSystem;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class MouseAim : MonoBehaviour
+public class FollowCamera : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -23,9 +22,10 @@ public class MouseAim : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
+    [SerializeField] private Transform target;
+    [SerializeField] AimShoot Apuntado;
     #endregion
-    
+
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -34,8 +34,7 @@ public class MouseAim : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Vector3 mousePosition;
-
+    Vector3 offset;
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -46,18 +45,22 @@ public class MouseAim : MonoBehaviour
     // - Hay que borrar los que no se usen 
     
     /// <summary>
+    /// Start is called on the frame when a script is enabled just before 
+    /// any of the Update methods are called the first time.
+    /// </summary>
+    void Start()
+    {
+        offset = new Vector3(0, 0, -10);
+    }
+
+    /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
-    void Update()
+    private void LateUpdate()
     {
-        Vector3 mousePosition = Mouse.current.position.ReadValue();
-        Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        Vector3 direction = cursorWorldPosition - transform.position;
-        Debug.DrawRay(transform.position, direction, Color.yellow);
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0,0,angle);
+        Vector3 Apunt = Apuntado.MousePos();
+        Vector3 late = (Apunt - transform.position) / 2;
+        transform.position = target.position + late + offset;
     }
     #endregion
 
@@ -80,5 +83,5 @@ public class MouseAim : MonoBehaviour
 
     #endregion   
 
-} // class MouseAim 
+} // class FollowCamera 
 // namespace

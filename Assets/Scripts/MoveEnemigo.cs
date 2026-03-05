@@ -26,7 +26,10 @@ public class MoveEnemigo : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField] private float duracion;    //duracion de tiempo en movimiento 
     [SerializeField] private float vel; //velocidad para el movimiento del enemigo
+<<<<<<< HEAD
     [SerializeField] private Transform player;  //jugador para realizar las acciones
+=======
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -37,11 +40,20 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
+<<<<<<< HEAD
     private bool isChasing=false;  //controlar si está persiguiendo al jugador
     private bool isShooting = false;  //controlar si está disparando al jugador
 
     private int direction=1;  //direccion del enemigo
     private float tiempoInicio=0; //tiempo iniciado para el movimiento
+=======
+    private bool movDer = true;    //direccion movimiento a la derecha para aplicar un movimiento automatico
+    private bool movIzq = true;
+    private bool canMove = true;  //controlar si se puede mover
+    private Vector3 direccion = Vector3.zero;  //direccion de persecucion-
+    private float tiempoInicio; //tiempo iniciado para el movimiento
+    private float restante;     //tiempo restante del movimiento para cambiar de direccion
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
     private Rigidbody2D rb;
     #endregion
 
@@ -57,13 +69,26 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Start()
     {
+<<<<<<< HEAD
         rb = GetComponent<Rigidbody2D>();
+=======
+        //inicio de una corrutina para cambiar la direcion del enemigo
+        //cuando el movimiento llega hasta un limite de tiempo
+        //o al colisionar con un objeto
+        rb = GetComponent<Rigidbody2D>();
+
+        //iniciar el tiempo
+        tiempoInicio = Time.time;
+        movDer = true;
+        movIzq = false;
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
+<<<<<<< HEAD
         if (isShooting)
         {   
             //cuando dispara se deja de mover
@@ -76,6 +101,35 @@ public class MoveEnemigo : MonoBehaviour
             tiempoInicio = 0;
         }
         else MovAuto();
+=======
+        if (canMove && direccion != Vector3.zero)
+        {
+            transform.Translate(direccion * vel * Time.deltaTime);
+        }
+
+        else
+        {
+            if (movDer) //si va en direccion derecha
+            {
+                transform.Translate(Vector3.right * vel * Time.deltaTime);      //aplicar movimiento derecha
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            else if (movIzq)
+            {
+                transform.Translate(Vector3.left * vel * Time.deltaTime);      //movimiento izquierda
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
+        if (Time.time - tiempoInicio >= duracion)
+        {
+            CambioDireccion();
+            tiempoInicio = Time.time;
+        }
+    }
+    private void FixedUpdate()
+    {
+
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -84,10 +138,14 @@ public class MoveEnemigo : MonoBehaviour
         //y reinicia el tiempo de movimiento
         if (collision.gameObject.CompareTag("Pared"))
         {
+<<<<<<< HEAD
             direction *= -1; //invertir dirección
             CambioDireccion();
             Debug.Log("detecion pared");
             tiempoInicio = 0;
+=======
+            CambioDireccion();
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
         }
     }
     #endregion
@@ -99,6 +157,7 @@ public class MoveEnemigo : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+<<<<<<< HEAD
     public int GetDirection()   
     {
         return direction;   //devolvel la direccion del enemigo para detectar con el jugador
@@ -112,6 +171,27 @@ public class MoveEnemigo : MonoBehaviour
     public void SetShooting(bool shooting)
     {
         isShooting= shooting;
+=======
+    public void StopMovement()
+    {
+        canMove = false;
+    }
+
+    ///<summary>Reanudar el movimiento normal del enemigo</summary>
+    public void ResumeMovement()
+    {
+        canMove = true;
+        direccion = Vector3.zero; // volver a patrullar automático
+    }
+
+    ///<summary>Mover al enemigo hacia una posición (persecución)</summary>
+    public void FollowPlayer(Vector3 targetPosition)
+    {
+        canMove = true;
+        float dirX = targetPosition.x - transform.position.x;
+        movDer = dirX > 0;  // actualizar dirección
+        direccion = new Vector3(Mathf.Sign(dirX), 0, 0); // movimiento hacia el jugador
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
     }
     #endregion
 
@@ -121,6 +201,7 @@ public class MoveEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+<<<<<<< HEAD
     private void Perseguir()
     {
         rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
@@ -144,6 +225,15 @@ public class MoveEnemigo : MonoBehaviour
     {
         transform.localScale = new Vector3(direction,1,1);
     }
+=======
+
+    private void CambioDireccion()
+    {
+        movDer = !movDer;
+        movIzq = !movIzq;
+        tiempoInicio = Time.time;       //reinicio de tiempo al cambiar de direcion
+    }
+>>>>>>> 7f2690ac5666ae18bcaa6cca285ccdbec1583bbd
     #endregion
 } // class MoveEnemigo 
-// namespace
+  // namespace
