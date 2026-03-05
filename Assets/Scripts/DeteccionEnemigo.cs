@@ -41,6 +41,7 @@ public class DeteccionEnemigo : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float forgetTime = 3;   //tiempo para dejar de perseguir
+    private float time = 0;
     private MoveEnemigo move;   //script de movimiento de enemigo
     private EnemyShoot shoot;   //script de disparo de enemigo
     #endregion
@@ -73,16 +74,16 @@ public class DeteccionEnemigo : MonoBehaviour
         bool dirCambiada = false;
 
         // Solo actúa si el jugador está en la dirección que mira
-        if (move.GetDirection() == 1 && DirToPlayer > 0)    //cuando mira a la derecha
+        if (move.GetDirection()==1 && DirToPlayer>0)    //cuando mira a la derecha
+        {
+            dirCambiada= true;
+        }
+        if (move.GetDirection() == -1 && DirToPlayer < 0)   //cuando mira a la izquierda
         {
             dirCambiada = true;
         }
-        else if (move.GetDirection() == -1 && DirToPlayer < 0)   //cuando mira a la izquierda
-        {
-            dirCambiada = true;
-        }
-        //si el jugador se detecta dentro de la "caja" y no hay otros objetos delante de ello
-        if (distance < ShootDis && dirCambiada == true)   //jugador dentro de la "caja" pequeña
+        //se detecta si el jugador está en la direccion del enemigo
+        if (distance < ShootDis && dirCambiada==true)   //jugador dentro de la "caja" pequeña
         {
             move.SetShooting(true);
             move.SetChasing(false);
@@ -90,8 +91,9 @@ public class DeteccionEnemigo : MonoBehaviour
             {
                 shoot.enabled = true;   //activar disparo al jugador
             }
+            time = forgetTime;  //reinicia el tiempo
         }
-        else if (distance <= ChaseDis && distance > ShootDis && dirCambiada == true)
+        else if (distance <= ChaseDis && distance > ShootDis && dirCambiada == true)    //"caja" grande
         {
             move.SetChasing(true);
             move.SetShooting(false);
@@ -99,23 +101,28 @@ public class DeteccionEnemigo : MonoBehaviour
             {
                 shoot.enabled = false;   //desactivar disparo al jugador
             }
+            time = forgetTime;  //reinicia el tiempo
         }
-        else
+        else //fuera de la distancia
         {
-            move.SetShooting(false);
-            move.SetChasing(false);
-            if (shoot != null)
+            time -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
+            if (time <= 0)
             {
-                shoot.enabled = false;   //desactivar disparo al jugador
+                move.SetShooting(false);
+                move.SetChasing(false);
+                if (shoot != null)
+                {
+                    shoot.enabled = false;   //desactivar disparo al jugador
+                }
             }
         }
-    }
+    } 
     void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis, ShootDis, 0));
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis, ChaseDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis,ChaseDis,0));
     }
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -135,7 +142,6 @@ public class DeteccionEnemigo : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     #endregion
-}
-
-// class DeteccionEnemigo 
+}// class DeteccionEnemigo 
 // namespace
+

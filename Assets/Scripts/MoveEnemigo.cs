@@ -121,11 +121,8 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-        float dir = player.position.x - transform.position.x;  //calcular la posicion para ver en qué direcion va el jugador
-        if (dir > 0) direction = 1;  //derecha
-        else direction = -1;    //izquierda
-        CambioDireccion();
         rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
+        transform.localScale = new Vector3(Math.Sign(direction), 1, 1);
     }
     private void MovAuto()
     {
