@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
 
 
@@ -15,7 +16,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    // ---- ATRIBUTOS DEL INSPECTOR ----
+    // ---- ATRIBUTOS DEL INSPECTOR ---- 
     #region Atributos del Inspector (serialized fields)
     // Documentar cada atributo que aparece aquí.
     // El convenio de nombres de Unity recomienda que los atributos
@@ -28,8 +29,10 @@ public class PlayerController : MonoBehaviour
     private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
     [SerializeField]
     private float Velocity; //Velocidad para correr
-    public Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    
+    [SerializeField]
+    private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
+    [SerializeField]
+    private GameObject Player;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -65,6 +68,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
+
+    }
+    void FixedUpdate()
+    {
         if (InputManager.Instance)
         {
             if (spriteRenderer != null)
@@ -80,16 +87,11 @@ public class PlayerController : MonoBehaviour
                 if (hit.collider != null && InputManager.Instance.JumpIsPressed())
                 {
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+
                 }
+                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
             }
-        }
-    }
-    void FixedUpdate()
-    {
-        if (InputManager.Instance && !tocandoPared)
-        {
-            //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-            rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
         }
     }
     #endregion
