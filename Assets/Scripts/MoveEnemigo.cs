@@ -63,10 +63,21 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Update()
     {
+        Vector2 offset = player.transform.position - transform.position;
         if (isShooting)
         {
             //cuando dispara se deja de mover
             rb.linearVelocity = Vector2.zero;
+            if (offset.x > 0 && direction != 1)
+            {
+                direction *= -1;
+                CambioDireccion();
+            }
+            if (offset.x < 0 && direction != -1)
+            {
+                direction *= -1;
+                CambioDireccion();
+            }
             return;
         }
         if (isChasing)
@@ -131,6 +142,7 @@ public class MoveEnemigo : MonoBehaviour
         if (tiempoInicio > duracion)
         {
             direction *= -1;    //cambio de direccion, invertir
+            CambioDireccion();
             rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
             tiempoInicio = 0;   //vuelve a sincronizar el tiempo
         }

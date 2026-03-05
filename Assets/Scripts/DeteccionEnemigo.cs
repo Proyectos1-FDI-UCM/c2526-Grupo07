@@ -29,6 +29,7 @@ public class DeteccionEnemigo : MonoBehaviour
     [SerializeField] private Transform player;  //objeto que persigue y dispara (jugador)
     [SerializeField] private float ChaseDis;    //distancia para perseguir
     [SerializeField] private float ShootDis;  //distancia para disparo
+    [SerializeField] private GameObject excl;
 
     #endregion
 
@@ -66,6 +67,7 @@ public class DeteccionEnemigo : MonoBehaviour
     {
         move = GetComponent<MoveEnemigo>();
         shoot = GetComponent<EnemyShoot>();
+        excl.SetActive(false);
     }
     void Update()
     {
@@ -86,6 +88,7 @@ public class DeteccionEnemigo : MonoBehaviour
         if (distance < ShootDis && dirCambiada==true)   //jugador dentro de la "caja" pequeña
         {
             move.SetShooting(true);
+            excl.SetActive(true);
             move.SetChasing(false);
             if (shoot != null)
             {
@@ -96,6 +99,7 @@ public class DeteccionEnemigo : MonoBehaviour
         else if (distance <= ChaseDis && distance > ShootDis && dirCambiada == true)    //"caja" grande
         {
             move.SetChasing(true);
+            excl.SetActive(true);
             move.SetShooting(false);
             if (shoot != null)
             {
@@ -105,9 +109,11 @@ public class DeteccionEnemigo : MonoBehaviour
         }
         else //fuera de la distancia
         {
+            excl.SetActive(true);
             time -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
             if (time <= 0)
             {
+                excl.SetActive(false);
                 move.SetShooting(false);
                 move.SetChasing(false);
                 if (shoot != null)
