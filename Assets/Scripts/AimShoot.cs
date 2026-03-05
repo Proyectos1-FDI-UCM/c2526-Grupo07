@@ -23,13 +23,15 @@ public class AimShoot : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    public GameObject Bala; //Objeto Bala que se crea al Dispara
+    private GameObject Bala; //Objeto Bala que se crea al Dispara
     [SerializeField]
-    public Transform SalidaBala; //Posición donde saldrá la bala
+    private Transform SalidaBala; //Posición donde saldrá la bala
     [SerializeField]
-    public float Cadencia = 0f; //Balas por segundo
+    private float Cadencia = 1f; //Balas por segundo
     [SerializeField]
-    public int Cargador = 10; //Número de balas que se pueden disparar
+    private int Cargador = 10; //Número de balas que se pueden disparar
+    [SerializeField]
+    private float TiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -41,8 +43,12 @@ public class AimShoot : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     Vector3 direction, lastMousePos, mousePosition;
+    //Disparo
     private float tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
     private int balasActuales; //Balas disponibles en el cargador
+    //Recarga
+    private bool recargando = false; //No está recargando, por ahora
+    private float tiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -91,15 +97,35 @@ public class AimShoot : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
+        //Comprueba si está recargando, si es así, reduce el tiempo de recarga
+        if (recargando)
+        {
+            tiempoRecarga -= Time.deltaTime;
+
+            // Cuando el tiempo de recarga termina, se llena el cargador 
+            if (tiempoRecarga <= 0f)
+            {
+                TerminarRecarga(); //Llena el cargador y "recargando" se vuelve falso
+            }
+            //Salimos del Update mientras se recarga, para que el jugador no dispare, y como "recargando" se vuelve falso al terminar, la proxima vez podrá disparar
+            return;
+        }
+        //Si no se recarga:
+
         //1 El tiempo para poder volver a disparar se reduce con el delta time
         if (tiempoDisparo > 0)
         {
             tiempoDisparo -= Time.deltaTime;
         }
-        //2 Comprueba si se recarga
-        if (InputManager.Instance.ReloadWasPressedThisFrame())
+
+        bool cargadorLleno = (balasActuales == Cargador); //El cargador está lleno(true) si las balas actuales son las mismas que las del cargador
+
+        //2 Si el cargador no está lleno e intentamos recargar, empieza la recarga
+        if (InputManager.Instance.ReloadWasPressedThisFrame() && !cargadorLleno)
         {
-            Recargar();
+            EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+
+            return; //Sale del Update para que no dispare
         }
         //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
         if (InputManager.Instance.FireIsPressed() && tiempoDisparo <= 0f && balasActuales > 0)
@@ -132,6 +158,7 @@ public class AimShoot : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
     private void Disparar()
     {
         //Crea la bala en su posición de salida
@@ -147,9 +174,17 @@ public class AimShoot : MonoBehaviour
         // Reiniciamos el tiempo de disparo según la cadencia
         tiempoDisparo = 1f / Cadencia;
     }
-    //Recargar==La munición disponible es la misma que la del cargador
-    private void Recargar()
+    //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+    private void EmpezarRecarga()
     {
+        recargando = true;
+        tiempoRecarga = TiempoRecarga;
+        Debug.Log("Recargando");
+    }
+    //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
+    private void TerminarRecarga()
+    {
+        recargando = false;
         balasActuales = Cargador;
         GameManager.Instance.Municion(Cargador, balasActuales);
         Debug.Log("Balas: " + balasActuales);
