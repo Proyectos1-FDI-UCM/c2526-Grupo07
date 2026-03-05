@@ -94,7 +94,6 @@ public class EnemyShoot : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -103,6 +102,5 @@ public class EnemyShoot : MonoBehaviour
     // mayúscula, incluida la primera letra)
 
     #endregion   
-
 } // class EnemyShoot 
 // namespace
