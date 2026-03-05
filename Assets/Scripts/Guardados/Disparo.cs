@@ -66,9 +66,9 @@ public class Disparo : MonoBehaviour
     void Start()
     {
 
-        balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
-        Debug.Log("Balas: " + balasActuales);
-        GameManager.Instance.Municion(balasActuales, Cargador);
+        _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
+        Debug.Log("Balas: " + _balasActuales);
+        GameManager.Instance.Municion(_balasActuales, Cargador);
     }
 
     /// <summary>
