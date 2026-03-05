@@ -25,7 +25,8 @@ public class RehenesDetectEnemigos : MonoBehaviour
 
     [SerializeField]
     private GameObject[] Enemigos; //Lista de enemigos que hay que eliminar para que el rehén esté libre
-
+    [SerializeField]
+    private SpriteRenderer Rehen;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -81,6 +82,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             Debug.Log("Rehén Libre");
             _rehenLibre = true;
+            Rehen.color = Color.green;
         }
 
     }
