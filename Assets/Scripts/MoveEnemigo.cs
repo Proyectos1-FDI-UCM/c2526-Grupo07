@@ -5,27 +5,18 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using System;
-using System.Collections;
-using UnityEngine;
+
 // Añadir aquí el resto de directivas using
-
-
 /// <summary>
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
+using System;
+using System.Collections;
+using UnityEngine;
+
 public class MoveEnemigo : MonoBehaviour
 {
-    private Coroutine cambioDirCoroutine;       //corrutina para cambio de direccion en dif casos
-
-    private bool movDer = true;    //direccion movimiento a la derecha para aplicar un movimiento automatico
-    private Vector3 direccion;  //direccion de movimiento
-    private float tiempoInicio; //tiempo iniciado para el movimiento
-    private float restante;     //tiempo restante del movimiento para cambiar de direccion
-    [SerializeField] private float duracion;    //duracion de tiempo en movimiento 
-    [SerializeField] private float vel; //velocidad para el movimiento del enemigo
-
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
     // Documentar cada atributo que aparece aquí.
@@ -33,8 +24,10 @@ public class MoveEnemigo : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
+    [SerializeField] private float duracion;    //duracion de tiempo en movimiento 
+    [SerializeField] private float vel; //velocidad para el movimiento del enemigo
     #endregion
-    
+
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -43,43 +36,68 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
+    private bool movDer = true;    //direccion movimiento a la derecha para aplicar un movimiento automatico
+    private bool movIzq = true;
+    private bool canMove = true;  //controlar si se puede mover
+    private Vector3 direccion = Vector3.zero;  //direccion de persecucion-
+    private float tiempoInicio; //tiempo iniciado para el movimiento
+    private float restante;     //tiempo restante del movimiento para cambiar de direccion
+    private Rigidbody2D rb;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    #endregion
-
     void Start()
     {
         //inicio de una corrutina para cambiar la direcion del enemigo
         //cuando el movimiento llega hasta un limite de tiempo
         //o al colisionar con un objeto
-        cambioDirCoroutine = StartCoroutine(CambioDireccion());
+        rb = GetComponent<Rigidbody2D>();
 
         //iniciar el tiempo
         tiempoInicio = Time.time;
-        movDer=true;
+        movDer = true;
+        movIzq = false;
     }
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
     void Update()
     {
-        //movimiento horizontal automatico
-        if (movDer) //si va en direccion derecha
+        if (canMove && direccion != Vector3.zero)
         {
-            transform.Translate(Vector3.right * vel * Time.deltaTime);      //aplicar movimiento derecha
+            transform.Translate(direccion * vel * Time.deltaTime);
         }
-        else 
-            transform.Translate(Vector3.left * vel * Time.deltaTime);      //movimiento izquierda
+
+        else
+        {
+            if (movDer) //si va en direccion derecha
+            {
+                transform.Translate(Vector3.right * vel * Time.deltaTime);      //aplicar movimiento derecha
+            }
+            else if (movIzq)
+            {
+                transform.Translate(Vector3.left * vel * Time.deltaTime);      //movimiento izquierda
+                transform.TransformDirection(-1, 0, 0);
+            }
+        }
+        if (Time.time - tiempoInicio >= duracion)
+        {
+            CambioDireccion();
+            tiempoInicio = Time.time;
+        }
+    }
+    private void FixedUpdate()
+    {
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -88,16 +106,11 @@ public class MoveEnemigo : MonoBehaviour
         //y reinicia el tiempo de movimiento
         if (collision.gameObject.CompareTag("Pared"))
         {
-            movDer = !movDer;
-            //cuando se ha colisionado
-            //se reinicia la corrutina
-            if(cambioDirCoroutine != null)
-            {
-                StopCoroutine(cambioDirCoroutine);  //detener la corrutina
-            }
-            cambioDirCoroutine= StartCoroutine(CambioDireccion());  //volver a iniciar 
+            CambioDireccion();
+            Debug.Log("detecion pared");
         }
     }
+    #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
     #region Métodos públicos
@@ -106,7 +119,26 @@ public class MoveEnemigo : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    public void StopMovement()
+    {
+        canMove = false;
+    }
 
+    ///<summary>Reanudar el movimiento normal del enemigo</summary>
+    public void ResumeMovement()
+    {
+        canMove = true;
+        direccion = Vector3.zero; // volver a patrullar automático
+    }
+
+    ///<summary>Mover al enemigo hacia una posición (persecución)</summary>
+    public void FollowPlayer(Vector3 targetPosition)
+    {
+        canMove = true;
+        float dirX = targetPosition.x - transform.position.x;
+        movDer = dirX > 0;  // actualizar dirección
+        direccion = new Vector3(Mathf.Sign(dirX), 0, 0); // movimiento hacia el jugador
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -115,17 +147,13 @@ public class MoveEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    #endregion
 
-    IEnumerator CambioDireccion()
+    private void CambioDireccion()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(duracion);
-            movDer = !movDer;     //invertir el movimiento del enemigo
-            restante = duracion;        //reinicio de tiempo al cambiar de direcion
-        }
+        movDer = !movDer;
+        movIzq = !movIzq;
+        tiempoInicio = Time.time;       //reinicio de tiempo al cambiar de direcion
     }
-
+    #endregion
 } // class MoveEnemigo 
-// namespace
+  // namespace
