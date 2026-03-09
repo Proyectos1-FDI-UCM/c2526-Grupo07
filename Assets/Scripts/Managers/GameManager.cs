@@ -219,7 +219,14 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateGUI()
     {
-        Health.text = "Vida: " + MaxHealthPoints;
+        if (MaxHealthPoints > 0)
+        {
+            Health.text = "Vida: " + MaxHealthPoints;
+        }
+        else
+        {
+            Health.text = "Vida: 0";
+        }
         Ammo.text = Cargador + "/" + BalasMax;
     }
 
