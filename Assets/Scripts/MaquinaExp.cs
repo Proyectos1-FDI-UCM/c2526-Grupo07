@@ -6,7 +6,6 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,9 +13,9 @@ using UnityEngine.TextCore.Text;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class MaquinaExp : MonoBehaviour
 {
-    // ---- ATRIBUTOS DEL INSPECTOR ---- 
+    // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
     // Documentar cada atributo que aparece aquí.
     // El convenio de nombres de Unity recomienda que los atributos
@@ -24,15 +23,9 @@ public class PlayerController : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
+    private int Damage; //Daño que recibe el jugador
     [SerializeField]
-    private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
-    [SerializeField]
-    private float Velocity; //Velocidad para correr
-    [SerializeField]
-    private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    [SerializeField]
-    private GameObject Player;
+    private float FuerzaEmpuje; //Que tan lejos o cerca empuja al jugador
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -43,9 +36,6 @@ public class PlayerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
-    private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
-    private bool canMove = true; //Ver si se puede mover o no
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -61,7 +51,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     /// <summary>
@@ -69,30 +59,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        Debug.Log(rb.linearVelocity);
+        
     }
-    void FixedUpdate()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (InputManager.Instance)
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
         {
-            if (spriteRenderer != null && canMove != false)
-            {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-
-                }
-                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
-            }
+            player.Empuje(FuerzaEmpuje);
+            GameManager.Instance.HealthPoints(Damage);
         }
     }
     #endregion
@@ -104,11 +79,7 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void Empuje(float fuerzaEmpuje)
-    {
-        canMove = false;
-        rb.linearVelocity = new Vector2(-InputManager.Instance.MovementVector.x * fuerzaEmpuje, 5f);
-    }
+
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -120,5 +91,5 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-} // class PlayerController 
+} // class MaquinaExp 
 // namespace
