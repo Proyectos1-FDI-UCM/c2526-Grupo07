@@ -90,7 +90,9 @@ public class PlayerController : MonoBehaviour
 
                 }
                 //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+
+                Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
+                transform.Translate(movement);
             }
         }
     }
