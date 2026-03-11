@@ -90,9 +90,11 @@ public class PlayerController : MonoBehaviour
 
                 }
                 //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-
-                Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
-                transform.Translate(movement);
+                if (tocandoPared == false)
+                {
+                    Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
+                    transform.Translate(movement);
+                }
             }
         }
     }
@@ -114,7 +116,14 @@ public class PlayerController : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        tocandoPared = true;
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        tocandoPared = false;
+    }
     #endregion
 
 } // class PlayerController 
