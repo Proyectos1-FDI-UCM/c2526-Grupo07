@@ -95,6 +95,12 @@ public class PlayerController : MonoBehaviour
                 //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
                 rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
                 Chuchillo();
+
+                if (tocandoPared == false)
+                {
+                    Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
+                    transform.Translate(movement);
+                }
             }
         }
     }
@@ -145,6 +151,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        tocandoPared = true;
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        tocandoPared = false;
+    }
     #endregion
 
 } // class PlayerController 
