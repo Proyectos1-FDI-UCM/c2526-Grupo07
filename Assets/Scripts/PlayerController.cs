@@ -77,21 +77,8 @@ public class PlayerController : MonoBehaviour
         {
             if (spriteRenderer != null && canMove != false)
             {
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-
-                }
-                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+                Salto();
+                Moverse();
             }
         }
     }
@@ -104,10 +91,9 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void Empuje(float fuerzaEmpuje)
+    public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
-        canMove = false;
-        rb.linearVelocity = new Vector2(-InputManager.Instance.MovementVector.x * fuerzaEmpuje, 5f);
+        rb.linearVelocity = new Vector2(dir.x * fuerzaEmpuje, dir.y);
     }
     #endregion
 
@@ -117,7 +103,26 @@ public class PlayerController : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void Salto()
+    {
+        //El raycast guarda la info en "hit"
+        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
+        //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
+        if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
+        {
+            //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+        }
+        if (hit.collider != null && InputManager.Instance.JumpIsPressed())
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+        }
+    }
+    private void Moverse()
+    {
+        //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+        rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+    }
     #endregion
 
 } // class PlayerController 

@@ -26,6 +26,8 @@ public class MaquinaExp : MonoBehaviour
     private int Damage; //Daño que recibe el jugador
     [SerializeField]
     private float FuerzaEmpuje; //Que tan lejos o cerca empuja al jugador
+    [SerializeField]
+    private Transform Player; //Posición del jugador para calcular el vector
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -36,6 +38,7 @@ public class MaquinaExp : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
+    Vector2 offset;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -59,14 +62,14 @@ public class MaquinaExp : MonoBehaviour
     /// </summary>
     void Update()
     {
-        
+        offset = Player.transform.position - transform.position;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
-            player.Empuje(FuerzaEmpuje);
+            player.Empuje(FuerzaEmpuje, offset.normalized);
             GameManager.Instance.HealthPoints(Damage);
         }
     }
