@@ -32,7 +32,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
     [SerializeField]
-    private GameObject Player;
+    private GameObject HitboxCuchillo;
+    [SerializeField] AimShoot Apuntado;
+    [SerializeField] private Transform cuchillo;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -45,7 +47,11 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
+<<<<<<< HEAD
     private bool canMove = true; //Ver si se puede mover o no
+=======
+    private float SetupChuchillo = 0f;
+>>>>>>> e73b4b25bd5099755c2f895cb85eb54ed490b57c
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -77,11 +83,37 @@ public class PlayerController : MonoBehaviour
         {
             if (spriteRenderer != null && canMove != false)
             {
+<<<<<<< HEAD
                 Salto();
                 Moverse();
+=======
+                //El raycast guarda la info en "hit"
+                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
+                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
+                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
+                {
+                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+                }
+                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+
+                }
+                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+                Chuchillo();
+
+                if (tocandoPared == false)
+                {
+                    Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
+                    transform.Translate(movement);
+                }
+>>>>>>> e73b4b25bd5099755c2f895cb85eb54ed490b57c
             }
         }
     }
+
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -122,6 +154,42 @@ public class PlayerController : MonoBehaviour
     {
         //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
         rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+    }
+
+    private void Chuchillo()
+    {
+        if (InputManager.Instance.KnifeWasPressedThisFrame())
+        {
+            Vector3 Dir = Apuntado.MousePos();
+            if (Dir.x > 0)
+            {
+                cuchillo.localPosition = new Vector3(0.8f, 0f, 0f);
+            }
+            else
+            {
+                cuchillo.localPosition = new Vector3(-1.3f, 0f, 0f);
+            }
+
+            SetupChuchillo = 0f;
+            HitboxCuchillo.SetActive(true);
+        }
+        if (HitboxCuchillo)
+        {
+            SetupChuchillo = SetupChuchillo + Time.deltaTime;
+        }
+        if (SetupChuchillo >= 0.5f)
+        {
+            HitboxCuchillo.SetActive(false);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        tocandoPared = true;
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        tocandoPared = false;
     }
     #endregion
 
