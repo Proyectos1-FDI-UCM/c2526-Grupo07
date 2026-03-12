@@ -69,7 +69,7 @@ public class MaquinaExp : MonoBehaviour
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
-            player.Empuje(FuerzaEmpuje, offset.normalized);
+            player.Empuje(FuerzaEmpuje, offset);
             GameManager.Instance.HealthPoints(Damage);
         }
     }

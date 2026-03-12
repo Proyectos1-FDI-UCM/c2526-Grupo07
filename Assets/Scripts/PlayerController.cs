@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
@@ -47,11 +48,10 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
-<<<<<<< HEAD
     private bool canMove = true; //Ver si se puede mover o no
-=======
     private float SetupChuchillo = 0f;
->>>>>>> e73b4b25bd5099755c2f895cb85eb54ed490b57c
+    private bool Knockback = false;
+    private float KnockbackDuration;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -75,7 +75,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        Debug.Log(rb.linearVelocity);
+        if (Knockback != false)
+        {
+            if (Time.time > KnockbackDuration)
+            {
+                canMove = true;
+            }
+        }
     }
     void FixedUpdate()
     {
@@ -83,10 +89,8 @@ public class PlayerController : MonoBehaviour
         {
             if (spriteRenderer != null && canMove != false)
             {
-<<<<<<< HEAD
                 Salto();
                 Moverse();
-=======
                 //El raycast guarda la info en "hit"
                 RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
                 //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
@@ -100,8 +104,6 @@ public class PlayerController : MonoBehaviour
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
 
                 }
-                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
                 Chuchillo();
 
                 if (tocandoPared == false)
@@ -109,7 +111,6 @@ public class PlayerController : MonoBehaviour
                     Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
                     transform.Translate(movement);
                 }
->>>>>>> e73b4b25bd5099755c2f895cb85eb54ed490b57c
             }
         }
     }
@@ -125,7 +126,11 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
-        rb.linearVelocity = new Vector2(dir.x * fuerzaEmpuje, dir.y);
+        canMove = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(fuerzaEmpuje * dir, ForceMode2D.Impulse);
+        Knockback = true;
+        KnockbackDuration = Time.time * 1.25f;
     }
     #endregion
 
