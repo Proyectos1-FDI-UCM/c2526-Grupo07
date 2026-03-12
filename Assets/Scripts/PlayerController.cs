@@ -32,7 +32,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
     [SerializeField]
-    private GameObject Player;
+    private GameObject HitboxCuchillo;
+    [SerializeField] AimShoot Apuntado;
+    [SerializeField] private Transform cuchillo;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
+    private float SetupChuchillo = 0f;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -90,6 +93,9 @@ public class PlayerController : MonoBehaviour
 
                 }
                 //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+                Chuchillo();
+
                 if (tocandoPared == false)
                 {
                     Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
@@ -98,6 +104,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -116,6 +123,34 @@ public class PlayerController : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+
+    private void Chuchillo()
+    {
+        if (InputManager.Instance.KnifeWasPressedThisFrame())
+        {
+            Vector3 Dir = Apuntado.MousePos();
+            if (Dir.x > 0)
+            {
+                cuchillo.localPosition = new Vector3(0.8f, 0f, 0f);
+            }
+            else
+            {
+                cuchillo.localPosition = new Vector3(-1.3f, 0f, 0f);
+            }
+
+            SetupChuchillo = 0f;
+            HitboxCuchillo.SetActive(true);
+        }
+        if (HitboxCuchillo)
+        {
+            SetupChuchillo = SetupChuchillo + Time.deltaTime;
+        }
+        if (SetupChuchillo >= 0.5f)
+        {
+            HitboxCuchillo.SetActive(false);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         tocandoPared = true;
