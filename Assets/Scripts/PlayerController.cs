@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private float SetupChuchillo = 0f;
     private bool Knockback = false;
     private float KnockbackDuration;
+    private float KnockbackFinish;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -77,11 +78,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Knockback != false)
         {
-            if (Time.time > KnockbackDuration)
+            KnockbackFinish = Time.deltaTime;
+            if (KnockbackFinish > KnockbackDuration)
             {
                 canMove = true;
             }
         }
+        Debug.Log("Duracion" + KnockbackDuration);
+        Debug.Log("Finish" + KnockbackFinish);
     }
     void FixedUpdate()
     {
@@ -106,11 +110,11 @@ public class PlayerController : MonoBehaviour
                 }
                 Chuchillo();
 
-                if (tocandoPared == false)
+                /*if (tocandoPared == false)
                 {
                     Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
                     transform.Translate(movement);
-                }
+                }*/
             }
         }
     }
@@ -128,9 +132,9 @@ public class PlayerController : MonoBehaviour
     {
         canMove = false;
         rb.linearVelocity = Vector2.zero;
-        rb.AddForce(fuerzaEmpuje * dir, ForceMode2D.Impulse);
+        rb.AddForce(fuerzaEmpuje * dir.normalized, ForceMode2D.Impulse);
         Knockback = true;
-        KnockbackDuration = Time.time * 1.25f;
+        KnockbackDuration = Time.deltaTime * 1.25f;
     }
     #endregion
 
