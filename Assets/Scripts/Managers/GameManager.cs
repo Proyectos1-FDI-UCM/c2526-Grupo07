@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
     private TMPro.TextMeshProUGUI Ammo;
     [SerializeField]
     private GameObject Menu;
+    [SerializeField]
+    private GameObject Puerta;
+    [SerializeField]
+    private GameObject PanelVictory;
     //[SerializeField]
     //private Transform BarraVida;
 
@@ -173,6 +177,7 @@ public class GameManager : MonoBehaviour
         Menu.SetActive(false);
         //Scale = BarraVida.localScale.x;
         MaxHealthInitial = MaxHealthPoints;
+        PanelVictory.SetActive(false);
     }
     public void HealthPoints(int Damage)
     {
@@ -197,6 +202,12 @@ public class GameManager : MonoBehaviour
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void PanelVictoria()
+    {
+        PanelVictory.SetActive(true);
+        Time.timeScale = 0f;
     }
     #endregion
 
@@ -229,7 +240,7 @@ public class GameManager : MonoBehaviour
         }
         Ammo.text = Cargador + "/" + BalasMax;
     }
-
+    
     #endregion
 } // class GameManager 
 // namespace
