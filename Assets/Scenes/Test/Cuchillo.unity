@@ -157,6 +157,7 @@ MonoBehaviour:
   HitboxCuchillo: {fileID: 2106382039}
   Apuntado: {fileID: 1068110591}
   cuchillo: {fileID: 2106382040}
+  CooldownChuchillo: 3
 --- !u!50 &708115218
 Rigidbody2D:
   serializedVersion: 5
@@ -1206,6 +1207,7 @@ MonoBehaviour:
   target: {fileID: 708115220}
   Apuntado: {fileID: 1068110591}
   "Tama\xF1oCamara": 7
+  Suavidad: 0.0025
 --- !u!114 &1953045214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1268,7 +1270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2106382040
 Transform:
   m_ObjectHideFlags: 0
