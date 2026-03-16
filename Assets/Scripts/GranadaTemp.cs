@@ -5,8 +5,8 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using UnityEditor.AnimatedValues;
 using UnityEngine;
-using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,7 +14,7 @@ using UnityEngine.UIElements;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class EnemyHealth : MonoBehaviour
+public class GranadaTemp : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -24,12 +24,11 @@ public class EnemyHealth : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    private int Vida;
+    private GameObject Granada;
     [SerializeField]
-    private Transform BarraVida;
+    private AimShoot Apuntar;
     [SerializeField]
-    private GameObject ObjetoDrop; //Objeto que suelta el enemigo
-
+    private int numGranadas;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -40,25 +39,22 @@ public class EnemyHealth : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private int VidaInitial;
-    private float Scale; // la escala de la barra de vida inicial
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
+    /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Start()
     {
-        VidaInitial = Vida;
-        Scale = BarraVida.localScale.x;
+        GameManager.Instance.GranadasRest(numGranadas);
+        Apuntar = Granada.gameObject.GetComponent<AimShoot>();
     }
 
     /// <summary>
@@ -66,6 +62,15 @@ public class EnemyHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (InputManager.Instance.UseObjectWasPressedThisFrame())
+        {
+            if(numGranadas > 0)
+            {
+                Instantiate(Granada, Apuntar.MousePos(), transform.rotation);
+                --numGranadas;
+                GameManager.Instance.GranadasRest(numGranadas);
+            }
+        }
     }
     #endregion
 
@@ -76,26 +81,9 @@ public class EnemyHealth : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void EnemyHealthPoint(int Damage)
-    {
-        // si la bala colisiona con el enemigo llama a este metodo
-        Vida -= Damage; // restar vida
-        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
-        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
-        if (Vida < 1) 
-        {
-            //Si tiene un objeto lo suelta en la posición del enemigo
-            if (ObjetoDrop != null)
-            {
-                Instantiate(ObjetoDrop, transform.position, Quaternion.identity);
-            }
-
-            Destroy(gameObject); 
-        } // destruye el enemigo a la que esta asignado la barra de vida
-    }
 
     #endregion
-
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -104,6 +92,6 @@ public class EnemyHealth : MonoBehaviour
     // mayúscula, incluida la primera letra)
 
     #endregion   
-    
-} // class EnemyHealth 
+
+} // class GranadaTemp 
 // namespace

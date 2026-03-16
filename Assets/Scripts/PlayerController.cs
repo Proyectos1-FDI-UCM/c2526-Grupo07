@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private GameObject HitboxCuchillo;
     [SerializeField] AimShoot Apuntado;
     [SerializeField] private Transform cuchillo;
+    [SerializeField] private float CooldownChuchillo = 3f;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private float SetupChuchillo = 0f;
     private bool Knockback = false;
     private float KnockbackDuration;
+    private float CChuchillo;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -68,6 +70,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        CChuchillo = 5f;
     }
 
     /// <summary>
@@ -75,6 +78,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (CChuchillo > CooldownChuchillo)
+        {
+            Chuchillo();
+        }
+        else
+        {
+            CChuchillo = CChuchillo + Time.deltaTime;
+        }
+        DesCuchillo();
+
         if (Knockback != false)
         {
             if (Time.time > KnockbackDuration)
@@ -91,26 +104,11 @@ public class PlayerController : MonoBehaviour
             {
                 Salto();
                 Moverse();
+
                 //El raycast guarda la info en "hit"
                 RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
                 //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-                if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
-                {
-                    //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
-                }
-                if (hit.collider != null && InputManager.Instance.JumpIsPressed())
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
 
-                }
-                Chuchillo();
-
-                if (tocandoPared == false)
-                {
-                    Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
-                    transform.Translate(movement);
-                }
             }
         }
     }
@@ -161,7 +159,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
     }
 
-    private void Chuchillo()
+    private void Chuchillo() //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
     {
         if (InputManager.Instance.KnifeWasPressedThisFrame())
         {
@@ -177,7 +175,11 @@ public class PlayerController : MonoBehaviour
 
             SetupChuchillo = 0f;
             HitboxCuchillo.SetActive(true);
+            CChuchillo = 0;
         }
+    }
+    private void DesCuchillo() //Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
+    {
         if (HitboxCuchillo)
         {
             SetupChuchillo = SetupChuchillo + Time.deltaTime;

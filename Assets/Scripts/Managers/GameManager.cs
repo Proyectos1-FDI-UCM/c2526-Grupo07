@@ -40,7 +40,13 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI Ammo;
     [SerializeField]
+    private TMPro.TextMeshProUGUI Grenades;
+    [SerializeField]
     private GameObject Menu;
+    [SerializeField]
+    private GameObject Puerta;
+    [SerializeField]
+    private GameObject PanelVictory;
     //[SerializeField]
     //private Transform BarraVida;
 
@@ -56,6 +62,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     private float Scale;
     private int MaxHealthInitial; //Vida máxima del jugador
+    private int numGranadas;
     private int Cargador; //Ver la situación del cargador
     private int BalasMax = 0; //Ver las balas maximas de esa arma
 
@@ -101,6 +108,19 @@ public class GameManager : MonoBehaviour
             Init();
         } // if-else somos instancia nueva o no.
     }
+
+    /// <summary>
+    /// Método llamado cuando se destruye el componente.
+    /// </summary>
+    private void Start()
+    {
+
+        UpdateGUI();
+        Menu.SetActive(false);
+        //Scale = BarraVida.localScale.x;
+        MaxHealthInitial = MaxHealthPoints;
+    }
+
 
     /// <summary>
     /// Método llamado cuando se destruye el componente.
@@ -170,13 +190,7 @@ public class GameManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(index);
         System.GC.Collect();
     } // ChangeScene
-    private void Start()
-    {
-        UpdateGUI();
-        Menu.SetActive(false);
-        //Scale = BarraVida.localScale.x;
-        MaxHealthInitial = MaxHealthPoints;
-    }
+
     public void HealthPoints(int Damage)
     {
         //si la bala colisiona con el jugador llama a este metodo
@@ -197,6 +211,11 @@ public class GameManager : MonoBehaviour
         BalasMax = balasMax;
         UpdateGUI();
     }
+    public void GranadasRest(int actGrenades)
+    {
+        numGranadas = actGrenades;
+        UpdateGUI();
+    }
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -206,8 +225,14 @@ public class GameManager : MonoBehaviour
         //Sumamos la cantidad de vida que quiere curar
         //y guardar la nueva vida (vida curada)
         MaxHealthPoints += vida;
-        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints=MaxHealthInitial;
+        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
         UpdateGUI();
+    }
+
+    public void PanelVictoria()
+    {
+        PanelVictory.SetActive(true);
+        Time.timeScale = 0f;
     }
     #endregion
 
@@ -239,8 +264,9 @@ public class GameManager : MonoBehaviour
             Health.text = "Vida: 0";
         }
         Ammo.text = Cargador + "/" + BalasMax;
+        Grenades.text = numGranadas + "";
     }
-
+    
     #endregion
 } // class GameManager 
 // namespace
