@@ -27,6 +27,8 @@ public class EnemyHealth : MonoBehaviour
     private int Vida;
     [SerializeField]
     private Transform BarraVida;
+    [SerializeField]
+    private GameObject ObjetoDrop; //Objeto que suelta el enemigo
 
     #endregion
 
@@ -80,7 +82,16 @@ public class EnemyHealth : MonoBehaviour
         Vida -= Damage; // restar vida
         BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
         BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
-        if (Vida < 1) { Destroy(gameObject); } // destruye el enemigo a la que esta asignado la barra de vida
+        if (Vida < 1) 
+        {
+            //Si tiene un objeto lo suelta en la posición del enemigo
+            if (ObjetoDrop != null)
+            {
+                Instantiate(ObjetoDrop, transform.position, Quaternion.identity);
+            }
+
+            Destroy(gameObject); 
+        } // destruye el enemigo a la que esta asignado la barra de vida
     }
 
     #endregion
