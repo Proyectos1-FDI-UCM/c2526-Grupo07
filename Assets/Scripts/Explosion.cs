@@ -44,6 +44,8 @@ public class Explosion : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     private float tiempo; //El tiempo que se reducirá para que explote la granada
+    private Rigidbody2D rb;
+    private Vector3 direction;
 
     #endregion
     
@@ -60,6 +62,8 @@ public class Explosion : MonoBehaviour
     /// </summary>
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        rb.linearVelocity = direction;
         tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
     }
 
@@ -85,7 +89,10 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void SetDireccion(Vector3 dir)
+    {
+        direction = dir;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

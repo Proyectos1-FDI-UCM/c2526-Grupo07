@@ -23,9 +23,13 @@ public class AimShoot : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
+    private GameObject Granada; //Objeto Granada que se crea al usar objeto
+    [SerializeField]
     private GameObject Bala; //Objeto Bala que se crea al Dispara
     [SerializeField]
     private Transform SalidaBala; //Posición donde saldrá la bala
+    [SerializeField]
+    private int numGranadas; //Numero de granadas que se tiene
     [SerializeField]
     private float Cadencia = 1f; //Balas por segundo
     [SerializeField]
@@ -72,6 +76,7 @@ public class AimShoot : MonoBehaviour
         balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         Debug.Log("Balas: " + balasActuales);
         GameManager.Instance.Municion(Cargador, balasActuales);
+        GameManager.Instance.GranadasRest(numGranadas);
     }
 
     /// <summary>
@@ -132,6 +137,18 @@ public class AimShoot : MonoBehaviour
         if (InputManager.Instance.FireIsPressed() && tiempoDisparo <= 0f && balasActuales > 0)
         {
             Disparar();
+        }
+
+        if (InputManager.Instance.UseObjectWasPressedThisFrame())
+        {
+            if (numGranadas > 0)
+            {
+                GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
+                Explosion explosion = newGranada.GetComponent<Explosion>();
+                explosion.SetDireccion(direction);
+                --numGranadas;
+                GameManager.Instance.GranadasRest(numGranadas);
+            }
         }
     }
     #endregion
