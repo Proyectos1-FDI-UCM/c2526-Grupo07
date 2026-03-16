@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8563119924288280650}
   - component: {fileID: 5643995590725073595}
   - component: {fileID: 8041845781245424144}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Granada
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f388ee61025ef144b61e15bfbe2f40d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velIn: {x: 10, y: 5}
   TiempoGranada: 2
   RadioGranada: 11.27
   Damage: 2
