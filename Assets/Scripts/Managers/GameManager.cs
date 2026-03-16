@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     /// En el momento de la carga, si ya hay otra instancia creada,
     /// nos destruimos (al GameObject completo)
     /// </summary>
+    
     protected void Awake()
     {
         if (_instance != null)
@@ -130,6 +131,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+    
 
     /// <summary>
     /// Devuelve cierto si la instancia del singleton está creada y
@@ -197,6 +200,14 @@ public class GameManager : MonoBehaviour
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void Healt(int vida)
+    {
+        //Sumamos la cantidad de vida que quiere curar
+        //y guardar la nueva vida (vida curada)
+        MaxHealthPoints += vida;
+        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints=MaxHealthInitial;
+        UpdateGUI();
     }
     #endregion
 

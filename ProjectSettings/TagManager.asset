@@ -9,6 +9,7 @@ TagManager:
   - muro
   - Pared
   - Enemigo
+  - Potion
   layers:
   - Default
   - TransparentFX
