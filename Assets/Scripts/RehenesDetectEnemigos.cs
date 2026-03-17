@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -25,8 +26,12 @@ public class RehenesDetectEnemigos : MonoBehaviour
 
     [SerializeField]
     private GameObject[] Enemigos; //Lista de enemigos que hay que eliminar para que el rehén esté libre
+    //[SerializeField]
+    //private SpriteRenderer Rehen;
     [SerializeField]
-    private SpriteRenderer Rehen;
+    private float Velocity; // velocida al que el rehen sale corriendo al liberarse
+    [SerializeField]
+    private GameObject Puerta; // la puerta en la cual el rehen tiene que seguir
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,8 +43,9 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
 
-    private bool _rehenLibre = false; //Asumimos que el rehén no está libre
-
+    private bool _rehenLibre = false; //Asumimos que el rehén no está libre 
+    private int Direction = 0; // direcction en la que el rehen va a escapar
+    private Rigidbody2D rb;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -53,7 +59,10 @@ public class RehenesDetectEnemigos : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -82,7 +91,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             Debug.Log("Rehén Libre");
             _rehenLibre = true;
-            Rehen.color = Color.green;
+            Move();
         }
 
     }
@@ -95,16 +104,35 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
-    #endregion
     
+    #endregion
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    private void Move()
+    {
+        if (Puerta.transform.position.x > transform.position.x)
+        {
+            Direction = 1;
+        }
+        else { Direction = -1; }
 
+        rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+        Destroy(this, 5f);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Puerta = collision.gameObject;
+        if (Puerta)
+        {
+            // llamar el gameManager para las estrellas
+            Destroy(this);
+        }
+    }
     #endregion   
 
 } // class RehenesDetectEnemigos 
