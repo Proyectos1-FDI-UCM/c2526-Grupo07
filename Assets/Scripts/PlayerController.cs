@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private GameObject HitboxCuchillo;
     [SerializeField] AimShoot Apuntado;
     [SerializeField] private Transform cuchillo;
+    [SerializeField] LayerMask groundLayer;
     [SerializeField] private float CooldownChuchillo = 3f;
     #endregion
 
@@ -53,6 +54,8 @@ public class PlayerController : MonoBehaviour
     private float SetupChuchillo = 0f;
     private bool Knockback = false;
     private float KnockbackDuration;
+    private float KnockbackFinish;
+    private float now;
     private float CChuchillo;
     #endregion
 
@@ -78,6 +81,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
+        now = Time.time;
+        Chuchillo();
         if (CChuchillo > CooldownChuchillo)
         {
             Chuchillo();
@@ -87,14 +92,16 @@ public class PlayerController : MonoBehaviour
             CChuchillo = CChuchillo + Time.deltaTime;
         }
         DesCuchillo();
-
         if (Knockback != false)
         {
-            if (Time.time > KnockbackDuration)
+            if (now - KnockbackFinish > KnockbackDuration)
             {
                 canMove = true;
+                KnockbackFinish = Time.time;
             }
         }
+        Debug.Log("Duracion" + KnockbackDuration);
+        Debug.Log("Finish" + KnockbackFinish);
     }
     void FixedUpdate()
     {
@@ -104,11 +111,11 @@ public class PlayerController : MonoBehaviour
             {
                 Salto();
                 Moverse();
-
-                //El raycast guarda la info en "hit"
-                RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
-                //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
-
+                /*if (tocandoPared == false)
+                {
+                    Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
+                    transform.Translate(movement);
+                }*/
             }
         }
     }
@@ -126,9 +133,9 @@ public class PlayerController : MonoBehaviour
     {
         canMove = false;
         rb.linearVelocity = Vector2.zero;
-        rb.AddForce(fuerzaEmpuje * dir, ForceMode2D.Impulse);
+        rb.AddForce(fuerzaEmpuje * dir.normalized, ForceMode2D.Impulse);
         Knockback = true;
-        KnockbackDuration = Time.time * 1.25f;
+        KnockbackDuration = 1.5f;
     }
     #endregion
 
@@ -141,7 +148,7 @@ public class PlayerController : MonoBehaviour
     private void Salto()
     {
         //El raycast guarda la info en "hit"
-        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f);
+        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, groundLayer);
         //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
         if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
         {
@@ -190,14 +197,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        tocandoPared = true;
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        tocandoPared = false;
-    }
     #endregion
 
 } // class PlayerController 

@@ -5,7 +5,9 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
 
 
@@ -27,6 +29,10 @@ public class RehenesDetectEnemigos : MonoBehaviour
     private GameObject[] Enemigos; //Lista de enemigos que hay que eliminar para que el rehén esté libre
     [SerializeField]
     private SpriteRenderer Rehen;
+    [SerializeField]
+    private float Velocity; // velocida al que el rehen sale corriendo al liberarse
+    [SerializeField]
+    private GameObject Puerta; // la puerta en la cual el rehen tiene que seguir
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,8 +44,9 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
 
-    private bool _rehenLibre = false; //Asumimos que el rehén no está libre
-
+    private bool _rehenLibre = false; //Asumimos que el rehén no está libre 
+    private int Direction = 0; // direccion en la que el rehen va a escapar
+    private Rigidbody2D rb;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -53,7 +60,10 @@ public class RehenesDetectEnemigos : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -71,7 +81,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
         for (int i = 0; i < Enemigos.Length; i++)
         {
             //Si encuentra algún enemigo en la lista, aún quedan enemigos y se termina el bucle
-            if(Enemigos[i] != null)
+            if (Enemigos[i] != null)
             {
                 QuedanEnemigos = true;
                 break;
@@ -84,7 +94,14 @@ public class RehenesDetectEnemigos : MonoBehaviour
             _rehenLibre = true;
             Rehen.color = Color.green;
         }
+    }
 
+    private void FixedUpdate()
+    {
+        if (_rehenLibre)
+        {
+            Move();
+        }
     }
     #endregion
 
@@ -95,16 +112,33 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        Door door = collision.gameObject.GetComponent<Door>();
+        if (door != null)
+        {
+            // llamar el gameManager para las estrellas
+            Destroy(this.gameObject); // destruye el rehen al collisionar con la puerta
+        }
+    }
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void Move() 
+    {
+        if (Puerta.transform.position.x > transform.position.x) // para saber donde esta la puerta y escapar en esa direccion
+        {
+            Direction = 1;
+        }
+        else { Direction = -1; }
+        rb.linearVelocity = new Vector2(Velocity * Direction, rb.linearVelocity.y); // rehen se escapa por la direccion que esta la puerta
+    }
+    
     #endregion   
 
 } // class RehenesDetectEnemigos 

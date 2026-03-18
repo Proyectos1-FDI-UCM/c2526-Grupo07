@@ -25,6 +25,8 @@ public class Explosion : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
+    private Vector2 velIn;
+    [SerializeField]
     private float TiempoGranada = 2f; //El tiempo en segundos que tarda en explotar la granada
     [SerializeField]
     private float RadioGranada = 2f; //El radio de explosión de la granada
@@ -45,7 +47,7 @@ public class Explosion : MonoBehaviour
 
     private float tiempo; //El tiempo que se reducirá para que explote la granada
     private Rigidbody2D rb;
-    private Vector3 direction;
+    private float direction;
 
     #endregion
     
@@ -63,7 +65,8 @@ public class Explosion : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = direction;
+        velIn.x *= direction;
+        rb.linearVelocity = velIn;
         tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
     }
 
@@ -91,7 +94,8 @@ public class Explosion : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void SetDireccion(Vector3 dir)
     {
-        direction = dir;
+        if (dir.x < 0) direction = -1f;
+        else direction = 1f;
     }
     #endregion
 
