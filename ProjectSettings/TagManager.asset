@@ -9,6 +9,7 @@ TagManager:
   - muro
   - Pared
   - Enemigo
+  - Potion
   layers:
   - Default
   - TransparentFX
@@ -19,6 +20,9 @@ TagManager:
   - Suelo
   - 
   - 
+  - Jugador
+  - Granada
+  - Enemigo
   - 
   - 
   - 

@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AimShoot Apuntado;
     [SerializeField] private Transform cuchillo;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] private float CooldownChuchillo = 3f;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
     private float KnockbackDuration;
     private float KnockbackFinish;
     private float now;
+    private float CChuchillo;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        CChuchillo = 5f;
     }
 
     /// <summary>
@@ -80,6 +83,15 @@ public class PlayerController : MonoBehaviour
     {
         now = Time.time;
         Chuchillo();
+        if (CChuchillo > CooldownChuchillo)
+        {
+            Chuchillo();
+        }
+        else
+        {
+            CChuchillo = CChuchillo + Time.deltaTime;
+        }
+        DesCuchillo();
         if (Knockback != false)
         {
             if (now - KnockbackFinish > KnockbackDuration)
@@ -154,7 +166,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
     }
 
-    private void Chuchillo()
+    private void Chuchillo() //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
     {
         if (InputManager.Instance.KnifeWasPressedThisFrame())
         {
@@ -170,7 +182,11 @@ public class PlayerController : MonoBehaviour
 
             SetupChuchillo = 0f;
             HitboxCuchillo.SetActive(true);
+            CChuchillo = 0;
         }
+    }
+    private void DesCuchillo() //Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
+    {
         if (HitboxCuchillo)
         {
             SetupChuchillo = SetupChuchillo + Time.deltaTime;

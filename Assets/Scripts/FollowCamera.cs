@@ -24,7 +24,8 @@ public class FollowCamera : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField] private Transform target;
     [SerializeField] AimShoot Apuntado;
-    [SerializeField] float TamañoCamara;
+    [SerializeField] float TamañoCamara = 7f;
+    [SerializeField] float Suavidad = 0.0025f;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -64,7 +65,8 @@ public class FollowCamera : MonoBehaviour
     {
         Vector3 Apunt = Apuntado.MousePos();
         Vector3 late = (Apunt - transform.position) / 2;
-        transform.position = new Vector3 (target.position.x + late.x, PosY, PosZ);
+        Vector3 Objetivo = new Vector3 (target.position.x + late.x, PosY, PosZ); 
+        transform.position = Vector3.Lerp (transform.position, Objetivo, Suavidad);
     }
     #endregion
 

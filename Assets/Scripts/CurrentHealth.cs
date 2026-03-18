@@ -6,7 +6,6 @@
 //---------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
 
 
@@ -14,7 +13,7 @@ using UnityEngine.UIElements;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class EnemyHealth : MonoBehaviour
+public class CurrentHealth : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -23,13 +22,7 @@ public class EnemyHealth : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private int Vida;
-    [SerializeField]
-    private Transform BarraVida;
-    [SerializeField]
-    private GameObject ObjetoDrop; //Objeto que suelta el enemigo
-
+    [SerializeField] private int health;    //cantidad de vida que cura
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -40,8 +33,7 @@ public class EnemyHealth : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private int VidaInitial;
-    private float Scale; // la escala de la barra de vida inicial
+    private int PotionCount;    //cantidad de botiquin
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -57,8 +49,7 @@ public class EnemyHealth : MonoBehaviour
     /// </summary>
     void Start()
     {
-        VidaInitial = Vida;
-        Scale = BarraVida.localScale.x;
+        
     }
 
     /// <summary>
@@ -66,6 +57,10 @@ public class EnemyHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            UsePotion();
+        }
     }
     #endregion
 
@@ -76,24 +71,6 @@ public class EnemyHealth : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void EnemyHealthPoint(int Damage)
-    {
-        // si la bala colisiona con el enemigo llama a este metodo
-        Vida -= Damage; // restar vida
-        BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
-        BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
-        if (Vida < 1) 
-        {
-            //Si tiene un objeto lo suelta en la posición del enemigo
-            if (ObjetoDrop != null)
-            {
-                Instantiate(ObjetoDrop, transform.position, Quaternion.identity);
-            }
-
-            Destroy(gameObject); 
-        } // destruye el enemigo a la que esta asignado la barra de vida
-    }
-
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -102,8 +79,30 @@ public class EnemyHealth : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void UsePotion()
+    {
+        //jugador utiliza el botiquín
+        //cura una cantidad de vida determinada
+        //desaparece el botiquin utilizado
+        if (PotionCount > 0)
+        {
+            PotionCount--;
+            GameManager.Instance.Healt(health);
+        }
+        else Debug.Log("ERROR: no hay consumible para utilizar");
+    }
+    private void OnTriggerEnter2D (Collider2D collision)
+    {
+        //si el jugador se colisiona con el botiquín
+        //se guarda en el inventario
+        //desaparece de la pantalla
+        if (collision.CompareTag("Potion"))
+        {
+            PotionCount++;
+            Destroy(collision.gameObject);
+        }
+    }
     #endregion   
-    
-} // class EnemyHealth 
+
+}// class CurrentHealth 
 // namespace

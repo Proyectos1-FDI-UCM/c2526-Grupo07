@@ -40,8 +40,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI Ammo; //Ver cantidad de balas
     [SerializeField]
-    private GameObject Menu; //Menú al perder
-    [SerializeField]
     private GameObject spriteGranada; //Enseñar la granada
     [SerializeField]
     private TMPro.TextMeshProUGUI TextGranadas; //Enseñar el número de granadas
@@ -53,6 +51,12 @@ public class GameManager : MonoBehaviour
     private TMPro.TextMeshProUGUI TextBotiquines; //Enseñar el número de botiquines
     [SerializeField]
     private int MaxBotiquin;
+    [SerializeField]
+    private GameObject Menu;
+    [SerializeField]
+    private GameObject Puerta;
+    [SerializeField]
+    private GameObject PanelVictory;
     //[SerializeField]
     //private Transform BarraVida;
 
@@ -68,6 +72,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     private float Scale;
     private int MaxHealthInitial; //Vida máxima del jugador
+    private int numGranadas;
     private int Cargador; //Ver la situación del cargador
     private int BalasMax = 0; //Ver las balas maximas de esa arma
     private int granadas = 0;
@@ -84,6 +89,7 @@ public class GameManager : MonoBehaviour
     /// En el momento de la carga, si ya hay otra instancia creada,
     /// nos destruimos (al GameObject completo)
     /// </summary>
+    
     protected void Awake()
     {
         if (_instance != null)
@@ -121,7 +127,6 @@ public class GameManager : MonoBehaviour
         //Scale = BarraVida.localScale.x;
         MaxHealthInitial = MaxHealthPoints;
     }
-
     /// <summary>
     /// Método llamado cuando se destruye el componente.
     /// </summary>
@@ -151,6 +156,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+    
 
     /// <summary>
     /// Devuelve cierto si la instancia del singleton está creada y
@@ -251,9 +258,28 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
+    public void GranadasRest(int actGrenades)
+    {
+        numGranadas = actGrenades;
+        UpdateGUI();
+    }
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void Healt(int vida)
+    {
+        //Sumamos la cantidad de vida que quiere curar
+        //y guardar la nueva vida (vida curada)
+        MaxHealthPoints += vida;
+        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
+        UpdateGUI();
+    }
+
+    public void PanelVictoria()
+    {
+        PanelVictory.SetActive(true);
+        Time.timeScale = 0f;
     }
     #endregion
 
