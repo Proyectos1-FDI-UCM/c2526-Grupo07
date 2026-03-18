@@ -36,11 +36,21 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int MaxHealthPoints; //Puntos de vida máximos del personaje
     [SerializeField]
-    private TMPro.TextMeshProUGUI Health;//Texto del canvas
+    private TMPro.TextMeshProUGUI Health; //Texto del canvas
     [SerializeField]
-    private TMPro.TextMeshProUGUI Ammo;
+    private TMPro.TextMeshProUGUI Ammo; //Ver cantidad de balas
     [SerializeField]
-    private TMPro.TextMeshProUGUI Grenades;
+    private GameObject spriteGranada; //Enseñar la granada
+    [SerializeField]
+    private TMPro.TextMeshProUGUI TextGranadas; //Enseñar el número de granadas
+    [SerializeField]
+    private int MaxGranadas;
+    [SerializeField]
+    private GameObject Botiquin; //Enseñar el botiquín
+    [SerializeField]
+    private TMPro.TextMeshProUGUI TextBotiquines; //Enseñar el número de botiquines
+    [SerializeField]
+    private int MaxBotiquin;
     [SerializeField]
     private GameObject Menu;
     [SerializeField]
@@ -65,6 +75,8 @@ public class GameManager : MonoBehaviour
     private int numGranadas;
     private int Cargador; //Ver la situación del cargador
     private int BalasMax = 0; //Ver las balas maximas de esa arma
+    private int granadas = 0;
+    private int botiquines = 0;  
 
     #endregion
 
@@ -108,20 +120,13 @@ public class GameManager : MonoBehaviour
             Init();
         } // if-else somos instancia nueva o no.
     }
-
-    /// <summary>
-    /// Método llamado cuando se destruye el componente.
-    /// </summary>
     private void Start()
     {
-
         UpdateGUI();
         Menu.SetActive(false);
         //Scale = BarraVida.localScale.x;
         MaxHealthInitial = MaxHealthPoints;
     }
-
-
     /// <summary>
     /// Método llamado cuando se destruye el componente.
     /// </summary>
@@ -211,6 +216,48 @@ public class GameManager : MonoBehaviour
         BalasMax = balasMax;
         UpdateGUI();
     }
+    public void UsarGranadas()
+    {
+        granadas--;
+        UpdateGUI();
+    }
+    public void GuardarGranadas()
+    {
+        granadas++;
+        UpdateGUI();
+    }
+    public void UsarBotiquin()
+    {
+        botiquines--;
+        UpdateGUI();
+    }
+    public void GuardarBotiquines()
+    {
+        botiquines++;
+        UpdateGUI();
+    }
+    public bool GranadasFull()
+    {
+        if (granadas == MaxGranadas)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool BotiquinesFull()
+    {
+        if (botiquines == MaxBotiquin)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public void GranadasRest(int actGrenades)
     {
         numGranadas = actGrenades;
@@ -264,9 +311,9 @@ public class GameManager : MonoBehaviour
             Health.text = "Vida: 0";
         }
         Ammo.text = Cargador + "/" + BalasMax;
-        Grenades.text = numGranadas + "";
+        TextBotiquines.text = "x" + botiquines;
+        TextGranadas.text = "x" + granadas;
     }
-    
     #endregion
 } // class GameManager 
 // namespace
