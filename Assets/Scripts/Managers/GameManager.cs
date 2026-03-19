@@ -119,13 +119,14 @@ public class GameManager : MonoBehaviour
             //DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no.
+        MaxHealthInitial = MaxHealthPoints;
     }
+
     private void Start()
     {
         UpdateGUI();
         Menu.SetActive(false);
         //Scale = BarraVida.localScale.x;
-        MaxHealthInitial = MaxHealthPoints;
     }
     /// <summary>
     /// Método llamado cuando se destruye el componente.
@@ -280,6 +281,17 @@ public class GameManager : MonoBehaviour
     {
         PanelVictory.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    //Metodo para poder acceder a la vida maxima desde otro script
+    public int GetVidaMaxima()
+    {
+        return MaxHealthInitial;
+    }
+    //Metodo para poder acceder a la vida actual desde otro script
+    public int GetVidaActual()
+    {
+        return MaxHealthPoints;
     }
     #endregion
 

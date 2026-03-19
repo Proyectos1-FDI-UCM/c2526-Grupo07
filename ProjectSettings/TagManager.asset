@@ -43,12 +43,18 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: "Corazon Da\xF1ado"
+    uniqueID: 3024526823
+    locked: 0
+  - name: Corazon
+    uniqueID: 3787778261
+    locked: 0
+  - name: Barra Vida
+    uniqueID: 1926896175
     locked: 0
   m_RenderingLayers:
   - Default
