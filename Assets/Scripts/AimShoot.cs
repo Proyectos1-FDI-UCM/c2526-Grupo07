@@ -76,7 +76,6 @@ public class AimShoot : MonoBehaviour
         balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         Debug.Log("Balas: " + balasActuales);
         GameManager.Instance.Municion(Cargador, balasActuales);
-        GameManager.Instance.GranadasRest(numGranadas);
     }
 
     /// <summary>
@@ -141,13 +140,15 @@ public class AimShoot : MonoBehaviour
 
         if (InputManager.Instance.UseObjectWasPressedThisFrame())
         {
-            if (numGranadas > 0)
+            if (InputManager.Instance.UseObjectWasPressedThisFrame())
             {
-                GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
-                Explosion explosion = newGranada.GetComponent<Explosion>();
-                explosion.SetDireccion(direction);
-                --numGranadas;
-                GameManager.Instance.GranadasRest(numGranadas);
+                if (GameManager.Instance.CantidadGranadas() > 0)
+                {
+                    GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
+                    Explosion bomba = newGranada.GetComponent<Explosion>();
+                    bomba.SetDireccion(direction);
+                    GameManager.Instance.UsarGranadas();
+                }
             }
         }
     }

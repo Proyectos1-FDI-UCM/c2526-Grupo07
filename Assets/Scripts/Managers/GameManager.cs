@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
             // Somos el primer GameManager.
             // Queremos sobrevivir a cambios de escena.
             _instance = this;
-            //DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no.
     }
@@ -258,10 +258,13 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-    public void GranadasRest(int actGrenades)
+    public int CantidadGranadas()
     {
-        numGranadas = actGrenades;
-        UpdateGUI();
+        return granadas;
+    }
+    public int CantidadBotiquines()
+    {
+        return botiquines;
     }
     public void ResetScene()
     {

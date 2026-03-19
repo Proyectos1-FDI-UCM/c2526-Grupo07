@@ -62,13 +62,14 @@ public class MaquinaExp : MonoBehaviour
     /// </summary>
     void Update()
     {
-        offset = Player.transform.position - transform.position;
+        offset = Player.transform.position - transform.position; //Calcula el vector que apunta al jugador
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
+            //Cuando colisiona con jugador, le aplica un empuje en dirección offset
             player.Empuje(FuerzaEmpuje, offset);
             GameManager.Instance.HealthPoints(Damage);
         }

@@ -117,7 +117,7 @@ public class Explosion : MonoBehaviour
         {
             EnemyHealth VidaEnemigo = Enemigos[i].GetComponent<EnemyHealth>(); //Guarda el componente EnemyHealth del objeto en VidaEnemigo, pero si no lo tiene, estará vacío(null)
 
-            if(VidaEnemigo != null ) //Revisa si no está vacío, s decir, que tiene EnemyHealth
+            if(VidaEnemigo != null ) //Revisa si no está vacío, es decir, que tiene EnemyHealth
             {
                 Vector2 vectorEnemigo = Enemigos[i].transform.position - transform.position; //Vector entre la granada y el enemigo
 

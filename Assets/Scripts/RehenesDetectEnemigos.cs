@@ -77,14 +77,16 @@ public class RehenesDetectEnemigos : MonoBehaviour
         //Axumimos que en cada frame no quedan enemigos
         bool QuedanEnemigos = false;
         //Buscamos que la lista de enemigos no está vacía
-        for (int i = 0; i < Enemigos.Length; i++)
+        int i = 0;
+        while (QuedanEnemigos == false && i < Enemigos.Length)
         {
             //Si encuentra algún enemigo en la lista, aún quedan enemigos y se termina el bucle
-            if(Enemigos[i] != null)
+            if (Enemigos[i] != null)
             {
                 QuedanEnemigos = true;
                 break;
             }
+            i++;
         }
         //Si no quedan enemigos, el rehén está libre, y en el primer if, se saldrá del Update
         if (!QuedanEnemigos)

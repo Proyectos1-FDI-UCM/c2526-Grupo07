@@ -100,8 +100,6 @@ public class PlayerController : MonoBehaviour
                 KnockbackFinish = Time.time;
             }
         }
-        Debug.Log("Duracion" + KnockbackDuration);
-        Debug.Log("Finish" + KnockbackFinish);
     }
     void FixedUpdate()
     {
@@ -124,7 +122,7 @@ public class PlayerController : MonoBehaviour
 
     // ---- MÉTODOS PÚBLICOS ----
     #region Métodos públicos
-    // Documentar cada método que aparece aquí con ///<summary>
+    // Documentar cada método que aparece aquí con 
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
