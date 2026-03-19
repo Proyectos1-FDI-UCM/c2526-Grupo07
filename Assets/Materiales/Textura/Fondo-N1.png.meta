@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 574bff1f286dc59488bbd7f98df9b92c
+guid: c8e619debeb536040a2890c949eb02b2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2412381900792260857
-    second: Granada 1_0
+      213: -5130558894233647175
+    second: Fondo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Granada 1_0
+      name: Fondo_0
       rect:
         serializedVersion: 2
-        x: 2
+        x: 0
         y: 0
-        width: 30
-        height: 32
+        width: 960
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70712bc417f758ed0800000000000000
-      internalID: -2412381900792260857
+      spriteID: 9b78bf95ed79cc8b0800000000000000
+      internalID: -5130558894233647175
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Granada 1_0: -2412381900792260857
+      Fondo_0: -5130558894233647175
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

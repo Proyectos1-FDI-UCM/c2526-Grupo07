@@ -7,6 +7,7 @@
 
 //using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
 
 
@@ -26,8 +27,8 @@ public class RehenesDetectEnemigos : MonoBehaviour
 
     [SerializeField]
     private GameObject[] Enemigos; //Lista de enemigos que hay que eliminar para que el rehén esté libre
-    //[SerializeField]
-    //private SpriteRenderer Rehen;
+    [SerializeField]
+    private SpriteRenderer Rehen;
     [SerializeField]
     private float Velocity; // velocida al que el rehen sale corriendo al liberarse
     [SerializeField]
@@ -44,7 +45,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     private bool _rehenLibre = false; //Asumimos que el rehén no está libre 
-    private int Direction = 0; // direcction en la que el rehen va a escapar
+    private int Direction = 0; // direccion en la que el rehen va a escapar
     private Rigidbody2D rb;
     #endregion
 
@@ -93,9 +94,16 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             Debug.Log("Rehén Libre");
             _rehenLibre = true;
+            Rehen.color = Color.green;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_rehenLibre)
+        {
             Move();
         }
-
     }
     #endregion
 
@@ -106,7 +114,15 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        Door door = collision.gameObject.GetComponent<Door>();
+        if (door != null)
+        {
+            // llamar el gameManager para las estrellas
+            Destroy(this.gameObject); // destruye el rehen al collisionar con la puerta
+        }
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -115,26 +131,16 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void Move()
+    private void Move() 
     {
-        if (Puerta.transform.position.x > transform.position.x)
+        if (Puerta.transform.position.x > transform.position.x) // para saber donde esta la puerta y escapar en esa direccion
         {
             Direction = 1;
         }
         else { Direction = -1; }
-
-        rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
-        Destroy(this, 5f);
+        rb.linearVelocity = new Vector2(Velocity * Direction, rb.linearVelocity.y); // rehen se escapa por la direccion que esta la puerta
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Puerta = collision.gameObject;
-        if (Puerta)
-        {
-            // llamar el gameManager para las estrellas
-            Destroy(this);
-        }
-    }
+    
     #endregion   
 
 } // class RehenesDetectEnemigos 
