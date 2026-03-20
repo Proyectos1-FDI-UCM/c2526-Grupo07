@@ -36,27 +36,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int MaxHealthPoints; //Puntos de vida máximos del personaje
     [SerializeField]
-    private TMPro.TextMeshProUGUI Health; //Texto del canvas
-    [SerializeField]
-    private TMPro.TextMeshProUGUI Ammo; //Ver cantidad de balas
-    [SerializeField]
-    private GameObject spriteGranada; //Enseñar la granada
-    [SerializeField]
-    private TMPro.TextMeshProUGUI TextGranadas; //Enseñar el número de granadas
-    [SerializeField]
     private int MaxGranadas;
     [SerializeField]
-    private GameObject Botiquin; //Enseñar el botiquín
-    [SerializeField]
-    private TMPro.TextMeshProUGUI TextBotiquines; //Enseñar el número de botiquines
+    private GameObject PanelVictory;
     [SerializeField]
     private int MaxBotiquin;
-    [SerializeField]
-    private GameObject Menu;
-    [SerializeField]
-    private GameObject Puerta;
-    [SerializeField]
-    private GameObject PanelVictory;
     //[SerializeField]
     //private Transform BarraVida;
 
@@ -118,14 +102,16 @@ public class GameManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
             Init();
-        } // if-else somos instancia nueva o no.
-        MaxHealthInitial = MaxHealthPoints;
+        } // if-else somos instancia nueva o no. 
     }
+
+    /// <summary>
+    /// Método llamado cuando se destruye el componente.
+    /// </summary>
 
     private void Start()
     {
-        UpdateGUI();
-        Menu.SetActive(false);
+        TransferManagerSetup();
         //Scale = BarraVida.localScale.x;
     }
     /// <summary>
@@ -204,38 +190,37 @@ public class GameManager : MonoBehaviour
         //BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f); //acortar la barra de vida
         // como se acorta en los dos extremos, muevo la barra de vida hacia la izquierda
         //BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y); 
-        UpdateGUI();
+        TransferManagerSetup();
         if (MaxHealthPoints < 1) // si llega a cero, muere
         {
             //BarraVida.localScale = new Vector2(0f,0f);
-            Menu.SetActive(true);
         }
     }
     public void Municion(int balasMax, int balasAct)
     {
         Cargador = balasAct;
         BalasMax = balasMax;
-        UpdateGUI();
+        TransferManagerSetup();
     }
     public void UsarGranadas()
     {
         granadas--;
-        UpdateGUI();
+        TransferManagerSetup();
     }
     public void GuardarGranadas()
     {
         granadas++;
-        UpdateGUI();
+        TransferManagerSetup();
     }
     public void UsarBotiquin()
     {
         botiquines--;
-        UpdateGUI();
+        TransferManagerSetup();
     }
     public void GuardarBotiquines()
     {
         botiquines++;
-        UpdateGUI();
+        TransferManagerSetup();
     }
     public bool GranadasFull()
     {
@@ -277,13 +262,7 @@ public class GameManager : MonoBehaviour
         //y guardar la nueva vida (vida curada)
         MaxHealthPoints += vida;
         if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
-        UpdateGUI();
-    }
-
-    public void PanelVictoria()
-    {
-        PanelVictory.SetActive(true);
-        Time.timeScale = 0f;
+        TransferManagerSetup();
     }
 
     //Metodo para poder acceder a la vida maxima desde otro script
@@ -295,6 +274,11 @@ public class GameManager : MonoBehaviour
     public int GetVidaActual()
     {
         return MaxHealthPoints;
+    }
+    //Metodo para mandar el estado del nivel al LevelManager
+    public void TransferManagerSetup()
+    {
+        LevelManager.Instance.RecogerEstado(Cargador, BalasMax);
     }
     #endregion
 
@@ -308,26 +292,6 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         // De momento no hay nada que inicializar
-    }
-
-    private void TransferManagerSetup()
-    {
-        // De momento no hay que transferir ningún setup
-        // a otro manager
-    }
-    private void UpdateGUI()
-    {
-        if (MaxHealthPoints > 0)
-        {
-            Health.text = "Vida: " + MaxHealthPoints;
-        }
-        else
-        {
-            Health.text = "Vida: 0";
-        }
-        Ammo.text = Cargador + "/" + BalasMax;
-        TextBotiquines.text = "x" + botiquines;
-        TextGranadas.text = "x" + granadas;
     }
     #endregion
 } // class GameManager 

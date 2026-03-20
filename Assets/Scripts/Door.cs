@@ -73,10 +73,10 @@ public class Door : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerController player = collision.GetComponent<PlayerController>();
-        GameManager GM = GetComponent<GameManager>();
+        LevelManager LM = GetComponent<LevelManager>();
         if (player != null)
         {
-            GM.PanelVictoria();
+            LM.PanelVictoria();
         }
     }
     // ---- MÉTODOS PRIVADOS ----
