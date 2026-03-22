@@ -114,7 +114,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
         Door door = collision.gameObject.GetComponent<Door>();
         if (door != null)
