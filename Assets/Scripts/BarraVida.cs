@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.UI;
 // Añadir aquí el resto de directivas using
 
 
@@ -13,7 +14,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class Door : MonoBehaviour
+public class BarraVida : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,7 +23,8 @@ public class Door : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
+    [SerializeField] private Slider BarraDeVida;
+    [SerializeField] private CurrentHealth CurrentHealth;
     #endregion
     
     // ---- ATRIBUTOS PRIVADOS ----
@@ -49,7 +51,8 @@ public class Door : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        CurrentHealth = GetComponent<CurrentHealth>();
+        IniciarBarraVida(GameManager.Instance.GetVidaMaxima(), GameManager.Instance.GetVidaActual());
     }
 
     /// <summary>
@@ -57,7 +60,7 @@ public class Door : MonoBehaviour
     /// </summary>
     void Update()
     {
-        
+        ActualizarBarraVida(GameManager.Instance.GetVidaActual());
     }
     #endregion
 
@@ -70,23 +73,25 @@ public class Door : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        PlayerController player = collision.GetComponent<PlayerController>();
-        LevelManager LM = GetComponent<LevelManager>();
-        if (player != null)
-        {
-            LM.PanelVictoria();
-        }
-    }
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    private void IniciarBarraVida(int VidaMax, int VidaActual)
+    {
+        BarraDeVida.maxValue = VidaMax;
+        BarraDeVida.value = VidaActual;
+    }
+
+    private void ActualizarBarraVida(int VidaActual)
+    {
+        BarraDeVida.value = VidaActual;
+    }
 
     #endregion   
 
-} // class Door 
+} // class BarraVida 
 // namespace
