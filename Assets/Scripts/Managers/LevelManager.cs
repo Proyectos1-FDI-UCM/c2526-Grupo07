@@ -49,6 +49,7 @@ public class LevelManager : MonoBehaviour
     private GameObject Puerta;
     [SerializeField]
     private GameObject PanelVictory;
+    [SerializeField] private GameObject CorazonDañado;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -176,6 +177,14 @@ public class LevelManager : MonoBehaviour
         Ammo.text = Cargador + "/" + BalasMax;
         TextBotiquines.text = "x" + botiquines;
         TextGranadas.text = "x" + granadas;
+        if(vidaMax <= vidaActual / 4)
+        {
+            CorazonDañado.SetActive(true);
+        }
+        else
+        {
+            CorazonDañado.SetActive(false);
+        }
     }
     #endregion
 } // class LevelManager 
