@@ -27,8 +27,6 @@ public class GranadaTemp : MonoBehaviour
     private GameObject Granada;
     [SerializeField]
     private AimShoot Apuntar;
-    [SerializeField]
-    private int numGranadas;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -53,7 +51,6 @@ public class GranadaTemp : MonoBehaviour
     /// </summary>
     void Start()
     {
-        GameManager.Instance.GranadasRest(numGranadas);
         Apuntar = Granada.gameObject.GetComponent<AimShoot>();
     }
 
@@ -64,11 +61,10 @@ public class GranadaTemp : MonoBehaviour
     {
         if (InputManager.Instance.UseObjectWasPressedThisFrame())
         {
-            if(numGranadas > 0)
+            if(GameManager.Instance.CantidadGranadas() > 0)
             {
                 Instantiate(Granada, Apuntar.MousePos(), transform.rotation);
-                --numGranadas;
-                GameManager.Instance.GranadasRest(numGranadas);
+                GameManager.Instance.UsarGranadas();
             }
         }
     }

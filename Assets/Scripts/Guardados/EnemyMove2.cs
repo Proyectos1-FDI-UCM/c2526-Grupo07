@@ -107,7 +107,6 @@ public class EnemyMove2 : MonoBehaviour
         if (collision.gameObject.CompareTag("Pared"))
         {
             CambioDireccion();
-            Debug.Log("detecion pared");
         }
     }
     #endregion

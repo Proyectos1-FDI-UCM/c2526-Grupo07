@@ -717,9 +717,9 @@ MonoBehaviour:
   player: {fileID: 628754547}
   puntoAtaque: {fileID: 1569328813}
   granadaPrefab: {fileID: 7698826228684791750, guid: bb61e2375383f504fb88786ede660522, type: 3}
-  fuerzaVertical: 2
-  vel: 5
-  rangoAtaque: 3
+  fuerzaVertical: 7
+  vel: 6
+  rangoAtaque: 5
   cooldown: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
