@@ -152,7 +152,7 @@ public class Explosion : MonoBehaviour
         //quita vida si se colisiona con el jugador
         if (collision.gameObject.CompareTag("Player"))
         {
-            LevelManager.Instance.RestLife(Damage);
+            GameManager.Instance.RestLife(Damage);
         }
     }
 

@@ -65,7 +65,7 @@ public class FollowCamera : MonoBehaviour
     {
         Vector3 Apunt = Apuntado.MousePos();
         Vector3 late = (Apunt - transform.position) / 2;
-        Vector3 Objetivo = new Vector3 (target.position.x + late.x, PosY, PosZ); 
+        Vector3 Objetivo = new Vector3 (target.position.x + late.x, PosY + 3.6f, PosZ); 
         transform.position = Vector3.Lerp (transform.position, Objetivo, Suavidad);
     }
     #endregion
