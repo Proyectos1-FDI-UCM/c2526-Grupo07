@@ -275,7 +275,12 @@ public class GameManager : MonoBehaviour
         if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
         UpdateGUI();
     }
-
+    public void RestLife(int vida)
+    {
+        MaxHealthPoints -= vida;
+        if(MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
+        UpdateGUI();
+    }
     public void PanelVictoria()
     {
         PanelVictory.SetActive(true);
