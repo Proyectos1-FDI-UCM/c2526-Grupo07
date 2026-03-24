@@ -148,6 +148,7 @@ public class LevelManager : MonoBehaviour
         PanelVictory.SetActive(true);
         Time.timeScale = 0f;
     }
+    
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

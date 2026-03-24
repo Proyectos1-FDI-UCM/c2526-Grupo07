@@ -94,7 +94,6 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             Debug.Log("Rehén Libre");
             _rehenLibre = true;
-            Rehen.color = Color.green;
         }
     }
 

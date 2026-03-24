@@ -147,7 +147,14 @@ public class Explosion : MonoBehaviour
 
     }
 
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //quita vida si se colisiona con el jugador
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            LevelManager.Instance.RestLife(Damage);
+        }
+    }
 
     //Dibuja el radio de la granada en el inspector
     private void OnDrawGizmosSelected()
