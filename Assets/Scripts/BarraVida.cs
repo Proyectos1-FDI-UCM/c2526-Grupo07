@@ -24,7 +24,7 @@ public class BarraVida : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private Slider BarraDeVida;
-    [SerializeField] private CurrentHealth CurrentHealth;
+
     #endregion
     
     // ---- ATRIBUTOS PRIVADOS ----
@@ -51,7 +51,6 @@ public class BarraVida : MonoBehaviour
     /// </summary>
     void Start()
     {
-        CurrentHealth = GetComponent<CurrentHealth>();
         IniciarBarraVida(GameManager.Instance.GetVidaMaxima(), GameManager.Instance.GetVidaActual());
     }
 
