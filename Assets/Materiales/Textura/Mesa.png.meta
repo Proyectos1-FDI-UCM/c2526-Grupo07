@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f68201bff83d73d42adc077931fd72f9
+guid: c28966197e82f55419ffe581c8044899
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8312369303578991710
-    second: Botiquin_0
+      213: -181533224904257672
+    second: IMG_1074-removebg-preview_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Botiquin_0
+      name: IMG_1074-removebg-preview_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 0
-        width: 56
-        height: 31
+        x: 35
+        y: 48
+        width: 548
+        height: 313
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5cdfad37d77b5370800000000000000
-      internalID: 8312369303578991710
+      spriteID: 87f86a66e701b7df0800000000000000
+      internalID: -181533224904257672
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Botiquin_0: 8312369303578991710
+      IMG_1074-removebg-preview_0: -181533224904257672
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -264,6 +264,12 @@ public class GameManager : MonoBehaviour
         if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
         TransferManagerSetup();
     }
+    public void RestLife(int vida)
+    {
+        MaxHealthPoints -= vida;
+        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
+        TransferManagerSetup() ;
+    }
 
     //Metodo para poder acceder a la vida maxima desde otro script
     public int GetVidaMaxima()

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f68201bff83d73d42adc077931fd72f9
+guid: fef58ba6d5df4914da157faafa0401df
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8312369303578991710
-    second: Botiquin_0
+      213: 5765737632965386846
+    second: ButtonMenu_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Botiquin_0
+      name: ButtonMenu_0
       rect:
         serializedVersion: 2
-        x: 4
+        x: 0
         y: 0
-        width: 56
-        height: 31
+        width: 112
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5cdfad37d77b5370800000000000000
-      internalID: 8312369303578991710
+      spriteID: e52e00934d3040050800000000000000
+      internalID: 5765737632965386846
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Botiquin_0: 8312369303578991710
+      ButtonMenu_0: 5765737632965386846
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
