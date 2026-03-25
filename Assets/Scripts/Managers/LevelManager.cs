@@ -7,6 +7,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Componente que se encarga de la gestión de un nivel concreto.
@@ -50,6 +51,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject PanelVictory;
     [SerializeField] private GameObject CorazonDañado;
+    [SerializeField] private Slider BarraDeVida;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -89,11 +91,12 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        vidaMax = GameManager.Instance.GetVidaMaxima();
+        IniciarBarraVida(vidaMax, vidaActual);
         UpdateGUI();
         Menu.SetActive(false);
-        vidaMax = GameManager.Instance.GetVidaMaxima();
         GameManager.Instance.TransferManagerSetup();
-        
+
     }
     #endregion
 
@@ -148,6 +151,7 @@ public class LevelManager : MonoBehaviour
         PanelVictory.SetActive(true);
         Time.timeScale = 0f;
     }
+    
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -164,7 +168,8 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateGUI()
     {
-
+        ActualizarBarraVida(vidaActual);
+        ActualizarCoraon();
         if (vidaActual > 0)
         {
             Health.text = "Vida: " + vidaActual;
@@ -177,7 +182,21 @@ public class LevelManager : MonoBehaviour
         Ammo.text = Cargador + "/" + BalasMax;
         TextBotiquines.text = "x" + botiquines;
         TextGranadas.text = "x" + granadas;
-        if(vidaMax <= vidaActual / 4)
+       
+    }
+    private void IniciarBarraVida(int VidaMax, int VidaActual)
+    {
+        BarraDeVida.maxValue = VidaMax;
+        BarraDeVida.value = VidaActual;
+    }
+    private void ActualizarBarraVida(int VidaActual)
+    {
+        BarraDeVida.value = VidaActual;
+    }
+
+    private void ActualizarCoraon()
+    {
+        if (vidaActual <= vidaMax / 4)
         {
             CorazonDañado.SetActive(true);
         }

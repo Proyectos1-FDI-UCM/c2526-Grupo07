@@ -726,7 +726,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BarraDeVida: {fileID: 330490546}
-  CurrentHealth: {fileID: 0}
 --- !u!1 &394288007
 GameObject:
   m_ObjectHideFlags: 0
@@ -3031,7 +3030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 708115220}
   Apuntado: {fileID: 1068110591}
-  "Tama\xF1oCamara": 7
+  "Tama\xF1oCamara": 8
   Suavidad: 0.0025
 --- !u!114 &1953045214
 MonoBehaviour:
@@ -3105,6 +3104,10 @@ PrefabInstance:
       propertyPath: TextBotiquines
       value: 
       objectReference: {fileID: 394288009}
+    - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
+      propertyPath: MaxHealthInitial
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

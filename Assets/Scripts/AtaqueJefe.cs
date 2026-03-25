@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class FollowCamera : MonoBehaviour
+public class AtaqueJefe : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,10 +22,16 @@ public class FollowCamera : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private Transform target;
-    [SerializeField] AimShoot Apuntado;
-    [SerializeField] float TamañoCamara = 7f;
-    [SerializeField] float Suavidad = 0.0025f;
+    [SerializeField] private Transform player;      //lanzar objeto al jugador
+    [SerializeField] private Transform puntoAtaque;     //punto donde lanza el objeto
+    [SerializeField] private GameObject granadaPrefab;  //objeto que lanza
+
+    [SerializeField] private float fuerzaVertical;  //altura max que llega el objeto
+    [SerializeField] private float vel;     //velocidad de lanzamiento
+
+    [SerializeField] private float rangoAtaque; //distancia para atacar
+    [SerializeField] private float cooldown;    //tiempo de enfriamiento
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -36,8 +42,7 @@ public class FollowCamera : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float PosZ;
-    private float PosY;
+    private float time=0; //tiempo para el siguiente ataque
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -53,20 +58,27 @@ public class FollowCamera : MonoBehaviour
     /// </summary>
     void Start()
     {
-        PosZ = -10;
-        PosY = target.position.y;
-        Camera.main.orthographicSize = TamañoCamara;
+        
     }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
-    private void LateUpdate()
+    void Update()
     {
-        Vector3 Apunt = Apuntado.MousePos();
-        Vector3 late = (Apunt - transform.position) / 2;
-        Vector3 Objetivo = new Vector3 (target.position.x + late.x, PosY + 3.6f, PosZ); 
-        transform.position = Vector3.Lerp (transform.position, Objetivo, Suavidad);
+        //calcular la distancia entre el jefe y el jugador
+        float distancia = Vector2.Distance(transform.position, player.position);
+
+        //si el jugador está lejos lanza granada
+        if (Time.time >= time)
+        {
+            if(distancia >= rangoAtaque)
+            {
+                LanzarGranada();
+                time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
+            }
+           
+        }
     }
     #endregion
 
@@ -86,8 +98,28 @@ public class FollowCamera : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    private void LanzarGranada()
+    {
+        if (granadaPrefab == null || puntoAtaque == null || player == null) return;
 
+        //añadir un origen y posicion del punto de ataque para granada
+        GameObject granada = Instantiate(granadaPrefab, puntoAtaque.position, Quaternion.identity);
+
+        Rigidbody2D rb= granada.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
+        {
+            //arco de movimiento
+            Vector2 direccion = (player.position - puntoAtaque.position).normalized;    //vector horizontal hacia el jugador
+            float fuerzaX = direccion.x * vel;    //aplicar fuerza x
+            float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
+            rb.linearVelocity= new Vector2(fuerzaX, fuerzaY);
+
+            Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
+            explosion.SetDireccion(direccion);
+        }
+    }
     #endregion   
 
-} // class FollowCamera 
+} // class DisparoJefe 
 // namespace
