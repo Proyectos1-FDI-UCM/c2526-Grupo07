@@ -24,10 +24,10 @@ public class BossDash : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float DashPower = 8f; // fuerza o velocidad del dash
-    [SerializeField] private float DashTime = 0.3f; // duracion del dash
+    [SerializeField] private float DashPower = 20f; // fuerza o velocidad del dash
+    [SerializeField] private float DashTime = 0.8f; // duracion del dash
     [SerializeField] private float DashColdDown = 3f; // duracion entre cada dash 
-
+    [SerializeField] private int DashDamage = 10;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -40,6 +40,7 @@ public class BossDash : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private float Timer; // tiempo que empieza desde 0
     private Rigidbody2D rb;
+    private BoxCollider2D col;
     private bool CanDash = true;
     private int dir = -1;
     #endregion
@@ -59,6 +60,7 @@ public class BossDash : MonoBehaviour
     {
         Timer = 0;
         rb = GetComponent<Rigidbody2D>();
+        col = rb.GetComponent<BoxCollider2D>();
         StartCoroutine(Dash());
     }
 
@@ -77,7 +79,16 @@ public class BossDash : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController player = collision.GetComponent<PlayerController>();
+        GameManager GM = GetComponent<GameManager>();
+        if (player != null) 
+        {
+            Debug.Log("this is player");
+            GM.HealthPoints(DashDamage);
+        }
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -86,7 +97,7 @@ public class BossDash : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private IEnumerator Dash() // 
+    private IEnumerator Dash()
     {
         while(CanDash)
         {
@@ -98,10 +109,12 @@ public class BossDash : MonoBehaviour
             {   
                 rb.gravityScale = 0;
                 rb.linearVelocity = new Vector2(transform.localScale.x * DashPower * dir, 0f);
+                col.isTrigger = true;
                 Timer += Time.deltaTime;
                 yield return null;
             }
             rb.gravityScale = originalGScale;
+            col.isTrigger = false;
         }
     }
     #endregion   
