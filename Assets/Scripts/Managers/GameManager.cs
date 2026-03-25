@@ -34,14 +34,15 @@ public class GameManager : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    private int MaxHealthPoints; //Puntos de vida máximos del personaje
+    private int MaxHealthPoints; //Puntos de vida ACTUALES del personaje
     [SerializeField]
     private int MaxGranadas;
     [SerializeField]
     private GameObject PanelVictory;
     [SerializeField]
     private int MaxBotiquin;
-    //[SerializeField]
+    [SerializeField]
+    private int MaxHealthInitial; //Vida máxima del jugador
     //private Transform BarraVida;
 
     #endregion
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private static GameManager _instance;
     private float Scale;
-    private int MaxHealthInitial; //Vida máxima del jugador
+    
     private int numGranadas;
     private int Cargador; //Ver la situación del cargador
     private int BalasMax = 0; //Ver las balas maximas de esa arma
@@ -103,6 +104,7 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no. 
+        MaxHealthPoints = MaxHealthInitial;
     }
 
     /// <summary>
