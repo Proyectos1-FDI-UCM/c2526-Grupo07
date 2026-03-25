@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private float KnockbackFinish;
     private float now;
     private float CChuchillo;
+    private Animator anim;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -74,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         CChuchillo = 5f;
+        anim = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         now = Time.time;
-        Chuchillo();
+
         if (CChuchillo > CooldownChuchillo)
         {
             Chuchillo();
@@ -91,7 +93,12 @@ public class PlayerController : MonoBehaviour
         {
             CChuchillo = CChuchillo + Time.deltaTime;
         }
-        DesCuchillo();
+        if (HitboxCuchillo.activeSelf) //Comprueba si la hitbox del cuchillo esta activada
+        {
+            //Solo si el cuchillo esta activado empieza a contar los 0.5s
+            DesCuchillo();
+        }
+    
         if (Knockback != false)
         {
             if (now - KnockbackFinish > KnockbackDuration)
@@ -168,6 +175,8 @@ public class PlayerController : MonoBehaviour
     {
         if (InputManager.Instance.KnifeWasPressedThisFrame())
         {
+            anim.SetBool("isAttacking", true); //Se activa la animacion del ataque del cuchillo
+
             Vector3 Dir = Apuntado.MousePos();
             if (Dir.x > 0)
             {
@@ -192,6 +201,8 @@ public class PlayerController : MonoBehaviour
         if (SetupChuchillo >= 0.5f)
         {
             HitboxCuchillo.SetActive(false);
+            anim.SetBool("isAttacking", false); //Se desactiva la animacion del ataque del cuchillo
+            SetupChuchillo = 0f;
         }
     }
 
