@@ -10,6 +10,7 @@ TagManager:
   - Pared
   - Enemigo
   - Potion
+  - Puerta
   layers:
   - Default
   - TransparentFX

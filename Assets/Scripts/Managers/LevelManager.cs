@@ -6,7 +6,9 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Componente que se encarga de la gestión de un nivel concreto.
@@ -47,13 +49,14 @@ public class LevelManager : MonoBehaviour
     private GameObject Menu;
     [SerializeField]
     private GameObject Puerta;
-    [SerializeField]
-    private GameObject PanelVictory;
     [SerializeField] private GameObject CorazonDañado;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject PanelVictoria;
+
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
-
     #region Atributos Privados (private fields)
 
     /// <summary>
@@ -71,6 +74,7 @@ public class LevelManager : MonoBehaviour
     private int BalasMax = 0; //Ver las balas maximas de esa arma
     private int granadas = 0;
     private int botiquines = 0;
+    public bool juegoTerminado= false;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -84,6 +88,8 @@ public class LevelManager : MonoBehaviour
             // Somos la primera y única instancia
             _instance = this;
             Init();
+            gameOverPanel.SetActive(false);
+            PanelVictoria.SetActive(false);
         }
     }
 
@@ -91,10 +97,17 @@ public class LevelManager : MonoBehaviour
     {
         UpdateGUI();
         Menu.SetActive(false);
+
+        //desactivar los paneles
+
         vidaMax = GameManager.Instance.GetVidaMaxima();
         GameManager.Instance.TransferManagerSetup();
         
     }
+    //private void Update()
+    //{
+    //    UpdateGUI();
+    //}
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -143,12 +156,30 @@ public class LevelManager : MonoBehaviour
         botiquines = GameManager.Instance.CantidadBotiquines();
         UpdateGUI();
     }
-    public void PanelVictoria()
+
+    public void GameOver()
     {
-        PanelVictory.SetActive(true);
-        Time.timeScale = 0f;
+        juegoTerminado = true; 
+        Time.timeScale = 0;     //detener el tiempo
+        gameOverPanel.SetActive(true);
     }
-    
+    public void Victoria()
+    {
+        juegoTerminado = true;
+        Time.timeScale = 0;     //detener el tiempo
+        PanelVictoria.SetActive(true);
+    }
+
+    public void Reiniciar()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void MenuInicial()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Menu");
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -173,7 +204,8 @@ public class LevelManager : MonoBehaviour
         else
         {
             Health.text = "Vida: 0";
-            Menu.SetActive(true);
+            //Menu.SetActive(true);
+            gameOverPanel.SetActive(true);
         }
         Ammo.text = Cargador + "/" + BalasMax;
         TextBotiquines.text = "x" + botiquines;
