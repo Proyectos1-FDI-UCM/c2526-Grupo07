@@ -73,7 +73,7 @@ public class MoveEnemigo : MonoBehaviour
                 direction *= -1;
                 CambioDireccion();
             }
-            if (offset.x < 0 && direction != -1)
+            if (offset.x < 0 && direction != -1) 
             {
                 direction *= -1;
                 CambioDireccion();
