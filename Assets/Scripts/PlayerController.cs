@@ -142,6 +142,11 @@ public class PlayerController : MonoBehaviour
         Knockback = true;
         KnockbackDuration = 1.5f;
     }
+
+    public void RecibirDañoJugador(int cantidad)
+    {
+        GameManager.Instance.HealthPoints(cantidad);
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -205,7 +210,6 @@ public class PlayerController : MonoBehaviour
             SetupChuchillo = 0f;
         }
     }
-
     #endregion
 
 } // class PlayerController 
