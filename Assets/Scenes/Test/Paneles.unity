@@ -1726,7 +1726,7 @@ MonoBehaviour:
   player: {fileID: 498726528}
   ChaseDis: 8
   ShootDis: 5
-  alturaMax: 0
+  alturaMax: 1
   excl: {fileID: 1707285800}
 --- !u!114 &826323042
 MonoBehaviour:

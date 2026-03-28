@@ -51,6 +51,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject Puerta;
     [SerializeField] private GameObject CorazonDañado;
+    [SerializeField]
+    private GameObject PanelVictory;
+    [SerializeField] private GameObject CorazonDaado;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject PanelVictoria;
     [SerializeField] private Slider BarraDeVida;
@@ -99,6 +102,10 @@ public class LevelManager : MonoBehaviour
         vidaMax = GameManager.Instance.GetVidaMaxima();
         IniciarBarraVida(vidaMax, vidaActual);
         UpdateGUI();
+        Menu.SetActive(false);
+
+        //desactivar los paneles
+        vidaMax = GameManager.Instance.GetVidaMaxima();
         GameManager.Instance.TransferManagerSetup();
     }
     //private void Update()
