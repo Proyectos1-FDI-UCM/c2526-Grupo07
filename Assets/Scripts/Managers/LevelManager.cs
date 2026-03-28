@@ -8,11 +8,8 @@
 
 using JetBrains.Annotations;
 using UnityEngine;
-<<<<<<< HEAD
 using UnityEngine.SceneManagement;
-=======
 using UnityEngine.UI;
->>>>>>> 306d5614a72f61f4f60dd3c33bf39095d4535cb4
 
 /// <summary>
 /// Componente que se encarga de la gestión de un nivel concreto.
@@ -54,14 +51,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject Puerta;
     [SerializeField] private GameObject CorazonDañado;
-<<<<<<< HEAD
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject PanelVictoria;
-
-
-=======
     [SerializeField] private Slider BarraDeVida;
->>>>>>> 306d5614a72f61f4f60dd3c33bf39095d4535cb4
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -96,6 +88,7 @@ public class LevelManager : MonoBehaviour
             // Somos la primera y única instancia
             _instance = this;
             Init();
+            //desactivar paneles
             gameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
         }
@@ -106,16 +99,7 @@ public class LevelManager : MonoBehaviour
         vidaMax = GameManager.Instance.GetVidaMaxima();
         IniciarBarraVida(vidaMax, vidaActual);
         UpdateGUI();
-        Menu.SetActive(false);
-<<<<<<< HEAD
-
-        //desactivar los paneles
-
-        vidaMax = GameManager.Instance.GetVidaMaxima();
-=======
->>>>>>> 306d5614a72f61f4f60dd3c33bf39095d4535cb4
         GameManager.Instance.TransferManagerSetup();
-
     }
     //private void Update()
     //{
