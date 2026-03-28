@@ -50,6 +50,7 @@ public class LevelManager : MonoBehaviour
     private GameObject Menu;
     [SerializeField]
     private GameObject Puerta;
+    [SerializeField] private GameObject CorazonDañado;
     [SerializeField]
     private GameObject PanelVictory;
     [SerializeField] private GameObject CorazonDaado;
@@ -90,6 +91,7 @@ public class LevelManager : MonoBehaviour
             // Somos la primera y única instancia
             _instance = this;
             Init();
+            //desactivar paneles
             gameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
         }
@@ -105,7 +107,6 @@ public class LevelManager : MonoBehaviour
         //desactivar los paneles
         vidaMax = GameManager.Instance.GetVidaMaxima();
         GameManager.Instance.TransferManagerSetup();
-
     }
     //private void Update()
     //{
@@ -230,11 +231,11 @@ public class LevelManager : MonoBehaviour
     {
         if (vidaActual <= vidaMax / 4)
         {
-            CorazonDaado.SetActive(true);
+            CorazonDañado.SetActive(true);
         }
         else
         {
-            CorazonDaado.SetActive(false);
+            CorazonDañado.SetActive(false);
         }
     }
     #endregion
