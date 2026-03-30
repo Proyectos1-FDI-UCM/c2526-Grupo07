@@ -31,7 +31,7 @@ public class Explosion : MonoBehaviour
     [SerializeField]
     private float RadioGranada = 2f; //El radio de explosión de la granada
     [SerializeField]
-    private int Damage = 2; //El daño que causa
+    private int Damage; //El daño que causa
 
 
     #endregion

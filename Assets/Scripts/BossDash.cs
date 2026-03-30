@@ -39,10 +39,11 @@ public class BossDash : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float Timer; // tiempo que empieza desde 0
+    private float Timer2;
     private Rigidbody2D rb;
     private BoxCollider2D col;
     private bool CanDash = true;
-    private int dir = -1;
+    private int dir = 1;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -61,14 +62,17 @@ public class BossDash : MonoBehaviour
         Timer = 0;
         rb = GetComponent<Rigidbody2D>();
         col = rb.GetComponent<BoxCollider2D>();
-        StartCoroutine(Dash());
     }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
+    {Dash();
+    }
+    private void FixedUpdate()
     {
+        
     }
     #endregion
 
@@ -97,25 +101,26 @@ public class BossDash : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private IEnumerator Dash()
+    private void Dash()
     {
-        while(CanDash)
+        float InitialG = rb.gravityScale;
+        Timer += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
+        if (Timer > DashColdDown)
         {
-            float originalGScale = rb.gravityScale;
-            yield return new WaitForSeconds(DashColdDown); // esperar por unos segundos
-            dir *= -1;
-            Timer = 0;
-            while(Timer<DashTime)
-            {   
-                rb.gravityScale = 0;
-                rb.linearVelocity = new Vector2(transform.localScale.x * DashPower * dir, 0f);
+            Timer2 += Time.deltaTime;
+            rb.linearVelocity = Vector2.zero;
+            if (Timer2 > DashTime)
+            {
                 col.isTrigger = true;
-                Timer += Time.deltaTime;
-                yield return null;
+                rb.gravityScale = 0;
+                dir *= -1;    //cambio de direccion, invertir
+                rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
+                Timer = 0;
+                Timer2 = 0;   //vuelve a sincronizar el tiempo
             }
-            rb.gravityScale = originalGScale;
-            col.isTrigger = false;
         }
+        col.isTrigger = false;
+        rb.gravityScale = InitialG;
     }
     #endregion   
 

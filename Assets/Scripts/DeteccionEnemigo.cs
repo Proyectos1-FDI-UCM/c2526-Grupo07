@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using Unity.Mathematics.Geometry;
 using UnityEditor;
 using UnityEditor.Analytics;
 using UnityEngine;
@@ -28,6 +29,7 @@ public class DeteccionEnemigo : MonoBehaviour
     [SerializeField] private Transform player;  //objeto que persigue y dispara (jugador)
     [SerializeField] private float ChaseDis;    //distancia para perseguir
     [SerializeField] private float ShootDis;  //distancia para disparo
+    [SerializeField] private float alturaMax; //altura max para detectar al jugador
     [SerializeField] private GameObject excl;
 
     #endregion
@@ -71,7 +73,10 @@ public class DeteccionEnemigo : MonoBehaviour
     void Update()
     {
         float DirToPlayer = player.position.x - transform.position.x;   //dirección hacia el jugador
-        float distance = Vector2.Distance(transform.position, player.position);     //distancia entre jugador y enemigo
+
+        float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
+        float distanciaY= Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
+
         bool dirCambiada = false;
 
         // Solo actúa si el jugador está en la dirección que mira
@@ -83,8 +88,9 @@ public class DeteccionEnemigo : MonoBehaviour
         {
             dirCambiada = true;
         }
+
         //se detecta si el jugador está en la direccion del enemigo
-        if (distance < ShootDis && dirCambiada==true)   //jugador dentro de la "caja" pequeña
+        if (distanceX < ShootDis && dirCambiada==true && distanciaY<=alturaMax)   //jugador dentro de la "caja" pequeña
         {
             move.SetShooting(true);
             excl.SetActive(true);
@@ -95,7 +101,7 @@ public class DeteccionEnemigo : MonoBehaviour
             }
             time = forgetTime;  //reinicia el tiempo
         }
-        else if (distance <= ChaseDis && distance > ShootDis && dirCambiada == true)    //"caja" grande
+        else if (distanceX <= ChaseDis && distanceX > ShootDis && dirCambiada == true && distanciaY<=alturaMax)    //"caja" grande
         {
             move.SetChasing(true);
             excl.SetActive(true);
