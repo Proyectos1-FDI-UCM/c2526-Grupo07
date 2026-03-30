@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
         TransferManagerSetup();
         //Scale = BarraVida.localScale.x;
     }

@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
     private GameObject Puerta;
     [SerializeField]
     private GameObject PanelVictory;
-    [SerializeField] private GameObject CorazonDañado;
+    [SerializeField] private GameObject CorazonDagnado;
     [SerializeField] private Slider BarraDeVida;
     #endregion
 
@@ -198,11 +198,11 @@ public class LevelManager : MonoBehaviour
     {
         if (vidaActual <= vidaMax / 4)
         {
-            CorazonDañado.SetActive(true);
+            CorazonDagnado.SetActive(true);
         }
         else
         {
-            CorazonDañado.SetActive(false);
+            CorazonDagnado.SetActive(false);
         }
     }
     #endregion
