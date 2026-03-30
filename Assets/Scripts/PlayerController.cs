@@ -33,6 +33,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
     [SerializeField]
+    private float dashTime = 0.2f;
+    [SerializeField]
+    private float cooldownDash = 3f;
+    [SerializeField]
+    private float dashDistance = 5f;
+    [SerializeField]
     private GameObject HitboxCuchillo;
     [SerializeField] AimShoot Apuntado;
     [SerializeField] private Transform cuchillo;
@@ -51,10 +57,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
     private bool canMove = true; //Ver si se puede mover o no
+    private bool canDash = true; //Ver si se puede Dashear o no
+    private bool isDashing = false; //Ver si está el dash activo
     private float SetupChuchillo = 0f;
     private bool Knockback = false;
+    private float dashStartTime;
     private float KnockbackDuration;
     private float KnockbackFinish;
+    private float lastTimeDashed = 0;
     private float now;
     private float CChuchillo;
     private Animator anim;
@@ -83,6 +93,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
+        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, groundLayer);
+        lastTimeDashed += Time.deltaTime;
+
         now = Time.time;
 
         if (CChuchillo > CooldownChuchillo)
@@ -106,6 +119,19 @@ public class PlayerController : MonoBehaviour
                 canMove = true;
                 KnockbackFinish = Time.time;
             }
+        }
+
+        if (hit.collider != null)
+        {
+            if (canDash != true) canDash = true;
+        }
+        if (InputManager.Instance.DashWasPressedThisFrame())
+        {
+            if (lastTimeDashed >= cooldownDash)
+            {
+                Dash();
+            }
+            else Debug.Log("Refreshing Dash");
         }
     }
     void FixedUpdate()
@@ -172,8 +198,15 @@ public class PlayerController : MonoBehaviour
     }
     private void Moverse()
     {
-        //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-        rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+        if(isDashing == false)
+        {
+            //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+            rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+        }
+        else
+        {
+            if (Time.time - dashStartTime > dashTime) isDashing = false;
+        }
     }
 
     private void Chuchillo() //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
@@ -209,6 +242,19 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isAttacking", false); //Se desactiva la animacion del ataque del cuchillo
             SetupChuchillo = 0f;
         }
+    }
+    private void Dash()
+    {
+        if (canDash)
+        {
+            dashStartTime = Time.time;
+            isDashing = true;
+            rb.linearVelocity = new Vector2 (dashDistance * 10f, 0f);
+            canDash = false;
+            lastTimeDashed = 0f;
+            Debug.Log("Dashing");
+        }
+        else Debug.Log("Unable to Dash");
     }
     #endregion
 
