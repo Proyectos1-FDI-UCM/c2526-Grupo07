@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3252046804151651848}
   - component: {fileID: -6279652754209634581}
   - component: {fileID: -1631421106869161154}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BalaPistola
   m_TagString: Untagged
   m_Icon: {fileID: 0}

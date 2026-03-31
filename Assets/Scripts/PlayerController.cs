@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
@@ -32,8 +33,6 @@ public class PlayerController : MonoBehaviour
     private float Velocity; //Velocidad para correr
     [SerializeField]
     private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    [SerializeField]
-    private float dashTime = 0.2f;
     [SerializeField]
     private float cooldownDash = 3f;
     [SerializeField]
@@ -65,6 +64,7 @@ public class PlayerController : MonoBehaviour
     private float KnockbackDuration;
     private float KnockbackFinish;
     private float lastTimeDashed = 0;
+    private float dashTime = 0.2f;
     private float now;
     private float CChuchillo;
     private Animator anim;
@@ -131,7 +131,6 @@ public class PlayerController : MonoBehaviour
             {
                 Dash();
             }
-            else Debug.Log("Refreshing Dash");
         }
     }
     void FixedUpdate()
@@ -205,7 +204,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Time.time - dashStartTime > dashTime) isDashing = false;
+            if (Time.time - dashStartTime > dashTime)
+            {
+                gameObject.layer = LayerMask.NameToLayer("Jugador");
+                isDashing = false;
+            }
         }
     }
 
@@ -245,16 +248,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Dash()
     {
+        float dir;
         if (canDash)
         {
-            dashStartTime = Time.time;
-            isDashing = true;
-            rb.linearVelocity = new Vector2 (dashDistance * 10f, 0f);
+            if (Apuntado.AimDir().x >= 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
+            else dir = -1f;
+            gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
+            dashStartTime = Time.time; //Momento en el que inicia el Dash
+            isDashing = true; 
+            rb.linearVelocity = new Vector2(dashDistance * 10f * dir, 0f); //Ejerce fuerza al gameObject
             canDash = false;
             lastTimeDashed = 0f;
-            Debug.Log("Dashing");
         }
-        else Debug.Log("Unable to Dash");
     }
     #endregion
 
