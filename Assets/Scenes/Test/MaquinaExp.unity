@@ -901,8 +901,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99fd003d6d699564eb9bcc4befdf46b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Granada: {fileID: 0}
   Bala: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   SalidaBala: {fileID: 197395016}
+  numGranadas: 0
   Cadencia: 3
   Cargador: 15
   TiempoRecarga: 2
@@ -1383,6 +1385,10 @@ MonoBehaviour:
   HitboxCuchillo: {fileID: 0}
   Apuntado: {fileID: 0}
   cuchillo: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  CooldownChuchillo: 3
 --- !u!50 &1838381485
 Rigidbody2D:
   serializedVersion: 5
