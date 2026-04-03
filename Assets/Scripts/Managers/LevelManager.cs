@@ -164,13 +164,13 @@ public class LevelManager : MonoBehaviour
     public void GameOver()
     {
         juegoTerminado = true; 
-        Time.timeScale = 0;     //detener el tiempo
+        //Time.timeScale = 0;     //detener el tiempo
         gameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
         juegoTerminado = true;
-        Time.timeScale = 0;     //detener el tiempo
+        //Time.timeScale = 0;     //detener el tiempo
         PanelVictoria.SetActive(true);
     }
 
@@ -202,14 +202,8 @@ public class LevelManager : MonoBehaviour
     {
         ActualizarBarraVida(vidaActual);
         ActualizarCoraon();
-        if (vidaActual > 0)
+        if (vidaActual  < 0)
         {
-            Health.text = "Vida: " + vidaActual;
-        }
-        else
-        {
-            Health.text = "Vida: 0";
-            //Menu.SetActive(true);
             gameOverPanel.SetActive(true);
         }
         Ammo.text = Cargador + "/" + BalasMax;

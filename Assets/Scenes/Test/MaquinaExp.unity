@@ -1585,7 +1585,7 @@ PrefabInstance:
       objectReference: {fileID: 1838381487}
     - target: {fileID: 2110808708666551425, guid: f1805746994f5ca4a9ff00421f7c6efd, type: 3}
       propertyPath: FuerzaEmpuje
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4338645919122495565, guid: f1805746994f5ca4a9ff00421f7c6efd, type: 3}
       propertyPath: m_LocalPosition.x
