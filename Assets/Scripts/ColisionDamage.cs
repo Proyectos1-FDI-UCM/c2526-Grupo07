@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class CurrentHealth : MonoBehaviour
+public class ColisionDamage : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,7 +22,9 @@ public class CurrentHealth : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private int health;    //cantidad de vida que cura
+    [SerializeField]
+    private int Damage; //Daño que recibe el jugador al chocar
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -33,7 +35,7 @@ public class CurrentHealth : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private int PotionCount;    //cantidad de botiquin
+
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -57,9 +59,14 @@ public class CurrentHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController player = collision.GetComponent<PlayerController>();
+        if (player != null)
         {
-            UsePotion();
+            GameManager.Instance.RestLife(Damage);
         }
     }
     #endregion
@@ -71,6 +78,7 @@ public class CurrentHealth : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -79,31 +87,8 @@ public class CurrentHealth : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void UsePotion()
-    {
-        //jugador utiliza el botiquín
-        //cura una cantidad de vida determinada
-        //desaparece el botiquin utilizado
-        if (PotionCount > 0)
-        {
-            PotionCount--;
-            GameManager.Instance.Healt(health);
-            GameManager.Instance.UsarBotiquin();
-        }
-        else Debug.Log("ERROR: no hay consumible para utilizar");
-    }
-    private void OnTriggerEnter2D (Collider2D collision)
-    {
-        //si el jugador se colisiona con el botiquín
-        //se guarda en el inventario
-        //desaparece de la pantalla
-        if (collision.CompareTag("Potion"))
-        {
-            PotionCount++;
-            Destroy(collision.gameObject);
-        }
-    }
-    #endregion   
 
-}// class CurrentHealth 
+    #endregion
+
+} // class ColisionDammage 
 // namespace

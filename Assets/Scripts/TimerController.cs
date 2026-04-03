@@ -5,6 +5,8 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -13,7 +15,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class CurrentHealth : MonoBehaviour
+public class TimerController : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,7 +24,7 @@ public class CurrentHealth : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private int health;    //cantidad de vida que cura
+    [SerializeField] public TextMeshProUGUI timerText;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -33,7 +35,8 @@ public class CurrentHealth : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private int PotionCount;    //cantidad de botiquin
+    private float timeSec;
+    private int timeMin;
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -57,9 +60,23 @@ public class CurrentHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        timeSec += Time.deltaTime;
+        if (timeSec>60)
         {
-            UsePotion();
+            timeSec = 0;
+            timeMin++;
+        }
+        if (timeSec < 10 && timeMin < 10)
+        {
+            timerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+        }
+        else if (timeSec > 10 && timeMin < 10)
+        {
+            timerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
+        }
+        else
+        {
+            timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
         }
     }
     #endregion
@@ -71,39 +88,17 @@ public class CurrentHealth : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    #endregion
 
+    #endregion
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void UsePotion()
-    {
-        //jugador utiliza el botiquín
-        //cura una cantidad de vida determinada
-        //desaparece el botiquin utilizado
-        if (PotionCount > 0)
-        {
-            PotionCount--;
-            GameManager.Instance.Healt(health);
-            GameManager.Instance.UsarBotiquin();
-        }
-        else Debug.Log("ERROR: no hay consumible para utilizar");
-    }
-    private void OnTriggerEnter2D (Collider2D collision)
-    {
-        //si el jugador se colisiona con el botiquín
-        //se guarda en el inventario
-        //desaparece de la pantalla
-        if (collision.CompareTag("Potion"))
-        {
-            PotionCount++;
-            Destroy(collision.gameObject);
-        }
-    }
+
     #endregion   
 
-}// class CurrentHealth 
+} // class TimerController 
 // namespace

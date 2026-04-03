@@ -31,7 +31,7 @@ public class Explosion : MonoBehaviour
     [SerializeField]
     private float RadioGranada = 2f; //El radio de explosión de la granada
     [SerializeField]
-    private int Damage = 2; //El daño que causa
+    private int Damage; //El daño que causa
 
 
     #endregion
@@ -106,7 +106,7 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    //Explotar==Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth, les causará el daño de la granada,
+    //Explotar==Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada,
     //solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
     private void Explotar()
     {
@@ -115,9 +115,11 @@ public class Explosion : MonoBehaviour
         //Recorre la lista
         for(int i = 0; i < Enemigos.Length; i++)
         {
-            EnemyHealth VidaEnemigo = Enemigos[i].GetComponent<EnemyHealth>(); //Guarda el componente EnemyHealth del objeto en VidaEnemigo, pero si no lo tiene, estará vacío(null)
+            EnemyHealth VidaEnemigo = Enemigos[i].GetComponent<EnemyHealth>(); //Guarda el componente EnemyHealth para comprobar si hay enemigos
 
-            if(VidaEnemigo != null ) //Revisa si no está vacío, es decir, que tiene EnemyHealth
+            PlayerController Player = Enemigos [i].GetComponent<PlayerController>(); //Guaerda el componente Player controller para comprobar si es el jugador
+
+            if (VidaEnemigo != null || Player != null) //Comprueba que haya enemigos o el jugador
             {
                 Vector2 vectorEnemigo = Enemigos[i].transform.position - transform.position; //Vector entre la granada y el enemigo
 
@@ -137,23 +139,21 @@ public class Explosion : MonoBehaviour
                     }
                 }
 
-                if (!Pared) //Si no hay pared causa daño al enemigo
+                if (!Pared) //Si no hay pared causa daño
                 {
-                    VidaEnemigo.EnemyHealthPoint(Damage);
+                    if(VidaEnemigo != null)
+                    {
+                        VidaEnemigo.EnemyHealthPoint(Damage);
+                    }
+                    else if(Player != null)
+                    {
+                        GameManager.Instance.HealthPoints(Damage);
+                    }
                 }
             }
         }
         Destroy(gameObject); //Se destruye la granada
 
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //quita vida si se colisiona con el jugador
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            GameManager.Instance.RestLife(Damage);
-        }
     }
 
     //Dibuja el radio de la granada en el inspector
