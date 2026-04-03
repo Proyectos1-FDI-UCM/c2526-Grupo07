@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     private float dashStartTime;
     private float KnockbackDuration;
     private float KnockbackFinish;
-    private float lastTimeDashed = 0;
+    private float lastTimeDashed = 2f;
     private float dashTime = 0.2f;
     private float now;
     private float CChuchillo;
@@ -123,14 +123,16 @@ public class PlayerController : MonoBehaviour
 
         if (hit.collider != null)
         {
-            if (canDash != true) canDash = true;
+            if(!canDash) canDash = true;
         }
+        else canDash = false;
         if (InputManager.Instance.DashWasPressedThisFrame())
         {
             if (lastTimeDashed >= cooldownDash)
             {
                 Dash();
             }
+            else Debug.Log("Refrescando");
         }
     }
     void FixedUpdate()
@@ -264,7 +266,9 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(dashDistance * 10f * dir, 0f); //Ejerce fuerza al gameObject
             canDash = false;
             lastTimeDashed = 0f;
+            Debug.Log("Dashed");
         }
+        else Debug.Log("No pudo dashear");
     }
     #endregion
 
