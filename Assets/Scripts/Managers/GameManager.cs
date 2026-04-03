@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
         // como se acorta en los dos extremos, muevo la barra de vida hacia la izquierda
         //BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y); 
         TransferManagerSetup();
-        if (MaxHealthPoints <0) // si llega a cero, muere
+        if (MaxHealthPoints <1) // si llega a cero, muere
         {
             MaxHealthPoints = 0;
             LevelManager.Instance.GameOver();
