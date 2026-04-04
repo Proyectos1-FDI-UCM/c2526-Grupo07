@@ -36,7 +36,7 @@ public class TimerController : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float timeSec;
-    private int timeMin;
+    private float timeMin;
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -78,6 +78,7 @@ public class TimerController : MonoBehaviour
         {
             timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
         }
+        Debug.Log(timeMin * 60 + timeSec);
     }
     #endregion
 
@@ -88,7 +89,10 @@ public class TimerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public float GetTimeSeconds()
+    {
+        return timeMin * 60 + timeSec;
+    }
     #endregion
     
     // ---- MÉTODOS PRIVADOS ----
