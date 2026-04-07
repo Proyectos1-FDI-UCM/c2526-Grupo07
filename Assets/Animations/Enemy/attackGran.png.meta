@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: aec86808cb07e4b429bce7e681d65ac0
+guid: 59f91fbe379cb5b469e681d6f6937091
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6864355960115301665
-    second: reheniddleman_0
+      213: 6045948276396263042
+    second: attackGran_0
   - first:
-      213: -6263394143248572446
-    second: reheniddleman_1
+      213: 377710259903402978
+    second: attackGran_1
   - first:
-      213: 2838191904084814355
-    second: reheniddleman_2
+      213: 1900772014745112500
+    second: attackGran_2
   - first:
-      213: -3380622783716000917
-    second: reheniddleman_3
+      213: -3596079715870290861
+    second: attackGran_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -60,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 250
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,57 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: reheniddleman_0
+      name: attackGran_0
       rect:
         serializedVersion: 2
-        x: 227
-        y: 916
-        width: 570
-        height: 897
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fd2fd798f98ecb0a0800000000000000
-      internalID: -6864355960115301665
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: reheniddleman_1
-      rect:
-        serializedVersion: 2
-        x: 1185
-        y: 916
-        width: 570
-        height: 897
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2ef186b2634f319a0800000000000000
-      internalID: -6263394143248572446
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: reheniddleman_2
-      rect:
-        serializedVersion: 2
-        x: 205
+        x: 72
         y: 0
-        width: 592
-        height: 874
+        width: 209
+        height: 214
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 31a6d57df78436720800000000000000
-      internalID: 2838191904084814355
+      spriteID: 2860cf0bce587e350800000000000000
+      internalID: 6045948276396263042
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: reheniddleman_3
+      name: attackGran_1
       rect:
         serializedVersion: 2
-        x: 1185
+        x: 335
         y: 0
-        width: 570
-        height: 896
+        width: 232
+        height: 214
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,8 +146,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b6bf3015d7d9511d0800000000000000
-      internalID: -3380622783716000917
+      spriteID: 2e3109dea75ed3500800000000000000
+      internalID: 377710259903402978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attackGran_2
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 0
+        width: 227
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bfc2e1a316e06a10800000000000000
+      internalID: 1900772014745112500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attackGran_3
+      rect:
+        serializedVersion: 2
+        x: 929
+        y: 0
+        width: 210
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35c409f1d88281ec0800000000000000
+      internalID: -3596079715870290861
       vertices: []
       indices: 
       edges: []
@@ -210,10 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      reheniddleman_0: -6864355960115301665
-      reheniddleman_1: -6263394143248572446
-      reheniddleman_2: 2838191904084814355
-      reheniddleman_3: -3380622783716000917
+      attackGran_0: 6045948276396263042
+      attackGran_1: 377710259903402978
+      attackGran_2: 1900772014745112500
+      attackGran_3: -3596079715870290861
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

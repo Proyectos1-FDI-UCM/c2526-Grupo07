@@ -47,6 +47,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
     private bool _rehenLibre = false; //Asumimos que el rehén no está libre 
     private int Direction = 0; // direccion en la que el rehen va a escapar
     private Rigidbody2D rb;
+    private Animator anim;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -63,6 +64,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -75,7 +77,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             return;
         }
-        //Axumimos que en cada frame no quedan enemigos
+        //Asumimos que en cada frame no quedan enemigos
         bool QuedanEnemigos = false;
         //Buscamos que la lista de enemigos no está vacía
         int i = 0;
@@ -94,6 +96,7 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             Debug.Log("Rehén Libre");
             _rehenLibre = true;
+            LiberarRehen();
         }
     }
 
@@ -138,9 +141,29 @@ public class RehenesDetectEnemigos : MonoBehaviour
         }
         else { Direction = -1; }
         rb.linearVelocity = new Vector2(Velocity * Direction, rb.linearVelocity.y); // rehen se escapa por la direccion que esta la puerta
+
+        if (Rehen != null)
+        {
+            Rehen.flipX = Direction < 0;
+        }
     }
-    
-    #endregion   
+    private void LiberarRehen()
+    {
+        _rehenLibre = true;
+
+        // Activar animación
+        if (anim != null)
+        {
+            anim.SetBool("freedom", true);
+        }
+
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.RehenSalvado();
+        }
+    }
+
+    #endregion
 
 } // class RehenesDetectEnemigos 
 // namespace

@@ -98,20 +98,24 @@ public class PlayerController : MonoBehaviour
 
         now = Time.time;
 
-        if (CChuchillo > CooldownChuchillo)
+        if (anim != null)
         {
-            Chuchillo();
+            if (!anim.GetBool("isAttacking"))
+            {
+                if (CChuchillo < CooldownChuchillo)
+                {
+                    CChuchillo += Time.deltaTime;
+                }
+            }
+            else
+            {
+                CChuchillo = 0f;
+            }
         }
-        else
-        {
-            CChuchillo = CChuchillo + Time.deltaTime;
-        }
-        if (HitboxCuchillo.activeSelf) //Comprueba si la hitbox del cuchillo esta activada
-        {
-            //Solo si el cuchillo esta activado empieza a contar los 0.5s
-            DesCuchillo();
-        }
-    
+
+        Chuchillo();
+        DesCuchillo();
+
         if (Knockback != false)
         {
             if (now - KnockbackFinish > KnockbackDuration)
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
         if (hit.collider != null)
         {
-            if(!canDash) canDash = true;
+            if (!canDash) canDash = true;
         }
         else canDash = false;
         if (InputManager.Instance.DashWasPressedThisFrame())
@@ -204,53 +208,76 @@ public class PlayerController : MonoBehaviour
     }
     private void Moverse()
     {
-        if(isDashing == false)
+        if (anim == null || !anim.GetBool("isAttacking"))
         {
-            //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+            float horizontalInput = InputManager.Instance.MovementVector.x;
+
+            // Manipulo la velocidad lineal del gameObject en el eje X
             rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
-        }
-        else
-        {
-            if (Time.time - dashStartTime > dashTime)
+
+            // Actualizamos animación de caminar
+            anim.SetFloat("speed", Mathf.Abs(horizontalInput));
+
+            // Girar sprite según dirección
+            if (spriteRenderer != null && horizontalInput != 0)
             {
-                gameObject.layer = LayerMask.NameToLayer("Jugador");
-                isDashing = false;
+                spriteRenderer.flipX = horizontalInput < 0;
+            }
+            if (isDashing == false)
+            {
+                //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
+                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+            }
+            else
+            {
+                if (Time.time - dashStartTime > dashTime)
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Jugador");
+                    isDashing = false;
+                }
             }
         }
     }
 
     private void Chuchillo() //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
     {
-        if (InputManager.Instance.KnifeWasPressedThisFrame())
+        if (InputManager.Instance.KnifeWasPressedThisFrame() && CChuchillo >= CooldownChuchillo && !anim.GetBool("isAttacking"))
         {
-            anim.SetBool("isAttacking", true); //Se activa la animacion del ataque del cuchillo
-
-            Vector3 Dir = Apuntado.MousePos();
-            if (Dir.x > 0)
+            //Activar hitbox PRIMERO
+            if (HitboxCuchillo != null)
             {
-                cuchillo.localPosition = new Vector3(0.8f, 0f, 0f);
-            }
-            else
-            {
-                cuchillo.localPosition = new Vector3(-1.3f, 0f, 0f);
+                HitboxCuchillo.SetActive(true);
             }
 
+            //Activar animación
+            anim.SetBool("isAttacking", true);
             SetupChuchillo = 0f;
-            HitboxCuchillo.SetActive(true);
-            CChuchillo = 0;
+
+            //Orientación
+            Vector3 Dir = Apuntado.MousePos();
+            cuchillo.localPosition = new Vector3(Dir.x > 0 ? 0.8f : -1.3f, 0f, 0f);
         }
     }
+
     private void DesCuchillo() //Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
     {
-        if (HitboxCuchillo)
+        if (anim != null && anim.GetBool("isAttacking"))
         {
-            SetupChuchillo = SetupChuchillo + Time.deltaTime;
-        }
-        if (SetupChuchillo >= 0.5f)
-        {
-            HitboxCuchillo.SetActive(false);
-            anim.SetBool("isAttacking", false); //Se desactiva la animacion del ataque del cuchillo
-            SetupChuchillo = 0f;
+            SetupChuchillo += Time.deltaTime;
+
+            //Cuando pasa el tiempo del ataque
+            if (SetupChuchillo >= 0.4f)
+            {
+                //Desactivar hitbox
+                if (HitboxCuchillo != null)
+                {
+                    HitboxCuchillo.SetActive(false);
+                }
+
+                //Desactivar animación de ataque
+                anim.SetBool("isAttacking", false);
+                SetupChuchillo = 0f;
+            }
         }
     }
     private void Dash()
@@ -262,7 +289,7 @@ public class PlayerController : MonoBehaviour
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
             dashStartTime = Time.time; //Momento en el que inicia el Dash
-            isDashing = true; 
+            isDashing = true;
             rb.linearVelocity = new Vector2(dashDistance * 10f * dir, 0f); //Ejerce fuerza al gameObject
             canDash = false;
             lastTimeDashed = 0f;
@@ -270,7 +297,7 @@ public class PlayerController : MonoBehaviour
         }
         else Debug.Log("No pudo dashear");
     }
+}
     #endregion
-
-} // class PlayerController 
+// class PlayerController 
 // namespace
