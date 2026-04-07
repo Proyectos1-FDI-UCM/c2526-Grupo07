@@ -42,7 +42,7 @@ public class BossDash : MonoBehaviour
     private float Timer2;
     private Rigidbody2D rb;
     private BoxCollider2D col;
-    private bool CanDash = true;
+    private bool Dashing = false;
     private int dir = 1;
     #endregion
 
@@ -68,7 +68,8 @@ public class BossDash : MonoBehaviour
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
-    {Dash();
+    {   
+        Dash();
     }
     private void FixedUpdate()
     {
@@ -85,12 +86,15 @@ public class BossDash : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController player = collision.GetComponent<PlayerController>();
-        GameManager GM = GetComponent<GameManager>();
-        if (player != null) 
+        
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
         {
             Debug.Log("this is player");
-            GM.HealthPoints(DashDamage);
+            GameManager.Instance.HealthPoints(DashDamage);
         }
     }
     #endregion
@@ -104,14 +108,14 @@ public class BossDash : MonoBehaviour
     private void Dash()
     {
         float InitialG = rb.gravityScale;
-        Timer += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-        if (Timer > DashColdDown)
+        Timer += Time.deltaTime; 
+        if (Timer > DashColdDown) //ColdDown
         {
             Timer2 += Time.deltaTime;
             rb.linearVelocity = Vector2.zero;
-            if (Timer2 > DashTime)
-            {
-                col.isTrigger = true;
+            if (Timer2 > DashTime) //Duración del Dash
+            { 
+                Dashing = true;
                 rb.gravityScale = 0;
                 dir *= -1;    //cambio de direccion, invertir
                 rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
@@ -119,8 +123,10 @@ public class BossDash : MonoBehaviour
                 Timer2 = 0;   //vuelve a sincronizar el tiempo
             }
         }
-        col.isTrigger = false;
-        rb.gravityScale = InitialG;
+        //else { Dashing = false; }
+        //if (Dashing) { col.isTrigger = true; }
+        //else { col.isTrigger = false; }
+            rb.gravityScale = InitialG;
     }
     #endregion   
 
