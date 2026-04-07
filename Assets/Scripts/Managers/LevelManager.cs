@@ -7,6 +7,7 @@
 //---------------------------------------------------------
 
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -34,29 +35,39 @@ public class LevelManager : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
 
-    [SerializeField]
-    private TMPro.TextMeshProUGUI Health; //Texto del canvas
-    [SerializeField]
-    private TMPro.TextMeshProUGUI Ammo; //Ver cantidad de balas
-    [SerializeField]
-    private GameObject spriteGranada; //Enseñar la granada
-    [SerializeField]
-    private TMPro.TextMeshProUGUI TextGranadas; //Enseñar el número de granadas
-    [SerializeField]
-    private GameObject Botiquin; //Enseñar el botiquín
-    [SerializeField]
-    private TMPro.TextMeshProUGUI TextBotiquines; //Enseñar el número de botiquines
-    [SerializeField]
-    private GameObject Menu;
-    [SerializeField]
-    private GameObject Puerta;
+    [SerializeField] private TMPro.TextMeshProUGUI Health; //Texto del canvas
+
+    [SerializeField] private TMPro.TextMeshProUGUI Ammo; //Ver cantidad de balas
+
+    [SerializeField] private GameObject spriteGranada; //Enseñar la granada
+
+    [SerializeField] private TMPro.TextMeshProUGUI TextGranadas; //Enseñar el número de granadas
+
+    [SerializeField] private GameObject Botiquin; //Enseñar el botiquín
+
+    [SerializeField] private TMPro.TextMeshProUGUI TextBotiquines; //Enseñar el número de botiquines
+
+    [SerializeField] private GameObject Menu;
+
+    [SerializeField] private GameObject Puerta;
+
     [SerializeField] private GameObject CorazonDañado;
-    [SerializeField]
-    private GameObject PanelVictory;
+
+    [SerializeField] private GameObject PanelVictory;
+
     [SerializeField] private GameObject CorazonDaado;
+
     [SerializeField] private GameObject gameOverPanel;
+
     [SerializeField] private GameObject PanelVictoria;
+
     [SerializeField] private Slider BarraDeVida;
+
+    [SerializeField] private GameObject[] spriteEstrellas;
+
+    [SerializeField] private int TiempoLimite;
+
+    [SerializeField] public TextMeshProUGUI timerText;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -69,7 +80,6 @@ public class LevelManager : MonoBehaviour
     private int vidaActual;
     private int MaxGranadas;
     private int MaxBotiquin;
-
     private float Scale;
     private int vidaMax; //Vida máxima del jugador
     private int numGranadas;
@@ -77,7 +87,11 @@ public class LevelManager : MonoBehaviour
     private int BalasMax = 0; //Ver las balas maximas de esa arma
     private int granadas = 0;
     private int botiquines = 0;
-    public bool juegoTerminado= false;
+    private bool juegoTerminado= false;
+    private float timeSec;
+    private float timeMin;
+    private float timeTotal;
+    private int numRehenes; //Número de rehenes en el mapa
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -100,18 +114,20 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         vidaMax = GameManager.Instance.GetVidaMaxima();
+        numRehenes = GameObject.FindGameObjectsWithTag("Rehen").Length;
         IniciarBarraVida(vidaMax, vidaActual);
         UpdateGUI();
         Menu.SetActive(false);
-
         //desactivar los paneles
         vidaMax = GameManager.Instance.GetVidaMaxima();
         GameManager.Instance.TransferManagerSetup();
     }
-    //private void Update()
-    //{
-    //    UpdateGUI();
-    //}
+    private void Update()
+    {
+        timeSec += Time.deltaTime;
+        timeTotal += Time.deltaTime;
+        UpdateGUI();
+    }
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -160,7 +176,10 @@ public class LevelManager : MonoBehaviour
         botiquines = GameManager.Instance.CantidadBotiquines();
         UpdateGUI();
     }
-
+    public void RehenSalvado()
+    {
+        numRehenes -= 1;
+    }
     public void GameOver()
     {
         juegoTerminado = true; 
@@ -170,10 +189,21 @@ public class LevelManager : MonoBehaviour
     public void Victoria()
     {
         juegoTerminado = true;
+        if (numRehenes == 0)
+        {
+            spriteEstrellas[2].SetActive(true);
+        }
+        if (numRehenes < 2)
+        {
+            spriteEstrellas[1].SetActive(true);
+        }
+        if (timeTotal < TiempoLimite)
+        {
+            spriteEstrellas[0].SetActive(true);
+        }
         //Time.timeScale = 0;     //detener el tiempo
         PanelVictoria.SetActive(true);
     }
-
     public void Reiniciar()
     {
         Time.timeScale = 1;
@@ -209,7 +239,23 @@ public class LevelManager : MonoBehaviour
         Ammo.text = Cargador + "/" + BalasMax;
         TextBotiquines.text = "x" + botiquines;
         TextGranadas.text = "x" + granadas;
-       
+        if (timeSec > 60)
+        {
+            timeSec = 0;
+            timeMin++;
+        }
+        if (timeSec < 10 && timeMin < 10)
+        {
+            timerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+        }
+        else if (timeSec > 10 && timeMin < 10)
+        {
+            timerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
+        }
+        else
+        {
+            timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+        }
     }
     private void IniciarBarraVida(int VidaMax, int VidaActual)
     {

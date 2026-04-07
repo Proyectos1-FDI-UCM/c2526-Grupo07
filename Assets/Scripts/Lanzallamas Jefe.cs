@@ -5,9 +5,8 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 // Añadir aquí el resto de directivas using
 
 
@@ -15,7 +14,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class TimerController : MonoBehaviour
+public class LanzallamasJefe : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -24,7 +23,10 @@ public class TimerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] public TextMeshProUGUI timerText;
+
+    [SerializeField] private Transform SalidaFuego;
+    [SerializeField] private GameObject Fuego;
+    [SerializeField] private Transform PosJugador;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -35,8 +37,7 @@ public class TimerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float timeSec;
-    private float timeMin;
+    Vector2 offset;
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -60,25 +61,7 @@ public class TimerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        timeSec += Time.deltaTime;
-        if (timeSec>60)
-        {
-            timeSec = 0;
-            timeMin++;
-        }
-        if (timeSec < 10 && timeMin < 10)
-        {
-            timerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
-        }
-        else if (timeSec > 10 && timeMin < 10)
-        {
-            timerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
-        }
-        else
-        {
-            timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
-        }
-        Debug.Log(timeMin * 60 + timeSec);
+        UsarLanzallamas();
     }
     #endregion
 
@@ -89,10 +72,7 @@ public class TimerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public float GetTimeSeconds()
-    {
-        return timeMin * 60 + timeSec;
-    }
+
     #endregion
     
     // ---- MÉTODOS PRIVADOS ----
@@ -101,8 +81,15 @@ public class TimerController : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    private void UsarLanzallamas()
+    {
+        offset = PosJugador.position - transform.position;
+        GameObject Fueguito = Instantiate(Fuego, SalidaFuego.position, SalidaFuego.rotation);
+        BulletBehaviour Direccion = Fueguito.GetComponent<BulletBehaviour>();
+        Direccion.Dir(offset);
+    }
 
     #endregion   
 
-} // class TimerController 
+} // class LanzallamasJefe 
 // namespace

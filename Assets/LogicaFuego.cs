@@ -5,8 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using TMPro;
-using UnityEditor.Experimental.GraphView;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -15,7 +14,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class TimerController : MonoBehaviour
+public class LogicaFuego : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -24,7 +23,10 @@ public class TimerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] public TextMeshProUGUI timerText;
+    [SerializeField] private float Velocidad;
+    [SerializeField] private int Daño;
+    [SerializeField] private float TiempoEnDestruirse;
+    [SerializeField] private Transform Jugador;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -35,50 +37,45 @@ public class TimerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float timeSec;
-    private float timeMin;
+    private float TiempoConVida;
+    Rigidbody2D rb;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
-    /// </summary>
-    void Start()
-    {
-        
-    }
-
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
+    void Start()
+    {
+        Vector3 dir = new Vector3(Jugador.position.x, Jugador.position.y, Jugador.position.z);
+        Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
+        rb.linearVelocity = dir2D * Velocidad;
+
+    }
     void Update()
     {
-        timeSec += Time.deltaTime;
-        if (timeSec>60)
+        //transform.Translate(Vector2.right * Velocidad * Time.deltaTime);
+        TiempoConVida += Time.time;
+        if(TiempoConVida > TiempoEnDestruirse)
         {
-            timeSec = 0;
-            timeMin++;
+            Destroy(gameObject);
         }
-        if (timeSec < 10 && timeMin < 10)
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
         {
-            timerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+            //Llama al GameManager para bajar vida
+            GameManager.Instance.HealthPoints(Daño);
         }
-        else if (timeSec > 10 && timeMin < 10)
-        {
-            timerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
-        }
-        else
-        {
-            timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
-        }
-        Debug.Log(timeMin * 60 + timeSec);
     }
     #endregion
 
@@ -89,12 +86,15 @@ public class TimerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public float GetTimeSeconds()
+    public void Dir(Vector2 dir)
     {
-        return timeMin * 60 + timeSec;
+        rb = GetComponent<Rigidbody2D>();
+        transform.right = dir;
+        rb.linearVelocity = (dir.normalized * Velocidad);
     }
+
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -102,7 +102,7 @@ public class TimerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion   
+    #endregion
 
-} // class TimerController 
+} // class LogicaFuego 
 // namespace
