@@ -7,7 +7,9 @@ TagManager:
   - Bullet
   - Pared
   - Potion
+  - Puerta
   - Enemigo
+  - Rehen
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - UI
   - Suelo
   - 
-  - 
+  - JugadorDuringDash
   - Jugador
   - Granada
   - Enemigo

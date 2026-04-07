@@ -43,6 +43,8 @@ public class AtaqueJefe : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float time=0; //tiempo para el siguiente ataque
+
+    private Animator anim;
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -58,7 +60,7 @@ public class AtaqueJefe : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -69,15 +71,26 @@ public class AtaqueJefe : MonoBehaviour
         //calcular la distancia entre el jefe y el jugador
         float distancia = Vector2.Distance(transform.position, player.position);
 
+        anim.SetBool("attackLan", false); //desactivar la animacion de lanzallamas
+        anim.SetBool("attackGran", false);    //desactivar la animacion de lanzar granada
+
         //si el jugador está lejos lanza granada
         if (Time.time >= time)
         {
-            if(distancia >= rangoAtaque)
+            if(distancia > rangoAtaque)
             {
+                anim.SetBool("attackGran", true);
+                anim.SetBool("attackLan", false); 
+
                 LanzarGranada();
                 time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
-           
+            else
+            {
+                anim.SetBool("attackLan", true);
+                anim.SetBool("attackGran", false);
+
+            }
         }
     }
     #endregion
@@ -89,9 +102,12 @@ public class AtaqueJefe : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void FinGran()
+    {
+        anim.SetBool("attackGran", false);
+    }
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -117,8 +133,11 @@ public class AtaqueJefe : MonoBehaviour
 
             Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
             explosion.SetDireccion(direccion);
+
         }
     }
+    
+
     #endregion   
 
 } // class DisparoJefe 
