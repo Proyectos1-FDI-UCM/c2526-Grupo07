@@ -127,8 +127,14 @@ public class BulletBehaviour : MonoBehaviour
         EnemyHealth enemy = colision.gameObject.GetComponent<EnemyHealth>();
         if (player != null)
         {
-            //Llama al GameManager para bajar vida
-            GameManager.Instance.HealthPoints(Damage);
+            //jugador no se puede disparar a si mismo
+            if (gameObject.layer == LayerMask.NameToLayer("bala") && player.gameObject.layer == LayerMask.NameToLayer("Jugador"))
+            { return; }
+            else
+            {
+                //Llama al GameManager para bajar vida
+                GameManager.Instance.HealthPoints(Damage);
+            }
         }
         else if (enemy != null)
         {
