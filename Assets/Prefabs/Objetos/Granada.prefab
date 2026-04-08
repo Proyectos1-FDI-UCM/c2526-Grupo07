@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f388ee61025ef144b61e15bfbe2f40d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velIn: {x: 6, y: 5}
+  velIn: {x: 6, y: 6}
   TiempoGranada: 2
-  RadioGranada: 2
-  Damage: 2
+  RadioGranada: 5
+  Damage: 50

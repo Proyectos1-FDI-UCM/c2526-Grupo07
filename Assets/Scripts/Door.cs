@@ -22,6 +22,7 @@ public class Door : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
+    [SerializeField] GameObject player;
 
     #endregion
     
@@ -70,13 +71,20 @@ public class Door : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    private void OnTriggerEnter2D(Collider2D collision)
+    
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController player = collision.GetComponent<PlayerController>();
-        LevelManager LM = GetComponent<LevelManager>();
-        if (player != null)
+        //player = collision.gameObject;
+        //PlayerController PC = player.GetComponent<PlayerController>();
+        //LevelManager LM = GetComponent<LevelManager>();
+        /*if (PC != null)
         {
-            LM.PanelVictoria();
+            LM.Victoria();
+            Debug.Log("entrar");
+        }*/
+        if (collision.CompareTag("Player"))
+        {
+            LevelManager.Instance.Victoria();
         }
     }
     // ---- MÉTODOS PRIVADOS ----

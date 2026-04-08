@@ -4,12 +4,12 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - suelo
   - Bullet
-  - muro
   - Pared
-  - Enemigo
   - Potion
+  - Puerta
+  - Enemigo
+  - Rehen
   layers:
   - Default
   - TransparentFX
@@ -19,12 +19,12 @@ TagManager:
   - UI
   - Suelo
   - 
-  - 
+  - JugadorDuringDash
   - Jugador
   - Granada
   - Enemigo
-  - 
-  - 
+  - Rehen
+  - Obstaculos
   - 
   - 
   - 

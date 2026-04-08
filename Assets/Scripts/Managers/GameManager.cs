@@ -6,9 +6,12 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /// <summary>
@@ -34,14 +37,15 @@ public class GameManager : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField]
-    private int MaxHealthPoints; //Puntos de vida máximos del personaje
+    private int MaxHealthPoints; //Puntos de vida ACTUALES del personaje
     [SerializeField]
     private int MaxGranadas;
     [SerializeField]
     private GameObject PanelVictory;
     [SerializeField]
     private int MaxBotiquin;
-    //[SerializeField]
+    [SerializeField]
+    private int MaxHealthInitial; //Vida máxima del jugador
     //private Transform BarraVida;
 
     #endregion
@@ -55,12 +59,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private static GameManager _instance;
     private float Scale;
-    private int MaxHealthInitial; //Vida máxima del jugador
+    
     private int numGranadas;
     private int Cargador; //Ver la situación del cargador
     private int BalasMax = 0; //Ver las balas maximas de esa arma
     private int granadas = 0;
-    private int botiquines = 0;  
+    private int botiquines = 0;
 
     #endregion
 
@@ -103,6 +107,7 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no. 
+        MaxHealthPoints = MaxHealthInitial;
     }
 
     /// <summary>
@@ -111,9 +116,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
         TransferManagerSetup();
         //Scale = BarraVida.localScale.x;
     }
+   
     /// <summary>
     /// Método llamado cuando se destruye el componente.
     /// </summary>
@@ -191,8 +198,10 @@ public class GameManager : MonoBehaviour
         // como se acorta en los dos extremos, muevo la barra de vida hacia la izquierda
         //BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y); 
         TransferManagerSetup();
-        if (MaxHealthPoints < 1) // si llega a cero, muere
+        if (MaxHealthPoints <1) // si llega a cero, muere
         {
+            MaxHealthPoints = 0;
+            LevelManager.Instance.GameOver();
             //BarraVida.localScale = new Vector2(0f,0f);
         }
     }
@@ -286,6 +295,7 @@ public class GameManager : MonoBehaviour
     {
         LevelManager.Instance.RecogerEstado(Cargador, BalasMax);
     }
+    
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

@@ -25,6 +25,7 @@ public class MoveEnemigo : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private float duracion;    //duracion de tiempo en movimiento 
+    [SerializeField] private float duracionQuieto; // tiempo en que va a estar quieto
     [SerializeField] private float vel; //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player;  //jugador para realizar las acciones
     #endregion
@@ -41,6 +42,7 @@ public class MoveEnemigo : MonoBehaviour
     private bool isShooting = false;  //controlar si está disparando al jugador
     private int direction = 1;  //direccion del enemigo
     private float tiempoInicio = 0; //tiempo iniciado para el movimiento
+    private float tiempoQuieto = 0; //tiempo inicial en que va a estar quieto
     private Rigidbody2D rb;
     #endregion
 
@@ -73,7 +75,7 @@ public class MoveEnemigo : MonoBehaviour
                 direction *= -1;
                 CambioDireccion();
             }
-            if (offset.x < 0 && direction != -1)
+            if (offset.x < 0 && direction != -1) 
             {
                 direction *= -1;
                 CambioDireccion();
@@ -151,10 +153,16 @@ public class MoveEnemigo : MonoBehaviour
         rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
         if (tiempoInicio > duracion)
         {
-            direction *= -1;    //cambio de direccion, invertir
-            CambioDireccion();
-            rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-            tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+            tiempoQuieto += Time.deltaTime;
+            rb.linearVelocity = Vector2.zero; 
+            if (tiempoQuieto> duracionQuieto)
+            {
+                direction *= -1;    //cambio de direccion, invertir
+                CambioDireccion();
+                rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
+                tiempoQuieto = 0;   
+                tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+            }
         }
     }
 
@@ -162,6 +170,7 @@ public class MoveEnemigo : MonoBehaviour
     {
         transform.localScale = new Vector3(direction, 1, 1);
     }
+    
     #endregion
 } // class MoveEnemigo 
   // namespace

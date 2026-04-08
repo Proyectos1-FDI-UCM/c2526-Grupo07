@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &80163539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,75 +480,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &682460833
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1450896622327545932, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_Name
-      value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: Ammo
-      value: 
-      objectReference: {fileID: 1085497189}
-    - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: Menu
-      value: 
-      objectReference: {fileID: 80163538}
-    - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: Health
-      value: 
-      objectReference: {fileID: 74400094}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013569748143672203, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
 --- !u!1 &912704661
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,9 +491,9 @@ GameObject:
   - component: {fileID: 912704664}
   - component: {fileID: 912704663}
   - component: {fileID: 912704662}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Suelo
-  m_TagString: Untagged
+  m_TagString: suelo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -901,8 +832,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99fd003d6d699564eb9bcc4befdf46b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Granada: {fileID: 0}
   Bala: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   SalidaBala: {fileID: 197395016}
+  numGranadas: 0
   Cadencia: 3
   Cargador: 15
   TiempoRecarga: 2
@@ -1380,9 +1313,15 @@ MonoBehaviour:
   SaltoMax: 12
   Velocity: 8
   Pies: {fileID: 327719132}
+  cooldownDash: 3
+  dashDistance: 5
   HitboxCuchillo: {fileID: 0}
   Apuntado: {fileID: 0}
   cuchillo: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  CooldownChuchillo: 3
 --- !u!50 &1838381485
 Rigidbody2D:
   serializedVersion: 5
@@ -1646,7 +1585,7 @@ PrefabInstance:
       objectReference: {fileID: 1838381487}
     - target: {fileID: 2110808708666551425, guid: f1805746994f5ca4a9ff00421f7c6efd, type: 3}
       propertyPath: FuerzaEmpuje
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4338645919122495565, guid: f1805746994f5ca4a9ff00421f7c6efd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1704,7 +1643,6 @@ SceneRoots:
   - {fileID: 1024565551}
   - {fileID: 2112646326}
   - {fileID: 1838381487}
-  - {fileID: 682460833}
   - {fileID: 912704664}
   - {fileID: 7737523062884196418}
   - {fileID: 1089661442}
