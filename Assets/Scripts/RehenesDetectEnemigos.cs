@@ -96,11 +96,8 @@ public class RehenesDetectEnemigos : MonoBehaviour
         {
             Debug.Log("Rehén Libre");
             _rehenLibre = true;
-<<<<<<< HEAD
             LevelManager.Instance.RehenSalvado();
-=======
             LiberarRehen();
->>>>>>> 6a9c43a507b05fc96882f608ad84f2789fb10f80
         }
     }
 
