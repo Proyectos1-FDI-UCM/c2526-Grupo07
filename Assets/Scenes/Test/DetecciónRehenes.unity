@@ -648,6 +648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Vida: 1
   BarraVida: {fileID: 308920306}
+  ObjetoDrop: {fileID: 0}
 --- !u!50 &970033184
 Rigidbody2D:
   serializedVersion: 5
@@ -856,6 +857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Vida: 1
   BarraVida: {fileID: 344019252}
+  ObjetoDrop: {fileID: 0}
 --- !u!1 &1287029772
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,9 +888,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealthPoints: 0
-  Health: {fileID: 0}
-  Ammo: {fileID: 0}
-  Menu: {fileID: 0}
+  MaxGranadas: 0
+  PanelVictory: {fileID: 0}
+  MaxBotiquin: 0
+  MaxHealthInitial: 0
 --- !u!4 &1287029774
 Transform:
   m_ObjectHideFlags: 0
@@ -1054,6 +1057,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Vida: 1
   BarraVida: {fileID: 1182159235}
+  ObjetoDrop: {fileID: 0}
 --- !u!1 &1386723297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,6 +1162,9 @@ MonoBehaviour:
   - {fileID: 970033177}
   - {fileID: 1236138485}
   - {fileID: 1319396001}
+  Rehen: {fileID: 0}
+  Velocity: 0
+  Puerta: {fileID: 0}
 --- !u!1 &2023295624
 GameObject:
   m_ObjectHideFlags: 0
