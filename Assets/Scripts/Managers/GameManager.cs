@@ -293,9 +293,15 @@ public class GameManager : MonoBehaviour
     //Metodo para mandar el estado del nivel al LevelManager
     public void TransferManagerSetup()
     {
-        LevelManager.Instance.RecogerEstado(Cargador, BalasMax);
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.RecogerEstado(Cargador, BalasMax);
+        }
     }
-    
+    public void SalirJuego()
+    {
+        Application.Quit();
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
