@@ -44,6 +44,8 @@ public class MoveEnemigo : MonoBehaviour
     private float tiempoInicio = 0; //tiempo iniciado para el movimiento
     private float tiempoQuieto = 0; //tiempo inicial en que va a estar quieto
     private Rigidbody2D rb;
+    private Animator anim;
+    private SpriteRenderer spriteRenderer;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -59,6 +61,8 @@ public class MoveEnemigo : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -98,6 +102,14 @@ public class MoveEnemigo : MonoBehaviour
             tiempoInicio = 0;
         }
         else MovAuto();
+    }
+    void FixedUpdate()
+    {
+        if (anim != null)
+        {
+            float speed = Mathf.Abs(rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+            anim.SetFloat("enemySpeed", speed); //Para la transicion
+        }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -145,7 +157,6 @@ public class MoveEnemigo : MonoBehaviour
     private void Perseguir()
     {
         rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-        transform.localScale = new Vector3(Math.Sign(direction), 1, 1);
     }
     private void MovAuto()
     {
@@ -168,7 +179,10 @@ public class MoveEnemigo : MonoBehaviour
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(direction, 1, 1);
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = direction < 0;
+        }
     }
     
     #endregion
