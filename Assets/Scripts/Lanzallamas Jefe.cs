@@ -40,6 +40,7 @@ public class LanzallamasJefe : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     Vector2 offset;
     private float TiempoEntreBalas;
+    private Animator anim;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -68,6 +69,7 @@ public class LanzallamasJefe : MonoBehaviour
         {
             UsarLanzallamas();
             TiempoEntreBalas = 0f;
+            anim.SetBool("attackLan", false);
         }
     }
     #endregion
@@ -90,6 +92,7 @@ public class LanzallamasJefe : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void UsarLanzallamas()
     {
+        anim.SetBool("attackLan", true);
         offset = PosJugador.position - transform.position;
         GameObject Fueguito = Instantiate(Fuego, SalidaFuego.position, SalidaFuego.rotation);
         LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
