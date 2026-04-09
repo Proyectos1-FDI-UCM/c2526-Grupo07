@@ -29,6 +29,7 @@ public class EnemyHealth : MonoBehaviour
     private Transform BarraVida;
     [SerializeField]
     private GameObject ObjetoDrop; //Objeto que suelta el enemigo
+    [SerializeField] private bool IsBoss;
 
     #endregion
 
@@ -89,7 +90,10 @@ public class EnemyHealth : MonoBehaviour
             {
                 Instantiate(ObjetoDrop, transform.position, Quaternion.identity);
             }
-
+            if (IsBoss)
+            {
+                LevelManager.Instance.Victoria();
+            }
             Destroy(gameObject); 
         } // destruye el enemigo a la que esta asignado la barra de vida
     }
