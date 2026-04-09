@@ -216,12 +216,6 @@ public class PlayerController : MonoBehaviour
 
             // Actualizamos animación de caminar
             anim.SetFloat("speed", Mathf.Abs(horizontalInput));
-            if (horizontalInput != 0)
-            {
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
-            }
             // Girar sprite según dirección
             if (spriteRenderer != null && horizontalInput != 0)
             {
