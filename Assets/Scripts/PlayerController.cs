@@ -230,9 +230,6 @@ public class PlayerController : MonoBehaviour
         {
             float horizontalInput = InputManager.Instance.MovementVector.x;
 
-            // Manipulo la velocidad lineal del gameObject en el eje X
-            rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
-
             // Actualizamos animación de caminar
             anim.SetFloat("speed", Mathf.Abs(horizontalInput));
             // Girar sprite según dirección
