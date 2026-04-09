@@ -303,7 +303,7 @@ public class PlayerController : MonoBehaviour
         float dir;
         if (canDash)
         {
-            if (Apuntado.AimDir().x >= 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
+            if (transform.localScale.x > 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
             dashStartTime = Time.time; //Momento en el que inicia el Dash
