@@ -2028,6 +2028,7 @@ GameObject:
   m_Component:
   - component: {fileID: 657184115}
   - component: {fileID: 657184116}
+  - component: {fileID: 657184117}
   m_Layer: 0
   m_Name: Cuchillo
   m_TagString: Untagged
@@ -2096,6 +2097,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &657184117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657184114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfb5f95842d0f8499ee68f0a4a46cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "Da\xF1o": 50
+  cuchillo: {fileID: 657184114}
 --- !u!4 &676046956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7198092459016846211, guid: 74cab56124db99e4b8a5c9e00d9598f8, type: 3}
@@ -5187,11 +5202,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2833448746243915632, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.06698704
+      value: -3.58
       objectReference: {fileID: 0}
     - target: {fileID: 2833448746243915632, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.3627543
+      value: -3.21
       objectReference: {fileID: 0}
     - target: {fileID: 2833448746243915632, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
       propertyPath: m_LocalPosition.z
