@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] private float CooldownChuchillo = 3f;
     [SerializeField] private GameObject Arma;
+    [SerializeField] private FlashRedAux AnimationSprite;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -199,8 +200,7 @@ public class PlayerController : MonoBehaviour
     }
     public void RedFlash()
     {
-        spriteRenderer.color = Color.red;
-        redFlash = true;
+        AnimationSprite.RedFlash();
     }
     #endregion
 
@@ -273,7 +273,7 @@ public class PlayerController : MonoBehaviour
 
             //Orientación
             Vector3 Dir = Apuntado.MousePos();
-            cuchillo.localPosition = new Vector3(Dir.x > 0 ? 0.8f : -1.3f, 0f, 0f);
+            cuchillo.localPosition = new Vector3(1.5f, 0f, 0f);
         }
     }
 

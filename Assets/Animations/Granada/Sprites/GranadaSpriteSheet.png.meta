@@ -1,25 +1,31 @@
 fileFormatVersion: 2
-guid: 39144a75409459c46a93df99d67bf597
+guid: cf9f10b385a986d4a8280b0d1334c8d2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7110878671101974141
-    second: dash_0
+      213: -749024654251515319
+    second: spritesheet (3)_0
   - first:
-      213: 7643240275301989466
-    second: dash_1
+      213: -1025294881627752460
+    second: spritesheet (3)_1
   - first:
-      213: -8809873816130030523
-    second: dash_2
+      213: 5676210040115815652
+    second: spritesheet (3)_2
   - first:
-      213: -4770175892979620097
-    second: dash_3
+      213: -3336086821669477768
+    second: spritesheet (3)_3
   - first:
-      213: -1190105860681885623
-    second: dash_4
+      213: 7513226289831329176
+    second: spritesheet (3)_4
   - first:
-      213: 8035217175372748222
-    second: dash_5
+      213: 4529837530519007653
+    second: spritesheet (3)_5
+  - first:
+      213: -589748259030667114
+    second: spritesheet (3)_6
+  - first:
+      213: 791536137631319008
+    second: spritesheet (3)_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -66,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 150
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -90,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -115,133 +121,111 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dash_0
+      name: GranadaSpriteSheet_0
       rect:
         serializedVersion: 2
-        x: 61
-        y: 0
-        width: 288
-        height: 392
+        x: 103
+        y: 35
+        width: 30
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d765fefe97aeea260800000000000000
-      internalID: 7110878671101974141
+      spriteID: ae390b0631df7164bad825517945726b
+      internalID: 925256329
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_1
+      name: GranadaSpriteSheet_1
       rect:
         serializedVersion: 2
-        x: 422
-        y: 0
-        width: 96
-        height: 54
+        x: 3
+        y: 1
+        width: 30
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a5c7556e88e321a60800000000000000
-      internalID: 7643240275301989466
+      spriteID: 60855948fa98db344b08f0449fa7c295
+      internalID: 961774844
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_2
+      name: GranadaSpriteSheet_2
       rect:
         serializedVersion: 2
-        x: 536
-        y: 9
-        width: 271
-        height: 383
+        x: 103
+        y: 69
+        width: 30
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 544fd81e07a0db580800000000000000
-      internalID: -8809873816130030523
+      spriteID: 7478b657712ba5c4ea023c9e5c225fcd
+      internalID: 1641556047
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_3
+      name: GranadaSpriteSheet_3
       rect:
         serializedVersion: 2
-        x: 818
-        y: 15
-        width: 412
-        height: 362
+        x: 52
+        y: 53
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ff661de7c4eeccdb0800000000000000
-      internalID: -4770175892979620097
+      spriteID: 09721dd201bdf9f448e53051c33f1788
+      internalID: 813397704
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_4
+      name: GranadaSpriteSheet_4
       rect:
         serializedVersion: 2
-        x: 1294
-        y: 0
-        width: 279
-        height: 392
+        x: 1
+        y: 53
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 94812f07605eb7fe0800000000000000
-      internalID: -1190105860681885623
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dash_5
-      rect:
-        serializedVersion: 2
-        x: 1699
-        y: 0
-        width: 288
-        height: 392
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eb5d537d273d28f60800000000000000
-      internalID: 8035217175372748222
+      spriteID: 925974dfbc0653345987441b355c87aa
+      internalID: -1122049820
       vertices: []
       indices: 
       edges: []
@@ -250,7 +234,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 070a3de5c2a03e5468ec4d1d2aac901f
     internalID: 0
     vertices: []
     indices: 
@@ -260,12 +244,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      dash_0: 7110878671101974141
-      dash_1: 7643240275301989466
-      dash_2: -8809873816130030523
-      dash_3: -4770175892979620097
-      dash_4: -1190105860681885623
-      dash_5: 8035217175372748222
+      GranadaSpriteSheet_0: 925256329
+      GranadaSpriteSheet_1: 961774844
+      GranadaSpriteSheet_2: 1641556047
+      GranadaSpriteSheet_3: 813397704
+      GranadaSpriteSheet_4: -1122049820
+      GranadaSpriteSheet_5: 1059939263
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
