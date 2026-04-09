@@ -77,7 +77,11 @@ public class FollowCamera : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void ShakeCamera()
+    {
+        transform.position += Vector3.Lerp(transform.position, new Vector3(1, 0, 0), Suavidad);
+        transform.position += Vector3.Lerp(transform.position, new Vector3(-1, 0, 0), Suavidad);
+    }
     #endregion
     
     // ---- MÉTODOS PRIVADOS ----

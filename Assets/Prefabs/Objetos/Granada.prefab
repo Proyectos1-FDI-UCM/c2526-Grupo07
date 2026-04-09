@@ -169,3 +169,4 @@ MonoBehaviour:
   TiempoGranada: 2
   RadioGranada: 5
   Damage: 50
+  camara: {fileID: 0}

@@ -137,6 +137,7 @@ public class LevelManager : MonoBehaviour
     /// <summary>
     /// Propiedad para acceder a la única instancia de la clase.
     /// </summary>
+    /// 
     public static LevelManager Instance
     {
         get
@@ -145,7 +146,6 @@ public class LevelManager : MonoBehaviour
             return _instance;
         }
     }
-
     /// <summary>
     /// Devuelve cierto si la instancia del singleton está creada y
     /// falso en otro caso.
