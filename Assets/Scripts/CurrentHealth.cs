@@ -61,6 +61,7 @@ public class CurrentHealth : MonoBehaviour
         {
             UsePotion();
         }
+        PotionCount = GameManager.Instance.CantidadBotiquines();
     }
     #endregion
 
@@ -99,7 +100,6 @@ public class CurrentHealth : MonoBehaviour
         //desaparece de la pantalla
         if (collision.CompareTag("Potion"))
         {
-            PotionCount++;
             Destroy(collision.gameObject);
         }
     }

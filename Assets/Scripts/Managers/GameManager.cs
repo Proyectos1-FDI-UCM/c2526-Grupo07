@@ -139,7 +139,10 @@ public class GameManager : MonoBehaviour
             _instance = null;
         } // if somos la instancia principal
     }
-
+    public void Update()
+    {
+        Debug.Log(botiquines);
+    }
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -332,10 +335,6 @@ public class GameManager : MonoBehaviour
         granadasAux = granadas;
         botiquinesAux = botiquines;
         vidaActualAux = MaxHealthPoints;
-    }
-    public void SalirJuego()
-    {
-        Application.Quit();
     }
     #endregion
 
