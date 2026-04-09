@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform cuchillo;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] private float CooldownChuchillo = 3f;
+    [SerializeField] private GameObject Arma;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -235,9 +236,9 @@ public class PlayerController : MonoBehaviour
             // Girar sprite según dirección
             if (horizontalInput != 0)
             {
-               Vector3 scale = transform.localScale;
-               scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
-               transform.localScale = scale;
+                Vector3 scale = transform.localScale;
+                scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
+                transform.localScale = scale;
             }
             if (isDashing == false)
             {
@@ -250,6 +251,7 @@ public class PlayerController : MonoBehaviour
                 {
                     gameObject.layer = LayerMask.NameToLayer("Jugador");
                     isDashing = false;
+                    anim.SetBool("isDashing", isDashing);
                 }
             }
         }
@@ -309,6 +311,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(dashDistance * 10f * dir, 0f); //Ejerce fuerza al gameObject
             canDash = false;
             lastTimeDashed = 0f;
+            anim.SetBool("isDashing", isDashing);
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");

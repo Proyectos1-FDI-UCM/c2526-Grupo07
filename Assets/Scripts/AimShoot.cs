@@ -102,7 +102,6 @@ public class AimShoot : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
-
         //Comprueba si está recargando, si es así, reduce el tiempo de recarga
         if (recargando)
         {

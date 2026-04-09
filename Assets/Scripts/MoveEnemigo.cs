@@ -73,7 +73,7 @@ public class MoveEnemigo : MonoBehaviour
         if (isShooting)
         {
             //cuando dispara se deja de mover
-            rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = new Vector3(0, rb.linearVelocityY, 0);
             if (offset.x > 0 && direction != 1)
             {
                 direction *= -1;
