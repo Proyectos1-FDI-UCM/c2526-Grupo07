@@ -1294,6 +1294,7 @@ MonoBehaviour:
   spriteEstrellas: []
   TiempoLimite: 0
   timerText: {fileID: 1884460304}
+  IsFinalLevel: 0
 --- !u!4 &724428059
 Transform:
   m_ObjectHideFlags: 0
