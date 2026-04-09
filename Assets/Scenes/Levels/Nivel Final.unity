@@ -1339,8 +1339,10 @@ MonoBehaviour:
   granadaPrefab: {fileID: 7698826228684791750, guid: bb61e2375383f504fb88786ede660522, type: 3}
   fuerzaVertical: 7
   vel: 6
-  rangoAtaque: 5
+  rangoAtaque: 8
   cooldown: 3
+  Fuego: {fileID: 1193850918367580504, guid: f859ebb93dde9ff499fdb627c5ba0326, type: 3}
+  Cadencia: 2
 --- !u!114 &960067418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1556,6 +1558,7 @@ MonoBehaviour:
   SalidaFuego: {fileID: 274958166}
   Fuego: {fileID: 1193850918367580504, guid: f859ebb93dde9ff499fdb627c5ba0326, type: 3}
   PosJugador: {fileID: 1230260055}
+  Cadencia: 3
 --- !u!114 &990431947 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4895206375415174979, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
@@ -1734,6 +1737,10 @@ PrefabInstance:
       propertyPath: TextGranadas
       value: 
       objectReference: {fileID: 1557106385}
+    - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
+      propertyPath: TiempoLimite
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: PanelVictoria
       value: 

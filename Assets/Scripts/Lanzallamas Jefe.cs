@@ -27,6 +27,7 @@ public class LanzallamasJefe : MonoBehaviour
     [SerializeField] private Transform SalidaFuego;
     [SerializeField] private GameObject Fuego;
     [SerializeField] private Transform PosJugador;
+    [SerializeField] private float Cadencia;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,22 +39,24 @@ public class LanzallamasJefe : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     Vector2 offset;
+    private float TiempoEntreBalas;
+    private Animator anim;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
-        
+        TiempoEntreBalas = 0f;
     }
 
     /// <summary>
@@ -61,7 +64,13 @@ public class LanzallamasJefe : MonoBehaviour
     /// </summary>
     void Update()
     {
-        UsarLanzallamas();
+        TiempoEntreBalas += Time.deltaTime;
+        if (TiempoEntreBalas >= Cadencia)
+        {
+            UsarLanzallamas();
+            TiempoEntreBalas = 0f;
+            anim.SetBool("attackLan", false);
+        }
     }
     #endregion
 
@@ -74,7 +83,7 @@ public class LanzallamasJefe : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -83,13 +92,14 @@ public class LanzallamasJefe : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void UsarLanzallamas()
     {
+        anim.SetBool("attackLan", true);
         offset = PosJugador.position - transform.position;
         GameObject Fueguito = Instantiate(Fuego, SalidaFuego.position, SalidaFuego.rotation);
-        BulletBehaviour Direccion = Fueguito.GetComponent<BulletBehaviour>();
-        Direccion.Dir(offset);
+        LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
+        DireccionFuego.Dir(offset);
     }
 
     #endregion   
 
 } // class LanzallamasJefe 
-// namespace
+  // namespace

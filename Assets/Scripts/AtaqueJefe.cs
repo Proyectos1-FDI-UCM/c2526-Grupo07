@@ -32,6 +32,8 @@ public class AtaqueJefe : MonoBehaviour
     [SerializeField] private float rangoAtaque; //distancia para atacar
     [SerializeField] private float cooldown;    //tiempo de enfriamiento
 
+    [SerializeField] private GameObject Fuego; // Prefab de la bala del lanzallamas (Fuego)
+    [SerializeField] private float Cadencia; //Cada cuanto tiempo puede disparar el lanzallamas
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -45,15 +47,18 @@ public class AtaqueJefe : MonoBehaviour
     private float time=0; //tiempo para el siguiente ataque
 
     private Animator anim;
+
+    Vector2 offset; //Vector a donde apunta el lanzallams
+    private float TiempoEntreBalas; // Cadencia del lanzallamas
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
@@ -61,6 +66,8 @@ public class AtaqueJefe : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+
+        TiempoEntreBalas = 0f; //Para la cadencia del lanzallamas
     }
 
     /// <summary>
@@ -134,6 +141,19 @@ public class AtaqueJefe : MonoBehaviour
             Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
             explosion.SetDireccion(direccion);
 
+        }
+    }
+
+    private void Lanzallamas()
+    {
+        TiempoEntreBalas += Time.deltaTime;
+        if (TiempoEntreBalas >= Cadencia)
+        {
+            offset = player.position - transform.position;
+            GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);
+            LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
+            DireccionFuego.Dir(offset);
+            TiempoEntreBalas = 0f;
         }
     }
     
