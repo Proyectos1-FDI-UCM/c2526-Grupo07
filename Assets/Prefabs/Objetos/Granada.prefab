@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6472470895489292896}
   - component: {fileID: 4864569651872676930}
   - component: {fileID: 7689456747105785223}
+  - component: {fileID: 7379548716851659261}
   m_Layer: 10
   m_Name: Granada
   m_TagString: Untagged
@@ -169,3 +170,28 @@ MonoBehaviour:
   TiempoGranada: 2
   RadioGranada: 5
   Damage: 50
+  camara: {fileID: 0}
+  TiempoAnimacionExplosion: 0.2
+  Particulas: {fileID: 9059282515790659327, guid: 603f67f64c967874fac5151b8d3db8ab, type: 3}
+--- !u!95 &7379548716851659261
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6464184301813551628}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a8637b8006f4c954791494bbd1b10a61, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

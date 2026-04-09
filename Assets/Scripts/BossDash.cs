@@ -43,7 +43,7 @@ public class BossDash : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D col;
     private bool Dashing = false;
-    private int dir = 1;
+    private int dir = -1;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -107,6 +107,9 @@ public class BossDash : MonoBehaviour
                 rb.gravityScale = 0;
                 dir *= -1;    //cambio de direccion, invertir
                 rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
+                Vector3 scale = transform.localScale;
+                scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
+                transform.localScale = scale;
                 Timer = 0;
                 Timer2 = 0;   //vuelve a sincronizar el tiempo
             }
