@@ -32,7 +32,8 @@ public class Explosion : MonoBehaviour
     private float RadioGranada = 2f; //El radio de explosión de la granada
     [SerializeField]
     private int Damage; //El daño que causa
-
+    [SerializeField]
+    private FollowCamera camara;
 
     #endregion
 
@@ -144,10 +145,12 @@ public class Explosion : MonoBehaviour
                     if(VidaEnemigo != null)
                     {
                         VidaEnemigo.EnemyHealthPoint(Damage);
+                        VidaEnemigo.RedFlash();
                     }
                     else if(Player != null)
                     {
                         GameManager.Instance.HealthPoints(Damage);
+                        Player.RedFlash();
                     }
                 }
             }

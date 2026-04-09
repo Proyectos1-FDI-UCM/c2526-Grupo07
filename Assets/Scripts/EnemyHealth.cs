@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 // Añadir aquí el resto de directivas using
@@ -43,21 +44,28 @@ public class EnemyHealth : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private int VidaInitial;
     private float Scale; // la escala de la barra de vida inicial
+    private SpriteRenderer sr;
+    private bool redFlash = false;
+    float flashDuration = 0.1f;
+    float now;
+    Color OriginalColor;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+        OriginalColor = sr.color;
         VidaInitial = Vida;
         Scale = BarraVida.localScale.x;
     }
@@ -67,6 +75,16 @@ public class EnemyHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (redFlash)
+        {
+            now += Time.deltaTime;
+            if (now  > flashDuration)
+            {
+                sr.color = OriginalColor;
+                now = 0;
+                redFlash = false;
+            }
+        }
     }
     #endregion
 
@@ -97,6 +115,11 @@ public class EnemyHealth : MonoBehaviour
             Destroy(gameObject); 
         } // destruye el enemigo a la que esta asignado la barra de vida
     }
+    public void RedFlash()
+    {
+        sr.color = Color.red;
+        redFlash = true;
+    }
 
     #endregion
 
@@ -107,7 +130,8 @@ public class EnemyHealth : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion   
-    
+
+    #endregion
+
 } // class EnemyHealth 
 // namespace

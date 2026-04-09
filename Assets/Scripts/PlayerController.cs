@@ -5,7 +5,6 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -68,6 +67,10 @@ public class PlayerController : MonoBehaviour
     private float now;
     private float CChuchillo;
     private Animator anim;
+    private bool redFlash = false;
+    float flashDuration = 0.1f;
+    float now2;
+    Color originalColor;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -86,6 +89,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         CChuchillo = 5f;
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     /// <summary>
@@ -138,6 +143,16 @@ public class PlayerController : MonoBehaviour
             }
             else Debug.Log("Refrescando");
         }
+        if (redFlash)
+        {
+            now2 += Time.deltaTime;
+            if (now2 > flashDuration)
+            {
+                spriteRenderer.color = originalColor;
+                now2 = 0;
+                redFlash = false;
+            }
+        }
     }
     void FixedUpdate()
     {
@@ -177,10 +192,14 @@ public class PlayerController : MonoBehaviour
         Knockback = true;
         KnockbackDuration = 1.5f;
     }
-
     public void RecibirDañoJugador(int cantidad)
     {
         GameManager.Instance.HealthPoints(cantidad);
+    }
+    public void RedFlash()
+    {
+        spriteRenderer.color = Color.red;
+        redFlash = true;
     }
     #endregion
 
@@ -217,16 +236,11 @@ public class PlayerController : MonoBehaviour
             // Actualizamos animación de caminar
             anim.SetFloat("speed", Mathf.Abs(horizontalInput));
             // Girar sprite según dirección
-            //if (horizontalInput != 0)
-            //{
-            //    Vector3 scale = transform.localScale;
-            //    scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
-            //    transform.localScale = scale;
-            //}
-            //Girar sprite según dirección
-            if (spriteRenderer != null && horizontalInput != 0)
+            if (horizontalInput != 0)
             {
-                spriteRenderer.flipX = horizontalInput < 0;
+               Vector3 scale = transform.localScale;
+               scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
+               transform.localScale = scale;
             }
             if (isDashing == false)
             {
