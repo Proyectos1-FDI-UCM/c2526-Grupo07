@@ -179,10 +179,7 @@ public class MoveEnemigo : MonoBehaviour
 
     private void CambioDireccion()
     {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.flipX = direction < 0;
-        }
+        transform.localScale = new Vector3(direction, 1, 1);
     }
     
     #endregion
