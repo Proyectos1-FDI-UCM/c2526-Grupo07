@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9161862524569382849}
   - component: {fileID: 1110340472183286482}
   - component: {fileID: -6794780624229922764}
+  - component: {fileID: -2745208767220738323}
   m_Layer: 0
   m_Name: Fuego
   m_TagString: Untagged
@@ -147,7 +148,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d0b4611c9590648a7bb901de2aae39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocidad: 9
-  "Da\xF1o": 0
-  TiempoEnDestruirse: 2
-  Jugador: {fileID: 0}
+  Velocidad: 10
+  "Da\xF1o": 5
+  TiempoEnDestruirse: 1.5
+--- !u!50 &-2745208767220738323
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193850918367580504}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -7,6 +7,7 @@
 
 using UnityEditor.AnimatedValues;
 using UnityEngine;
+using UnityEngine.Animations;
 // Añadir aquí el resto de directivas using
 
 
@@ -26,7 +27,6 @@ public class LogicaFuego : MonoBehaviour
     [SerializeField] private float Velocidad;
     [SerializeField] private int Daño;
     [SerializeField] private float TiempoEnDestruirse;
-    [SerializeField] private Transform Jugador;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,6 +38,8 @@ public class LogicaFuego : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float TiempoConVida;
+    private Vector3 posicionJugador;
+    private Vector2 dir2D;
     Rigidbody2D rb;
     #endregion
 
@@ -52,16 +54,12 @@ public class LogicaFuego : MonoBehaviour
     /// </summary>
     void Start()
     {
-        Vector3 dir = new Vector3(Jugador.position.x, Jugador.position.y, Jugador.position.z);
-        Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
-        rb.linearVelocity = dir2D * Velocidad;
-
+        dir2D = new Vector2(posicionJugador.x, posicionJugador.y).normalized;
+        TiempoConVida = Time.time;
     }
     void Update()
     {
-        //transform.Translate(Vector2.right * Velocidad * Time.deltaTime);
-        TiempoConVida += Time.time;
-        if(TiempoConVida > TiempoEnDestruirse)
+        if (Time.time - TiempoConVida > TiempoEnDestruirse)
         {
             Destroy(gameObject);
         }
@@ -90,7 +88,7 @@ public class LogicaFuego : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         transform.right = dir;
-        rb.linearVelocity = (dir.normalized * Velocidad);
+        rb.linearVelocity = dir.normalized * Velocidad;
     }
 
     #endregion
@@ -105,4 +103,4 @@ public class LogicaFuego : MonoBehaviour
     #endregion
 
 } // class LogicaFuego 
-// namespace
+  // namespace

@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &81182022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +191,7 @@ MonoBehaviour:
   Vida: 100
   BarraVida: {fileID: 1279585544}
   ObjetoDrop: {fileID: 0}
+  IsBoss: 0
 --- !u!114 &81182025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,7 +655,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324633264}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a367a1b9068b6d44fb2b90477462fe64, type: 3}
   m_Name: 
@@ -696,6 +697,7 @@ MonoBehaviour:
   Vida: 100
   BarraVida: {fileID: 438799339}
   ObjetoDrop: {fileID: 0}
+  IsBoss: 0
 --- !u!114 &324633268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,6 +875,7 @@ MonoBehaviour:
   SalidaFuego: {fileID: 1161092607}
   Fuego: {fileID: 1193850918367580504, guid: f859ebb93dde9ff499fdb627c5ba0326, type: 3}
   PosJugador: {fileID: 708115220}
+  Cadencia: 0.1
 --- !u!1 &330490544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1874,6 +1877,7 @@ MonoBehaviour:
   Vida: 100
   BarraVida: {fileID: 1912655369}
   ObjetoDrop: {fileID: 0}
+  IsBoss: 0
 --- !u!114 &1090352769
 MonoBehaviour:
   m_ObjectHideFlags: 0
