@@ -183,7 +183,7 @@ public class LevelManager : MonoBehaviour
     public void GameOver()
     {
         juegoTerminado = true; 
-        //Time.timeScale = 0;     //detener el tiempo
+        Time.timeScale = 0;     //detener el tiempo
         gameOverPanel.SetActive(true);
     }
     public void Victoria()
@@ -201,7 +201,7 @@ public class LevelManager : MonoBehaviour
         {
             spriteEstrellas[0].SetActive(true);
         }
-        //Time.timeScale = 0;     //detener el tiempo
+        Time.timeScale = 0;     //detener el tiempo
         PanelVictoria.SetActive(true);
     }
     public void Reiniciar()
