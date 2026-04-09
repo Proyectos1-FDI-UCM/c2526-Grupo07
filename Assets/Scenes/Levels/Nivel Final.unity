@@ -1331,6 +1331,7 @@ GameObject:
   - component: {fileID: 960067421}
   - component: {fileID: 960067423}
   - component: {fileID: 960067424}
+  - component: {fileID: 960067425}
   m_Layer: 10
   m_Name: Boss
   m_TagString: Enemigo
@@ -1557,6 +1558,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &960067425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960067416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67652609e0137ad43b53d97dfb0daaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SalidaFuego: {fileID: 274958166}
+  Fuego: {fileID: 1193850918367580504, guid: f859ebb93dde9ff499fdb627c5ba0326, type: 3}
+  PosJugador: {fileID: 1230260055}
 --- !u!114 &990431947 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4895206375415174979, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
@@ -1610,7 +1626,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6701659889004841130, guid: 45f6e48ac814cc147b503865c74d4863, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.51
       objectReference: {fileID: 0}
     - target: {fileID: 6701659889004841130, guid: 45f6e48ac814cc147b503865c74d4863, type: 3}
       propertyPath: m_LocalRotation.w
