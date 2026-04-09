@@ -104,8 +104,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velIn: {x: 10, y: 5}
   TiempoGranada: 2
-  RadioGranada: 11.27
+  RadioGranada: 5
   Damage: 20
+  camara: {fileID: 0}
 --- !u!58 &5643995590725073595
 CircleCollider2D:
   m_ObjectHideFlags: 0
