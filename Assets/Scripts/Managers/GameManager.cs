@@ -66,6 +66,13 @@ public class GameManager : MonoBehaviour
     private int granadas = 0;
     private int botiquines = 0;
 
+    private int numGranadasAux;
+    private int CargadorAux;
+    private int BalasMaxAux = 0;
+    private int granadasAux = 0;
+    private int botiquinesAux = 0;
+    private int vidaActualAux = 0;
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -77,7 +84,7 @@ public class GameManager : MonoBehaviour
     /// En el momento de la carga, si ya hay otra instancia creada,
     /// nos destruimos (al GameObject completo)
     /// </summary>
-    
+
     protected void Awake()
     {
         if (_instance != null)
@@ -186,6 +193,7 @@ public class GameManager : MonoBehaviour
         //
         // En realidad... todo esto es algo antiguo por lo que lo mismo ya está resuelto)
         System.GC.Collect();
+        GuardarDatos(index);
         UnityEngine.SceneManagement.SceneManager.LoadScene(index);
         System.GC.Collect();
     } // ChangeScene
@@ -297,6 +305,33 @@ public class GameManager : MonoBehaviour
         {
             LevelManager.Instance.RecogerEstado(Cargador, BalasMax);
         }
+    }
+    //Metodo para retomar los datos que habian al inicio del nivel
+    public void RestableceDatos()
+    {
+        numGranadas = numGranadasAux;
+        Cargador = CargadorAux;
+        BalasMax = BalasMaxAux;
+        granadas = granadasAux;
+        botiquines = botiquinesAux;
+        MaxHealthPoints = vidaActualAux;
+    }
+    //Metodo para guardar los datos del inicio del nivel
+    public void GuardarDatos(int escena)
+    {
+        if (escena == 1)
+        {
+            MaxHealthPoints = MaxHealthInitial;
+            Cargador = BalasMax;
+            granadas = 0;
+            botiquines = 0;
+        }
+        numGranadasAux = numGranadas;
+        CargadorAux = Cargador;
+        BalasMaxAux = BalasMax;
+        granadasAux = granadas;
+        botiquinesAux = botiquines;
+        vidaActualAux = MaxHealthPoints;
     }
     public void SalirJuego()
     {
