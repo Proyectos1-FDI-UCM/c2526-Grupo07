@@ -1835,6 +1835,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3198260278041528354, guid: e18ad164fe699874d89763322ac5a694, type: 3}
+      propertyPath: Puerta
+      value: 
+      objectReference: {fileID: 1845241252}
+    - target: {fileID: 3198260278041528354, guid: e18ad164fe699874d89763322ac5a694, type: 3}
+      propertyPath: 'Enemigos.Array.data[0]'
+      value: 
+      objectReference: {fileID: 960067416}
     - target: {fileID: 4488766883787002391, guid: e18ad164fe699874d89763322ac5a694, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2209,6 +2217,11 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 748986978100311638, guid: 05a609f20d379254ea7c561416abc8fc, type: 3}
   m_PrefabInstance: {fileID: 845119858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1845241252 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1004769480525766507, guid: e18ad164fe699874d89763322ac5a694, type: 3}
+  m_PrefabInstance: {fileID: 1219940891}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1887069587 stripped
 Transform:
