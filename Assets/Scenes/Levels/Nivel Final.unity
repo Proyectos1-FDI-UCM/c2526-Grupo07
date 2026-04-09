@@ -1357,7 +1357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DashPower: 20
   DashTime: 0.5
-  DashColdDown: 2
+  DashColdDown: 5
   DashDamage: 10
 --- !u!212 &960067419
 SpriteRenderer:
@@ -1558,7 +1558,7 @@ MonoBehaviour:
   SalidaFuego: {fileID: 274958166}
   Fuego: {fileID: 1193850918367580504, guid: f859ebb93dde9ff499fdb627c5ba0326, type: 3}
   PosJugador: {fileID: 1230260055}
-  Cadencia: 3
+  Cadencia: 2
 --- !u!114 &990431947 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4895206375415174979, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
@@ -1739,7 +1739,7 @@ PrefabInstance:
       objectReference: {fileID: 1557106385}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: TiempoLimite
-      value: 3
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: PanelVictoria
