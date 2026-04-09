@@ -68,6 +68,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int TiempoLimite;
 
     [SerializeField] public TextMeshProUGUI timerText;
+
+    [SerializeField] private bool IsFinalLevel;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -189,7 +191,11 @@ public class LevelManager : MonoBehaviour
     public void Victoria()
     {
         juegoTerminado = true;
-        if (numRehenes == 0)
+        if (IsFinalLevel)
+        {
+            spriteEstrellas[2].SetActive(true);
+        }
+        else if (numRehenes == 0)
         {
             spriteEstrellas[2].SetActive(true);
         }
