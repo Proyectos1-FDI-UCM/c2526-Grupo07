@@ -34,6 +34,10 @@ public class Explosion : MonoBehaviour
     private int Damage; //El daño que causa
     [SerializeField]
     private FollowCamera camara;
+    [SerializeField]
+    private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
+    [SerializeField]
+    private GameObject Particulas;
 
     #endregion
 
@@ -49,16 +53,18 @@ public class Explosion : MonoBehaviour
     private float tiempo; //El tiempo que se reducirá para que explote la granada
     private Rigidbody2D rb;
     private float direction;
+    private Animator _animator; //Será el componente Animator
+    private bool _destruida = false; //Comprueba si explotó
 
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
@@ -69,6 +75,13 @@ public class Explosion : MonoBehaviour
         velIn.x *= direction;
         rb.linearVelocity = velIn;
         tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
+        _animator = GetComponent<Animator>(); // Recoge el Animator de la granada
+        
+        //Comprueba si la granada fue lanzada para iniciar la animación
+        if (_animator != null)
+        {
+            _animator.SetBool("Lanzada", true);
+        }
     }
 
     /// <summary>
@@ -76,6 +89,11 @@ public class Explosion : MonoBehaviour
     /// </summary>
     void Update()
     {
+        //Comprueba si explotó para salir del Update
+        if (_destruida)
+        {
+            return;
+        }
         //Reduce el tiempo de explosión
         tiempo -= Time.deltaTime;
         //Cuando llega a cero explota
@@ -111,6 +129,7 @@ public class Explosion : MonoBehaviour
     //solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
     private void Explotar()
     {
+        _destruida = true; //Explotó
         //Crea un lista con los objetos que estén en el radio al explotar
         Collider2D[] Enemigos = Physics2D.OverlapCircleAll(transform.position, RadioGranada);
         //Recorre la lista
@@ -155,7 +174,22 @@ public class Explosion : MonoBehaviour
                 }
             }
         }
-        Destroy(gameObject); //Se destruye la granada
+
+        rb.linearVelocity = Vector2.zero; //Quita la velocidad de la granada para que la animación de explosión no se mueva
+        rb.simulated = false; //Quita las físicas de la granada
+        if (Particulas != null)
+        {
+            // Crea las partículas de la explosión
+            Instantiate(Particulas, transform.position, Quaternion.identity);
+        }
+        //Inicia la animación de explosión
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Explosion");
+
+        }
+
+        Destroy(gameObject, TiempoAnimacionExplosion); //Se destruye la granada
 
     }
 
