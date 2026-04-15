@@ -71,7 +71,7 @@ public class LogicaFuego : MonoBehaviour
         if (player != null)
         {
             //Llama al GameManager para bajar vida
-            GameManager.Instance.HealthPoints(Daño);
+            GameManager.Instance.RestarVida(Daño);
         }
     }
     #endregion

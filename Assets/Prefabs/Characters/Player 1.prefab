@@ -202,19 +202,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f87b33f98a78f4fb3cca782b641cba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 7201556185361341473}
+  Velocidad: 7
   SaltoMax: 8
-  Velocity: 7
-  Pies: {fileID: 1545692577432091246}
-  cooldownDash: 3
-  dashDistance: 5
-  HitboxCuchillo: {fileID: 8913274079982296147}
-  Apuntado: {fileID: 3022492316311735754}
-  cuchillo: {fileID: 2460368893323837546}
-  groundLayer:
+  Saltable:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
+  Pies: {fileID: 1545692577432091246}
+  CooldownDash: 3
+  DistanciaDash: 5
   CooldownChuchillo: 3
+  HitboxCuchillo: {fileID: 8913274079982296147}
+  AnimationSprite: {fileID: 0}
+  SpriteJugador: {fileID: 0}
 --- !u!50 &114778734128497918
 Rigidbody2D:
   serializedVersion: 5
@@ -231,7 +230,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9f38930e6a506cf48832b9606c03976b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

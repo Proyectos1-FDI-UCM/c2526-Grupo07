@@ -133,7 +133,7 @@ public class BulletBehaviour : MonoBehaviour
             else
             {
                 //Llama al GameManager para bajar vida
-                GameManager.Instance.HealthPoints(Damage);
+                GameManager.Instance.RestarVida(Damage);
                 player.RedFlash();
             }
         }

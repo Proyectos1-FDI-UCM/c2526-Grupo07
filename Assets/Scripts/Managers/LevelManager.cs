@@ -35,41 +35,26 @@ public class LevelManager : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
 
-    [SerializeField] private TMPro.TextMeshProUGUI Health; //Texto del canvas
+    [SerializeField] private TextMeshProUGUI TextAmmo; //Cantidad de balas
 
-    [SerializeField] private TMPro.TextMeshProUGUI Ammo; //Ver cantidad de balas
+    [SerializeField] private GameObject SpriteGranada;     //Sprite de la granada
+    [SerializeField] private TextMeshProUGUI TextGranadas; //Número de granadas
 
-    [SerializeField] private GameObject spriteGranada; //Enseñar la granada
+    [SerializeField] private GameObject SpriteBotiquin;      //Sprite del botiquín
+    [SerializeField] private TextMeshProUGUI TextBotiquines; //Número de botiquines
 
-    [SerializeField] private TMPro.TextMeshProUGUI TextGranadas; //Enseñar el número de granadas
+    [SerializeField] private Slider BarraDeVida;             //Sprite de barra de vida
+    [SerializeField] private GameObject SpriteCorazonDañado; //Sprite del corazon dañado
 
-    [SerializeField] private GameObject Botiquin; //Enseñar el botiquín
+    [SerializeField] private GameObject GameOverPanel; //Menú game over
+    [SerializeField] private GameObject PanelVictoria; //Menú victoria
 
-    [SerializeField] private TMPro.TextMeshProUGUI TextBotiquines; //Enseñar el número de botiquines
+    [SerializeField] private int TiempoLimite;         //Tiempo limite para una de las estrellas
+    [SerializeField] public TextMeshProUGUI TimerText; //Texto para ver el tiempo
 
-    [SerializeField] private GameObject Menu;
+    [SerializeField] private GameObject[] SpriteEstrellas; //Sprite para las estrellas logradas
 
-    [SerializeField] private GameObject Puerta;
-
-    [SerializeField] private GameObject CorazonDañado;
-
-    [SerializeField] private GameObject PanelVictory;
-
-    [SerializeField] private GameObject CorazonDaado;
-
-    [SerializeField] private GameObject gameOverPanel;
-
-    [SerializeField] private GameObject PanelVictoria;
-
-    [SerializeField] private Slider BarraDeVida;
-
-    [SerializeField] private GameObject[] spriteEstrellas;
-
-    [SerializeField] private int TiempoLimite;
-
-    [SerializeField] public TextMeshProUGUI timerText;
-
-    [SerializeField] private bool IsFinalLevel;
+    [SerializeField] private bool IsFinalLevel; //True si es el nivel final
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -78,21 +63,24 @@ public class LevelManager : MonoBehaviour
     /// <summary>
     /// Instancia única de la clase (singleton).
     /// </summary>
+    
     private static LevelManager _instance;
-    private int vidaActual;
-    private int MaxGranadas;
-    private int MaxBotiquin;
-    private float Scale;
-    private int vidaMax; //Vida máxima del jugador
-    private int numGranadas;
-    private int Cargador; //Ver la situación del cargador
-    private int BalasMax = 0; //Ver las balas maximas de esa arma
-    private int granadas = 0;
-    private int botiquines = 0;
-    private bool juegoTerminado= false;
-    private float timeSec;
-    private float timeMin;
-    private float timeTotal;
+
+    private int _vidaActual; //Vida actual del jugador
+    private int _vidaMax;    //Vida máxima del jugador
+
+    private int _cargador;     //Situación del cargador
+    private int _maxBalas = 0; //Balas maximas de esa arma
+
+    private int _granadas = 0;   //Cantidad de granadas
+    private int _botiquines = 0; //Cantidad de botiquines
+
+    private bool _juegoTerminado= false; //True si el juego termina
+
+    private float timeSec;   //Tiempo en segundos
+    private float timeMin;   //Tiempo en minutos
+    private float timeTotal; //Tiempo total en segundos
+
     private int numRehenes; //Número de rehenes en el mapa
     #endregion
 
@@ -107,21 +95,19 @@ public class LevelManager : MonoBehaviour
             // Somos la primera y única instancia
             _instance = this;
             Init();
-            //desactivar paneles
-            gameOverPanel.SetActive(false);
+            //Desactivar paneles
+            GameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
         }
     }
 
     void Start()
     {
-        vidaMax = GameManager.Instance.GetVidaMaxima();
+        _vidaMax = GameManager.Instance.GetVidaMaxima();
         numRehenes = GameObject.FindGameObjectsWithTag("Rehen").Length;
-        IniciarBarraVida(vidaMax, vidaActual);
+        IniciarBarraVida(_vidaMax, _vidaActual);
+
         UpdateGUI();
-        Menu.SetActive(false);
-        //desactivar los paneles
-        vidaMax = GameManager.Instance.GetVidaMaxima();
         GameManager.Instance.TransferManagerSetup();
     }
     private void Update()
@@ -169,13 +155,14 @@ public class LevelManager : MonoBehaviour
     /// destruído antes de tiempo.
     /// </summary>
     /// <returns>Cierto si hay instancia creada.</returns>
-    public void RecogerEstado(int CargadorG, int BalasMaxG)
+    
+    public void RecogerEstado(int Cargador, int BalasMax)
     {
-        Cargador = CargadorG;
-        BalasMax = BalasMaxG;
-        vidaActual = GameManager.Instance.GetVidaActual();
-        granadas = GameManager.Instance.CantidadGranadas();
-        botiquines = GameManager.Instance.CantidadBotiquines();
+        _cargador = Cargador;
+        _maxBalas = BalasMax;
+        _vidaActual = GameManager.Instance.GetVidaActual();
+        _granadas = GameManager.Instance.CantidadGranadas();
+        _botiquines = GameManager.Instance.CantidadBotiquines();
         UpdateGUI();
     }
     public void RehenSalvado()
@@ -184,28 +171,28 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        juegoTerminado = true; 
+        _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
-        gameOverPanel.SetActive(true);
+        GameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
-        juegoTerminado = true;
+        _juegoTerminado = true;
         if (IsFinalLevel)
         {
-            spriteEstrellas[2].SetActive(true);
+            SpriteEstrellas[2].SetActive(true);
         }
         else if (numRehenes == 0)
         {
-            spriteEstrellas[2].SetActive(true);
+            SpriteEstrellas[2].SetActive(true);
         }
         if (numRehenes < 2)
         {
-            spriteEstrellas[1].SetActive(true);
+            SpriteEstrellas[1].SetActive(true);
         }
         if (timeTotal < TiempoLimite)
         {
-            spriteEstrellas[0].SetActive(true);
+            SpriteEstrellas[0].SetActive(true);
         }
         //Time.timeScale = 0;     //detener el tiempo
         PanelVictoria.SetActive(true);
@@ -237,15 +224,15 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateGUI()
     {
-        ActualizarBarraVida(vidaActual);
+        ActualizarBarraVida(_vidaActual);
         ActualizarCoraon();
-        if (vidaActual  < 0)
+        if (_vidaActual  < 0)
         {
-            gameOverPanel.SetActive(true);
+            GameOverPanel.SetActive(true);
         }
-        Ammo.text = Cargador + "/" + BalasMax;
-        TextBotiquines.text = "x" + botiquines;
-        TextGranadas.text = "x" + granadas;
+        TextAmmo.text = _cargador + "/" + _maxBalas;
+        TextBotiquines.text = "x" + _botiquines;
+        TextGranadas.text = "x" + _granadas;
         if (timeSec > 60)
         {
             timeSec = 0;
@@ -253,15 +240,15 @@ public class LevelManager : MonoBehaviour
         }
         if (timeSec < 10 && timeMin < 10)
         {
-            timerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+            TimerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
         }
         else if (timeSec > 10 && timeMin < 10)
         {
-            timerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
+            TimerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
         }
         else
         {
-            timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+            TimerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
         }
     }
     private void IniciarBarraVida(int VidaMax, int VidaActual)
@@ -276,13 +263,13 @@ public class LevelManager : MonoBehaviour
 
     private void ActualizarCoraon()
     {
-        if (vidaActual <= vidaMax / 4)
+        if (_vidaActual <= _vidaMax / 4)
         {
-            CorazonDañado.SetActive(true);
+            SpriteCorazonDañado.SetActive(true);
         }
         else
         {
-            CorazonDañado.SetActive(false);
+            SpriteCorazonDañado.SetActive(false);
         }
     }
     #endregion

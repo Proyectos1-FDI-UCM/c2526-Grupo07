@@ -88,7 +88,7 @@ public class CurrentHealth : MonoBehaviour
         if (PotionCount > 0)
         {
             PotionCount--;
-            GameManager.Instance.Healt(health);
+            GameManager.Instance.CurarVida(health);
             GameManager.Instance.UsarBotiquin();
         }
         else Debug.Log("ERROR: no hay consumible para utilizar");

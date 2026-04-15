@@ -24,10 +24,12 @@ public class MoveEnemigo : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float duracion;    //duracion de tiempo en movimiento 
+
+    [SerializeField] private float duracion;       //duracion de tiempo en movimiento 
     [SerializeField] private float duracionQuieto; // tiempo en que va a estar quieto
-    [SerializeField] private float vel; //velocidad para el movimiento del enemigo
-    [SerializeField] private Transform player;  //jugador para realizar las acciones
+
+    [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
+    [SerializeField] private Transform player; //jugador para realizar las acciones
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,14 +40,14 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private bool isChasing = false;  //controlar si está persiguiendo al jugador
-    private bool isShooting = false;  //controlar si está disparando al jugador
-    private int direction = 1;  //direccion del enemigo
-    private float tiempoInicio = 0; //tiempo iniciado para el movimiento
-    private float tiempoQuieto = 0; //tiempo inicial en que va a estar quieto
-    private Rigidbody2D rb;
-    private Animator anim;
-    private SpriteRenderer spriteRenderer;
+    private bool _isChasing = false;  //controlar si está persiguiendo al jugador
+    private bool _isShooting = false; //controlar si está disparando al jugador
+    private int _direction = 1;       //direccion del enemigo
+    private float _tiempoInicio = 0;  //tiempo iniciado para el movimiento
+    private float _tiempoQuieto = 0;  //tiempo inicial en que va a estar quieto
+    private Rigidbody2D _rb;
+    private Animator _anim;
+    private SpriteRenderer _spriteRenderer;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -60,9 +62,9 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -70,45 +72,45 @@ public class MoveEnemigo : MonoBehaviour
     void Update()
     {
         Vector2 offset = player.transform.position - transform.position;
-        if (isShooting)
+        if (_isShooting)
         {
             //cuando dispara se deja de mover
-            rb.linearVelocity = new Vector3(0, rb.linearVelocityY, 0);
-            if (offset.x > 0 && direction != 1)
+            _rb.linearVelocity = new Vector3(0, _rb.linearVelocityY, 0);
+            if (offset.x > 0 && _direction != 1)
             {
-                direction *= -1;
+                _direction *= -1;
                 CambioDireccion();
             }
-            if (offset.x < 0 && direction != -1) 
+            if (offset.x < 0 && _direction != -1) 
             {
-                direction *= -1;
+                _direction *= -1;
                 CambioDireccion();
             }
             return;
         }
-        if (isChasing)
+        if (_isChasing)
         {
             Perseguir();
-            if (offset.x > 0 && direction != 1)
+            if (offset.x > 0 && _direction != 1)
             {
-                direction *= -1;
+                _direction *= -1;
                 CambioDireccion();
             }
-            if (offset.x < 0 && direction != -1)
+            if (offset.x < 0 && _direction != -1)
             {
-                direction *= -1;
+                _direction *= -1;
                 CambioDireccion();
             }
-            tiempoInicio = 0;
+            _tiempoInicio = 0;
         }
         else MovAuto();
     }
     void FixedUpdate()
     {
-        if (anim != null)
+        if (_anim != null)
         {
-            float speed = Mathf.Abs(rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
-            anim.SetFloat("enemySpeed", speed); //Para la transicion
+            float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+            _anim.SetFloat("enemySpeed", speed); //Para la transicion
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
@@ -118,9 +120,9 @@ public class MoveEnemigo : MonoBehaviour
         //y reinicia el tiempo de movimiento
         if (collision.gameObject.CompareTag("Pared"))
         {
-            direction *= -1;
+            _direction *= -1;
             CambioDireccion();
-            tiempoInicio = 0;
+            _tiempoInicio = 0;
         }
     }
     #endregion
@@ -134,17 +136,17 @@ public class MoveEnemigo : MonoBehaviour
     // Ejemplo: GetPlayerController
     public int GetDirection()
     {
-        return direction;   //devolver la direccion del enemigo para detectar con el jugador
+        return _direction;   //devolver la direccion del enemigo para detectar con el jugador
     }
 
     //devolver el valor booleano si está realizando esta acción
     public void SetChasing(bool chasing)
     {
-        isChasing = chasing;
+        _isChasing = chasing;
     }
     public void SetShooting(bool shooting)
     {
-        isShooting = shooting;
+        _isShooting = shooting;
     }
     #endregion
 
@@ -156,30 +158,30 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-        rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
     private void MovAuto()
     {
-        tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-        rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-        if (tiempoInicio > duracion)
+        _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        if (_tiempoInicio > duracion)
         {
-            tiempoQuieto += Time.deltaTime;
-            rb.linearVelocity = Vector2.zero; 
-            if (tiempoQuieto> duracionQuieto)
+            _tiempoQuieto += Time.deltaTime;
+            _rb.linearVelocity = Vector2.zero; 
+            if (_tiempoQuieto> duracionQuieto)
             {
-                direction *= -1;    //cambio de direccion, invertir
+                _direction *= -1;    //cambio de direccion, invertir
                 CambioDireccion();
-                rb.linearVelocity = new Vector2(direction * vel, rb.linearVelocity.y);
-                tiempoQuieto = 0;   
-                tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+                _tiempoQuieto = 0;   
+                _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
             }
         }
     }
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(direction, 1, 1);
+        transform.localScale = new Vector3(_direction, 1, 1);
     }
     
     #endregion

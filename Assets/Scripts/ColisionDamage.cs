@@ -66,7 +66,7 @@ public class ColisionDamage : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null)
         {
-            GameManager.Instance.RestLife(Damage);
+            GameManager.Instance.RestarVida(Damage);
         }
     }
     #endregion
