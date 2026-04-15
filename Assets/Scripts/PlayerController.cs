@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
     float flashDuration = 0.1f;
     float now2;
     Color originalColor;
+    private bool pausado = false;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -160,7 +161,11 @@ public class PlayerController : MonoBehaviour
     {
         if (InputManager.Instance)
         {
-            if (spriteRenderer != null && canMove != false)
+            if (pausado)
+            {
+                Pause();
+            }
+            else if (spriteRenderer != null && canMove != false)
             {
                 Salto();
                 Moverse();
@@ -201,6 +206,11 @@ public class PlayerController : MonoBehaviour
     public void RedFlash()
     {
         AnimationSprite.RedFlash();
+    }
+    
+    public bool PlayerPause() 
+    {
+        return pausado = true;
     }
     #endregion
 
@@ -315,6 +325,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");
+    }
+    private void Pause() // hace que el player este pausado
+    {
+        rb.linearVelocity = Vector2.zero;
+        canDash = false;
     }
 }
     #endregion

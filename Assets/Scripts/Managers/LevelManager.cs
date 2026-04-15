@@ -129,6 +129,10 @@ public class LevelManager : MonoBehaviour
         timeSec += Time.deltaTime;
         timeTotal += Time.deltaTime;
         UpdateGUI();
+        if (InputManager.Instance.PauseWasPressedThisFrame())
+        {
+            Pause();
+        }
     }
     #endregion
 
@@ -220,6 +224,13 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("Menu");
+    }
+    public void Pause()
+    {
+        PlayerController player = GetComponent<PlayerController>();
+        MoveEnemigo enemy = GetComponent<MoveEnemigo>();
+        player.PlayerPause();
+        enemy.EnemyPause();
     }
     #endregion
 

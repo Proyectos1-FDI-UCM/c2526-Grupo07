@@ -46,6 +46,7 @@ public class MoveEnemigo : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private SpriteRenderer spriteRenderer;
+    private bool pausado;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -69,39 +70,46 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Update()
     {
-        Vector2 offset = player.transform.position - transform.position;
-        if (isShooting)
+        if (pausado)
         {
-            //cuando dispara se deja de mover
-            rb.linearVelocity = new Vector3(0, rb.linearVelocityY, 0);
-            if (offset.x > 0 && direction != 1)
-            {
-                direction *= -1;
-                CambioDireccion();
-            }
-            if (offset.x < 0 && direction != -1) 
-            {
-                direction *= -1;
-                CambioDireccion();
-            }
-            return;
+            rb.linearVelocity = Vector2.zero;
         }
-        if (isChasing)
+        else
         {
-            Perseguir();
-            if (offset.x > 0 && direction != 1)
+            Vector2 offset = player.transform.position - transform.position;
+            if (isShooting)
             {
-                direction *= -1;
-                CambioDireccion();
+                //cuando dispara se deja de mover
+                rb.linearVelocity = new Vector3(0, rb.linearVelocityY, 0);
+                if (offset.x > 0 && direction != 1)
+                {
+                    direction *= -1;
+                    CambioDireccion();
+                }
+                if (offset.x < 0 && direction != -1)
+                {
+                    direction *= -1;
+                    CambioDireccion();
+                }
+                return;
             }
-            if (offset.x < 0 && direction != -1)
+            if (isChasing)
             {
-                direction *= -1;
-                CambioDireccion();
+                Perseguir();
+                if (offset.x > 0 && direction != 1)
+                {
+                    direction *= -1;
+                    CambioDireccion();
+                }
+                if (offset.x < 0 && direction != -1)
+                {
+                    direction *= -1;
+                    CambioDireccion();
+                }
+                tiempoInicio = 0;
             }
-            tiempoInicio = 0;
+            else MovAuto();
         }
-        else MovAuto();
     }
     void FixedUpdate()
     {
@@ -145,6 +153,11 @@ public class MoveEnemigo : MonoBehaviour
     public void SetShooting(bool shooting)
     {
         isShooting = shooting;
+    }
+    public bool EnemyPause()
+    {
+        pausado = true;
+        return pausado;
     }
     #endregion
 
