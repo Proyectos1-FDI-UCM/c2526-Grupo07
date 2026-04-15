@@ -23,6 +23,7 @@ public class CurrentHealth : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private int health;    //cantidad de vida que cura
+    [SerializeField] private GameObject ParticulasCura;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -90,6 +91,10 @@ public class CurrentHealth : MonoBehaviour
             PotionCount--;
             GameManager.Instance.CurarVida(health);
             GameManager.Instance.UsarBotiquin();
+            if (ParticulasCura != null)
+            {
+                Instantiate(ParticulasCura, transform.position, Quaternion.identity, transform);
+            }
         }
         else Debug.Log("ERROR: no hay consumible para utilizar");
     }
