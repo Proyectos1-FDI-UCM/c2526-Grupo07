@@ -66,7 +66,7 @@ public class EnemyDmgOnCollision : MonoBehaviour
         if (Player != null)
         {
             Debug.Log("Hola");
-            GameManager.Instance.HealthPoints(Damage);
+            GameManager.Instance.RestarVida(Damage);
         }
     }
     #endregion

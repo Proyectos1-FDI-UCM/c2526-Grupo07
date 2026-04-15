@@ -133,16 +133,18 @@ public class BulletBehaviour : MonoBehaviour
             else
             {
                 //Llama al GameManager para bajar vida
-                GameManager.Instance.HealthPoints(Damage);
+                GameManager.Instance.RestarVida(Damage);
                 player.RedFlash();
             }
+            Destroy(gameObject);
         }
         else if (enemy != null)
         {
             enemy.EnemyHealthPoint(Damage);
             enemy.RedFlash();
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        
     }
     #endregion
 

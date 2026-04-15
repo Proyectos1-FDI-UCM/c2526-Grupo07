@@ -71,7 +71,7 @@ public class MaquinaExp : MonoBehaviour
         {
             //Cuando colisiona con jugador, le aplica un empuje en dirección offset
             player.Empuje(FuerzaEmpuje, offset);
-            GameManager.Instance.HealthPoints(Damage);
+            GameManager.Instance.RestarVida(Damage);
         }
     }
     #endregion

@@ -24,26 +24,25 @@ public class PlayerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private float SaltoMax; //Ajustar la altura máxima a la que puede saltar
-    [SerializeField]
-    private float Velocity; //Velocidad para correr
-    [SerializeField]
-    private Transform Pies;  //Un empty en los pies para la detección del suelo al saltar
-    [SerializeField]
-    private float cooldownDash = 3f;
-    [SerializeField]
-    private float dashDistance = 5f;
-    [SerializeField]
-    private GameObject HitboxCuchillo;
-    [SerializeField] AimShoot Apuntado;
-    [SerializeField] private Transform cuchillo;
-    [SerializeField] LayerMask groundLayer;
-    [SerializeField] private float CooldownChuchillo = 3f;
-    [SerializeField] private GameObject Arma;
-    [SerializeField] private FlashRedAux AnimationSprite;
+
+    //Movimiento
+    [SerializeField] private float Velocidad = 7f; //Velocidad para correr
+    [SerializeField] private float SaltoMax = 12f; //Ajustar la altura máxima a la que puede salta
+    [SerializeField] private LayerMask Saltable;   //Capas donde el jugador puede saltar
+    [SerializeField] private Transform Pies;       //Un empty en los pies para la detección del suelo al saltar
+
+    //Dash
+    [SerializeField] private float CooldownDash = 3f;  //Enfriamientodel Dash
+    [SerializeField] private float DistanciaDash = 5f; //Distancia a la que puede avanzar el Dash
+
+    //Cuchillo
+    [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
+    [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
+
+    //Sprites y animación
+    [SerializeField] private FlashRedAux AnimationSprite;   //(BORRAR/ARREGLAR) Para hacer el flash rojo del jugador
+    [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -53,26 +52,38 @@ public class PlayerController : MonoBehaviour
     // privados se nombren en formato _camelCase (comienza con _, 
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
-    // Ejemplo: _maxHealthPoints
-    private Rigidbody2D rb; //Declaro rb del gameObject para manipular su velocidad al saltar
-    private bool tocandoPared = false; //Dejar de moverse horizontalmente a esa dirección si toca pared
-    private bool canMove = true; //Ver si se puede mover o no
-    private bool canDash = true; //Ver si se puede Dashear o no
-    private bool isDashing = false; //Ver si está el dash activo
-    private float SetupChuchillo = 0f;
-    private bool Knockback = false;
-    private float dashStartTime;
-    private float KnockbackDuration;
-    private float KnockbackFinish;
-    private float lastTimeDashed = 2f;
-    private float dashTime = 0.2f;
-    private float now;
-    private float CChuchillo;
-    private Animator anim;
-    private bool redFlash = false;
-    float flashDuration = 0.1f;
-    float now2;
-    Color originalColor;
+    // Ejemplo: _maxHealthPoints   
+
+    //Tiempo
+    private float _now;                 //Tiempo del juego
+
+    //RigidBody y movimiento
+    private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
+    private bool _canMove = true;       //Ver si se puede mover o no
+    
+    //Dash
+    private bool _canDash = true;       //Ver si se puede Dashear o no
+    private bool _isDashing = false;    //Ver si está el dash activo
+    private float _dashStartTime;       //Tiempo cuando empieza el Dash
+    private float _lastTimeDashed = 2f; //Última vez que ha dasheado
+    private float _dashTime = 0.2f;     //Cuanto dura el Dash
+
+    //Empuje
+    private bool _onKnockback = false;  //True si el jugador esta siendo empujado
+    private float _knockbackDuration;   //Duración del empuje (jugador no puede moverse durante esta duración)
+    private float _knockbackFinish;     //Termina el empuje
+
+    //Cuchillo
+    private float _coolDownCuchillo;    //Enfriamiento del uso del cuchillo
+    private float _cuchillo = 5f;
+
+    //Sprites y animación
+    private Animator _anim;             //Animación del personaje
+    private Color _originalColor;       //Color original del personaje
+    private bool _redFlash = false;     //Poner al personaje en rojo si es true
+    private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
+    private float _flashInitialTime;    //Tiempo inicio del color rojo
+    //Pausa
     private bool pausado = false;
     #endregion
 
@@ -89,11 +100,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        CChuchillo = 5f;
-        anim = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        originalColor = spriteRenderer.color;
+        _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+        SpriteJugador = GetComponent<SpriteRenderer>();
+
+        _originalColor = SpriteJugador.color; //Guardar color original
     }
 
     /// <summary>
@@ -101,59 +112,59 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, groundLayer);
-        lastTimeDashed += Time.deltaTime;
+        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
+        
+        _lastTimeDashed += Time.deltaTime;
+        _now += Time.deltaTime;
 
-        now = Time.time;
-
-        if (anim != null)
+        if (_anim != null)
         {
-            if (!anim.GetBool("isAttacking"))
+            if (!_anim.GetBool("isAttacking"))
             {
-                if (CChuchillo < CooldownChuchillo)
+                if (_cuchillo < CooldownChuchillo)
                 {
-                    CChuchillo += Time.deltaTime;
+                    _cuchillo += Time.deltaTime;
                 }
             }
             else
             {
-                CChuchillo = 0f;
+                _cuchillo = 0f;
             }
         }
 
-        Chuchillo();
+        Cuchillo();
         DesCuchillo();
 
-        if (Knockback != false)
+        if (_onKnockback != false)
         {
-            if (now - KnockbackFinish > KnockbackDuration)
+            if (_now - _knockbackFinish > _knockbackDuration)
             {
-                canMove = true;
-                KnockbackFinish = Time.time;
+                _canMove = true;
+                _knockbackFinish = Time.time;
             }
         }
 
         if (hit.collider != null)
         {
-            if (!canDash) canDash = true;
+            if (!_canDash) _canDash = true;
         }
-        else canDash = false;
+        else _canDash = false;
         if (InputManager.Instance.DashWasPressedThisFrame())
         {
-            if (lastTimeDashed >= cooldownDash)
+            if (_lastTimeDashed >= CooldownDash)
             {
                 Dash();
             }
             else Debug.Log("Refrescando");
         }
-        if (redFlash)
+        if (_redFlash)
         {
-            now2 += Time.deltaTime;
-            if (now2 > flashDuration)
+            _flashInitialTime += Time.deltaTime;
+            if (_flashInitialTime > _flashDuration)
             {
-                spriteRenderer.color = originalColor;
-                now2 = 0;
-                redFlash = false;
+                SpriteJugador.color = _originalColor;
+                _flashInitialTime = 0;
+                _redFlash = false;
             }
         }
     }
@@ -161,19 +172,15 @@ public class PlayerController : MonoBehaviour
     {
         if (InputManager.Instance)
         {
+
             if (pausado)
             {
                 Pause();
             }
-            else if (spriteRenderer != null && canMove != false)
+            else if (SpriteJugador != null && _canMove != false)
             {
                 Salto();
                 Moverse();
-                /*if (tocandoPared == false)
-                {
-                    Vector2 movement = new Vector2(InputManager.Instance.MovementVector.x, 0f) * Velocity * Time.deltaTime;
-                    transform.Translate(movement);
-                }*/
             }
         }
     }
@@ -189,20 +196,17 @@ public class PlayerController : MonoBehaviour
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
-        canMove = false;
-        rb.linearVelocity = Vector2.zero;
+        _canMove = false;
+        _rb.linearVelocity = Vector2.zero;
         if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.1f;
         else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.1f;
         else if (dir.x < 0) dir1.x = -1f;
         else dir1.x = 1f;
-        rb.AddForce(fuerzaEmpuje * dir1, ForceMode2D.Impulse);
-        Knockback = true;
-        KnockbackDuration = 1.5f;
+        _rb.AddForce(fuerzaEmpuje * dir1, ForceMode2D.Impulse);
+        _onKnockback = true;
+        _knockbackDuration = 1.5f;
     }
-    public void RecibirDañoJugador(int cantidad)
-    {
-        GameManager.Instance.HealthPoints(cantidad);
-    }
+
     public void RedFlash()
     {
         AnimationSprite.RedFlash();
@@ -220,29 +224,33 @@ public class PlayerController : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+
+    //Método para saltar
     private void Salto()
     {
         //El raycast guarda la info en "hit"
-        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
+
         //Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
         if (hit.collider != null && InputManager.Instance.JumpWasPressedThisFrame())
         {
             //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
         }
         if (hit.collider != null && InputManager.Instance.JumpIsPressed())
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, SaltoMax);
+            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
         }
     }
+    //Método para moverse horizontalmente y dash
     private void Moverse()
     {
-        if (anim == null || !anim.GetBool("isAttacking"))
+        if (_anim == null || !_anim.GetBool("isAttacking"))
         {
             float horizontalInput = InputManager.Instance.MovementVector.x;
 
             // Actualizamos animación de caminar
-            anim.SetFloat("speed", Mathf.Abs(horizontalInput));
+            _anim.SetFloat("speed", Mathf.Abs(horizontalInput));
             // Girar sprite según dirección
             if (horizontalInput != 0)
             {
@@ -250,26 +258,27 @@ public class PlayerController : MonoBehaviour
                 scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
                 transform.localScale = scale;
             }
-            if (isDashing == false)
+            if (_isDashing == false)
             {
                 //Manipulo la velocidad lineal del gameObject en el eje X según lo que recibo del InputManager * Velocidad
-                rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocity, rb.linearVelocity.y);
+                _rb.linearVelocity = new Vector2(InputManager.Instance.MovementVector.x * Velocidad, _rb.linearVelocity.y);
             }
             else
             {
-                if (Time.time - dashStartTime > dashTime)
+                if (Time.time - _dashStartTime > _dashTime)
                 {
                     gameObject.layer = LayerMask.NameToLayer("Jugador");
-                    isDashing = false;
-                    anim.SetBool("isDashing", isDashing);
+                    _isDashing = false;
+                    _anim.SetBool("isDashing", _isDashing);
                 }
             }
         }
     }
 
-    private void Chuchillo() //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
+    //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
+    private void Cuchillo() 
     {
-        if (InputManager.Instance.KnifeWasPressedThisFrame() && CChuchillo >= CooldownChuchillo && !anim.GetBool("isAttacking"))
+        if (InputManager.Instance.KnifeWasPressedThisFrame() && _cuchillo >= CooldownChuchillo && !_anim.GetBool("isAttacking"))
         {
             //Activar hitbox PRIMERO
             if (HitboxCuchillo != null)
@@ -278,23 +287,19 @@ public class PlayerController : MonoBehaviour
             }
 
             //Activar animación
-            anim.SetBool("isAttacking", true);
-            SetupChuchillo = 0f;
-
-            //Orientación
-            Vector3 Dir = Apuntado.MousePos();
-            cuchillo.localPosition = new Vector3(1.5f, 0f, 0f);
+            _anim.SetBool("isAttacking", true);
+            _coolDownCuchillo = 0f;
         }
     }
-
-    private void DesCuchillo() //Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
+    //Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
+    private void DesCuchillo() 
     {
-        if (anim != null && anim.GetBool("isAttacking"))
+        if (_anim != null && _anim.GetBool("isAttacking"))
         {
-            SetupChuchillo += Time.deltaTime;
+            _coolDownCuchillo += Time.deltaTime;
 
             //Cuando pasa el tiempo del ataque
-            if (SetupChuchillo >= 0.4f)
+            if (_coolDownCuchillo >= 0.4f)
             {
                 //Desactivar hitbox
                 if (HitboxCuchillo != null)
@@ -303,33 +308,34 @@ public class PlayerController : MonoBehaviour
                 }
 
                 //Desactivar animación de ataque
-                anim.SetBool("isAttacking", false);
-                SetupChuchillo = 0f;
+                _anim.SetBool("isAttacking", false);
+                _coolDownCuchillo = 0f;
             }
         }
     }
+    //Método para ejecutar el dash
     private void Dash()
     {
         float dir;
-        if (canDash)
+        if (_canDash)
         {
             if (transform.localScale.x > 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
-            dashStartTime = Time.time; //Momento en el que inicia el Dash
-            isDashing = true;
-            rb.linearVelocity = new Vector2(dashDistance * 10f * dir, 0f); //Ejerce fuerza al gameObject
-            canDash = false;
-            lastTimeDashed = 0f;
-            anim.SetBool("isDashing", isDashing);
+            _dashStartTime = Time.time; //Momento en el que inicia el Dash
+            _isDashing = true;
+            _rb.linearVelocity = new Vector2(DistanciaDash * 10f * dir, 0f); //Ejerce fuerza al gameObject
+            _canDash = false;
+            _lastTimeDashed = 0f;
+            _anim.SetBool("isDashing", _isDashing);
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");
     }
     private void Pause() // hace que el player este pausado
     {
-        rb.linearVelocity = Vector2.zero;
-        canDash = false;
+        _rb.linearVelocity = Vector2.zero;
+        _canDash = false;
     }
 }
     #endregion
