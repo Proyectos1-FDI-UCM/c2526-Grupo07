@@ -50,6 +50,8 @@ public class AtaqueJefe : MonoBehaviour
 
     Vector2 offset; //Vector a donde apunta el lanzallams
     private float TiempoEntreBalas; // Cadencia del lanzallamas
+
+    private bool _CanGranada; // puede lanzar granada
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -68,6 +70,8 @@ public class AtaqueJefe : MonoBehaviour
         anim = GetComponent<Animator>();
 
         TiempoEntreBalas = 0f; //Para la cadencia del lanzallamas
+
+        _CanGranada = true;
     }
 
     /// <summary>
@@ -90,6 +94,7 @@ public class AtaqueJefe : MonoBehaviour
                 anim.SetBool("attackLan", false); 
 
                 LanzarGranada();
+                Lanzallamas();
                 time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
             else
@@ -113,6 +118,15 @@ public class AtaqueJefe : MonoBehaviour
     {
         anim.SetBool("attackGran", false);
     }
+    public void BossGranadaPause()
+    {
+        _CanGranada = false;
+
+    }
+    public void BossGranadaContinue()
+    {
+        _CanGranada = true;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -123,24 +137,27 @@ public class AtaqueJefe : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void LanzarGranada()
     {
-        if (granadaPrefab == null || puntoAtaque == null || player == null) return;
-
-        //añadir un origen y posicion del punto de ataque para granada
-        GameObject granada = Instantiate(granadaPrefab, puntoAtaque.position, Quaternion.identity);
-
-        Rigidbody2D rb= granada.GetComponent<Rigidbody2D>();
-
-        if (rb != null)
+        if (_CanGranada)
         {
-            //arco de movimiento
-            Vector2 direccion = (player.position - puntoAtaque.position).normalized;    //vector horizontal hacia el jugador
-            float fuerzaX = direccion.x * vel;    //aplicar fuerza x
-            float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
-            rb.linearVelocity= new Vector2(fuerzaX, fuerzaY);
+            if (granadaPrefab == null || puntoAtaque == null || player == null) return;
 
-            Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
-            explosion.SetDireccion(direccion);
+            //añadir un origen y posicion del punto de ataque para granada
+            GameObject granada = Instantiate(granadaPrefab, puntoAtaque.position, Quaternion.identity);
 
+            Rigidbody2D rb= granada.GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                //arco de movimiento
+                Vector2 direccion = (player.position - puntoAtaque.position).normalized;    //vector horizontal hacia el jugador
+                float fuerzaX = direccion.x * vel;    //aplicar fuerza x
+                float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
+                rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
+
+                Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
+                explosion.SetDireccion(direccion);
+
+            }
         }
     }
 

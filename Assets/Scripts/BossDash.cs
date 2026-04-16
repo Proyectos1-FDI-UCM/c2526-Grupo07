@@ -44,6 +44,7 @@ public class BossDash : MonoBehaviour
     private BoxCollider2D col;
     private bool Dashing = false;
     private int dir = -1;
+    private bool _CanDash;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -62,6 +63,7 @@ public class BossDash : MonoBehaviour
         Timer = 0;
         rb = GetComponent<Rigidbody2D>();
         col = rb.GetComponent<BoxCollider2D>();
+        _CanDash = true;
     }
 
     /// <summary>
@@ -70,10 +72,6 @@ public class BossDash : MonoBehaviour
     void Update()
     {   
         Dash();
-    }
-    private void FixedUpdate()
-    {
-        
     }
     #endregion
 
@@ -84,7 +82,15 @@ public class BossDash : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    
+    public void BossDashPause()
+    {
+        Debug.Log("jefeDashpausado");
+        _CanDash = false;
+    }
+    public void BossDashContinue()
+    {
+        _CanDash = true;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -95,27 +101,29 @@ public class BossDash : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Dash()
     {
-        float InitialG = rb.gravityScale;
-        Timer += Time.deltaTime; 
-        if (Timer > DashColdDown) //ColdDown
+        if (_CanDash)
         {
-            Timer2 += Time.deltaTime;
-            rb.linearVelocity = Vector2.zero;
-            if (Timer2 > DashTime) //Duración del Dash
-            { 
-                Dashing = true;
-                rb.gravityScale = 0;
-                dir *= -1;    //cambio de direccion, invertir
-                rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
-                Timer = 0;
-                Timer2 = 0;   //vuelve a sincronizar el tiempo
+            float InitialG = rb.gravityScale;
+            Timer += Time.deltaTime;
+            if (Timer > DashColdDown) //ColdDown
+            {
+                Timer2 += Time.deltaTime;
+                rb.linearVelocity = Vector2.zero;
+                if (Timer2 > DashTime) //Duración del Dash
+                {
+                    Dashing = true;
+                    rb.gravityScale = 0;
+                    dir *= -1;    //cambio de direccion, invertir
+                    rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
+                    Vector3 scale = transform.localScale;
+                    scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
+                    transform.localScale = scale;
+                    Timer = 0;
+                    Timer2 = 0;   //vuelve a sincronizar el tiempo
+                }
             }
+            rb.gravityScale = InitialG;
         }
-        
-        rb.gravityScale = InitialG;
     }
     #endregion   
 

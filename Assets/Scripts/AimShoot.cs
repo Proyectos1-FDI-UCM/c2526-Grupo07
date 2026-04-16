@@ -59,7 +59,9 @@ public class AimShoot : MonoBehaviour
     private bool _recargando = false;  //No está recargando, por ahora
     private float _tiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
     #endregion
-
+    //pausa
+    private bool canShoot = true; // determina si el jugador puede disparar (variable creado para la pausa)
+    private bool pausado = false; // determina si el juego esta pausado o no
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -86,6 +88,10 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (pausado)
+        {
+            canShoot = false;
+        }
         _mousePosition = InputManager.Instance.GetAimMouseValue();
         if (InputManager.Instance.AimControllerIsPressed())
         {
@@ -171,6 +177,15 @@ public class AimShoot : MonoBehaviour
     {
         return Camera.main.ScreenToWorldPoint(_mousePosition);
     }
+    public bool PlayerShootPause()
+    {
+        return pausado = true;
+    }
+    public bool PlayerShootContinue()
+    {
+        canShoot = true;
+        return pausado = false;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -182,35 +197,44 @@ public class AimShoot : MonoBehaviour
     //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
     private void Disparar()
     {
-        //Crea la bala en su posición de salida
-        //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
-        GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
-        BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
-        balaDir.Dir(_direction);
-        // Restamos una bala al cargador
-        _balasActuales--;
-        GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-        Debug.Log("Balas: " + _balasActuales);
+        if(canShoot)
+        {
+            //Crea la bala en su posición de salida
+            //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+            GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+            BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+            balaDir.Dir(_direction);
+            // Restamos una bala al cargador
+            _balasActuales--;
+            GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+            Debug.Log("Balas: " + _balasActuales);
 
-        // Reiniciamos el tiempo de disparo según la cadencia
-        _tiempoDisparo = 1f / Cadencia;
+            // Reiniciamos el tiempo de disparo según la cadencia
+            _tiempoDisparo = 1f / Cadencia;
+        }
     }
     //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
     private void EmpezarRecarga()
     {
-        _recargando = true;
-        _tiempoRecarga = TiempoRecarga;
-        Debug.Log("Recargando");
-        SpriteRecarga.SetActive(true);
+        if(canShoot)
+        {
+            _recargando = true;
+            _tiempoRecarga = TiempoRecarga;
+            Debug.Log("Recargando");
+            SpriteRecarga.SetActive(true);
+        }
     }
     //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
     private void TerminarRecarga()
     {
-        _recargando = false;
-        _balasActuales = Cargador;
-        GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-        Debug.Log("Balas: " + _balasActuales);
-        SpriteRecarga.SetActive(false);
+        if (canShoot)
+        {
+            _recargando = false;
+            _balasActuales = Cargador;
+            GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+            Debug.Log("Balas: " + _balasActuales);
+            SpriteRecarga.SetActive(false);
+        }
     }
     #endregion
 

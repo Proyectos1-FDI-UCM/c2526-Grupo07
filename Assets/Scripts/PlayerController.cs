@@ -83,8 +83,6 @@ public class PlayerController : MonoBehaviour
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
     private float _flashInitialTime;    //Tiempo inicio del color rojo
-    //Pausa
-    private bool pausado = false;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -172,12 +170,7 @@ public class PlayerController : MonoBehaviour
     {
         if (InputManager.Instance)
         {
-
-            if (pausado)
-            {
-                Pause();
-            }
-            else if (SpriteJugador != null && _canMove != false)
+            if (SpriteJugador != null && _canMove != false)
             {
                 Salto();
                 Moverse();
@@ -212,9 +205,17 @@ public class PlayerController : MonoBehaviour
         AnimationSprite.RedFlash();
     }
     
-    public bool PlayerPause() 
+    public void PlayerPause() 
     {
-        return pausado = true;
+        Debug.Log("pausado");
+        _canMove = false;
+        _canDash = false;
+        
+    }
+    public void PlayerContinue()
+    {
+        _canMove = true;
+        _canDash = true;
     }
     #endregion
 

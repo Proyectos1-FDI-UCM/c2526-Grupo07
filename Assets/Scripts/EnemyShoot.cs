@@ -46,6 +46,7 @@ public class EnemyShoot : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private float minInterval;
     Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
+    private bool pausado = false; // si el juego esta pausado o no
 
     #endregion
 
@@ -92,7 +93,14 @@ public class EnemyShoot : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void EnemyShootPausado()
+    {
+        pausado = true;
+    }
+    public void EnemyShootContinue()
+    {
+        pausado = false;
+    }
     #endregion
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
