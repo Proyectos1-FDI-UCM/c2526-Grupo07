@@ -5,11 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using Unity.Mathematics.Geometry;
-using UnityEditor;
-using UnityEditor.Analytics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 // Añadir aquí el resto de directivas using
 
 
@@ -17,7 +13,7 @@ using UnityEngine.EventSystems;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class DeteccionEnemigo : MonoBehaviour
+public class DeteccionAK : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -31,7 +27,6 @@ public class DeteccionEnemigo : MonoBehaviour
     [SerializeField] private float ShootDis;  //distancia para disparo
     [SerializeField] private float alturaMax; //altura max para detectar al jugador
     [SerializeField] private GameObject excl;
-
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -44,7 +39,7 @@ public class DeteccionEnemigo : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private float forgetTime = 3;   //tiempo para dejar de perseguir
     private float time = 0;
-    private MoveEnemigo move;   //script de movimiento de enemigo
+    private EnemyAK move;   //script de movimiento de enemigo
     private EnemyShoot shoot;   //script de disparo de enemigo
     #endregion
 
@@ -59,14 +54,9 @@ public class DeteccionEnemigo : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    #endregion
     void Start()
     {
-        move = GetComponent<MoveEnemigo>();
+        move = GetComponent<EnemyAK>();
         shoot = GetComponent<EnemyShoot>();
         excl.SetActive(false);
     }
@@ -75,11 +65,11 @@ public class DeteccionEnemigo : MonoBehaviour
         float DirToPlayer = player.position.x - transform.position.x;   //dirección hacia el jugador
 
         float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
-        float distanciaY= Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
+        float distanciaY = Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
 
         // Solo actúa si el jugador está en la dirección que mira
         //devolver la direccion correcta del jugador
-        bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||     
+        bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||
                            (move.GetDirection() == -1 && DirToPlayer < 0);
         bool canSeePlayer = dirCambiada && distanciaY <= alturaMax;     //cuándo detecta el jugador
 
@@ -93,14 +83,14 @@ public class DeteccionEnemigo : MonoBehaviour
             shoot.SetCanShoot(true);
 
             excl.SetActive(true);
-            time = forgetTime;
+            time = forgetTime;  //reinicia el tiempo
         }
-        else if (distanceX < ChaseDis && distanceX > ShootDis && canSeePlayer)    //"caja" grande
+        else if (distanceX <= ChaseDis && distanceX > ShootDis && canSeePlayer)    //"caja" grande
         {
             move.SetChasing(true);
-
             excl.SetActive(true);
-            time = forgetTime;
+            
+            time = forgetTime;  //reinicia el tiempo
         }
         else //fuera de la distancia
         {
@@ -108,20 +98,22 @@ public class DeteccionEnemigo : MonoBehaviour
             time -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
             if (time <= 0)
             {
+                //excl.SetActive(false);
                 move.SetShooting(false);
                 move.SetChasing(false);
                 shoot.SetCanShoot(false);
                 excl.SetActive(false);
             }
         }
-    } 
+    }
     void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis*2, ShootDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis * 2, ShootDis, 0));
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis*2,ChaseDis,0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis * 2, ChaseDis, 0));
     }
+    #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
     #region Métodos públicos
@@ -139,7 +131,8 @@ public class DeteccionEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    #endregion
-}// class DeteccionEnemigo 
-// namespace
 
+    #endregion
+
+} // class DeteccionAK 
+// namespace
