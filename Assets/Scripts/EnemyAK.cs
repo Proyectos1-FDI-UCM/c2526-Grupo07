@@ -22,9 +22,13 @@ public class EnemyAK : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float time;    //tiempo para cambiar de sentido
-    [SerializeField] private float speed;   
-    [SerializeField] private Transform player;
+    //[SerializeField] private float duracion;       //duracion de tiempo en movimiento 
+    //[SerializeField] private float duracionQuieto; // tiempo en que va a estar quieto
+
+    [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
+    [SerializeField] private Transform player; //jugador para realizar las acciones
+    [SerializeField] private Collider2D plataforma;     //plataforma donde mueve el enemigo
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -35,29 +39,33 @@ public class EnemyAK : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float duracion=0;     //tiempo que dura en movimiento
-    private int direction = 1;  //direccion derecha
-    private Rigidbody2D rb;
-
-    private bool isChasing = false; //controlar si está persiguiendo
-    private bool isShooting= false; //controlar si está disparando
+    private bool _isChasing = false;  //controlar si está persiguiendo al jugador
+    private bool _isShooting = false; //controlar si está disparando al jugador
+    private int _direction = 1;       //direccion del enemigo
+    //private float _tiempoInicio = 0;  //tiempo iniciado para el movimiento
+    //private float _tiempoQuieto = 0;  //tiempo inicial en que va a estar quieto
+    private Rigidbody2D _rb;
+    private Animator _anim;
+    private SpriteRenderer _spriteRenderer;
     //script disaro enemigoAK
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
-        rb= GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     /// <summary>
@@ -66,45 +74,58 @@ public class EnemyAK : MonoBehaviour
     void Update()
     {
         Vector2 offset = player.transform.position - transform.position;
-        if (isShooting)
+        if (_isShooting)
         {
+            _isChasing = false;
             //cuando dispara se deja de mover
-            rb.linearVelocity = Vector2.zero;
-            //ver posición del jugador y cambiar a esa dirección
-            if (offset.x > 0 && direction != 1)
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+            if (offset.x > 0 && _direction != 1)
             {
-                direction *= -1;
+                _direction *= -1;
+                CambioDireccion();
             }
-            if (offset.x < 0 && direction != -1)
+            if (offset.x < 0 && _direction != -1)
             {
-                direction *= -1;
+                _direction *= -1;
+                CambioDireccion();
             }
             return;
         }
-        if (isChasing)
+        if (_isChasing)
         {
-            rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
-            if (offset.x > 0 && direction != 1)
+            _isShooting = false;
+            Perseguir();
+            if (offset.x > 0 && _direction != 1)
             {
-                direction *= -1;
+                _direction *= -1;
+                CambioDireccion();
             }
-            if (offset.x < 0 && direction != -1)
+            if (offset.x < 0 && _direction != -1)
             {
-                direction *= -1;
+                _direction *= -1;
+                CambioDireccion();
             }
-            duracion = 0;
         }
-        else MovAuto();        
+        else MovAuto();
+        LimitarMov();
     }
-
+    void FixedUpdate()
+    {
+        if (_anim != null)
+        {
+            float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+            _anim.SetFloat("enemySpeed", speed); //Para la transicion
+        }
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //si se colisiona con la pared cambia de direccion
-        //vuelve a sincronizar el tiempo
+        //si se colisiona con un objeto(pared)
+        //se cambia de direccion
+        //y reinicia el tiempo de movimiento
         if (collision.gameObject.CompareTag("Pared"))
         {
-            direction *= -1;
-            duracion = 0;
+            _direction *= -1;
+            CambioDireccion();
         }
     }
 
@@ -119,17 +140,17 @@ public class EnemyAK : MonoBehaviour
     // Ejemplo: GetPlayerController
     public int GetDirection()
     {
-        return direction;   //devolver la direccion del enemigo para detectar con el jugador
+        return _direction;   //devolver la direccion del enemigo para detectar con el jugador
     }
 
     //devolver el valor booleano si está realizando esta acción
     public void SetChasing(bool chasing)
     {
-        isChasing = chasing;
+        _isChasing = chasing;
     }
     public void SetShooting(bool shooting)
     {
-        isShooting = shooting;
+        _isShooting = shooting;
     }
     #endregion
 
@@ -139,18 +160,35 @@ public class EnemyAK : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    private void Perseguir()
+    {
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+    }
     private void MovAuto()
     {
-        //el enemigo mueve en un tiempo determinado
-        //si pasa el tiempo cambia de dirección
-        //y se vuelve a sincronizar el tiempo
-        duracion+= Time.deltaTime;
-        rb.linearVelocity= new Vector2(direction * speed, rb.linearVelocity.y);
-        if(duracion > time)
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+    }
+
+    private void CambioDireccion()
+    {
+        transform.localScale = new Vector3(_direction, 1, 1);
+    }
+    private void LimitarMov()
+    {
+        Bounds b = plataforma.bounds;   //definir rango de la plataforma
+
+        float x = transform.position.x;
+        if (x <= b.min.x && _direction==-1)     //llega lim izq , cambio dir
         {
-            direction *= -1;
-            duracion=0;
+            _direction = 1;
+            CambioDireccion();
         }
+        else if (x >= b.max.x && _direction==1) //llega lim der, cambio dir
+        {
+            _direction = -1;
+            CambioDireccion();
+        }
+        x = Mathf.Clamp(x, b.min.x, b.max.x);   //movimiento dentro de plataforma
     }
     #endregion   
 

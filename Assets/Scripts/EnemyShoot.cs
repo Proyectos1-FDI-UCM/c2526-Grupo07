@@ -45,6 +45,7 @@ public class EnemyShoot : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float minInterval;
+    private bool _canShoot;
     Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
 
     #endregion
@@ -70,6 +71,8 @@ public class EnemyShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (!_canShoot) return;
+
         float now = Time.time;
 
         if (now - HoraDisparo > minInterval)
@@ -92,7 +95,10 @@ public class EnemyShoot : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-
+    public void SetCanShoot(bool canShoot)
+    {
+        _canShoot = canShoot;
+    }
     #endregion
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados

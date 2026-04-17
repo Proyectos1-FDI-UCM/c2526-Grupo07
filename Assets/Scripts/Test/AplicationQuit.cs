@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class ColisionDamage : MonoBehaviour
+public class AplicationQuit : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,11 +22,9 @@ public class ColisionDamage : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private int Damage; //Daño que recibe el jugador al chocar
 
     #endregion
-
+    
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -61,14 +59,6 @@ public class ColisionDamage : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        PlayerController player = collision.GetComponent<PlayerController>();
-        if (player != null)
-        {
-            GameManager.Instance.RestarVida(Damage);
-        }
-    }
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -80,15 +70,18 @@ public class ColisionDamage : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-
+    
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    public void Exit()
+    {
+        Application.Quit();
+    }
+    #endregion   
 
-    #endregion
-
-} // class ColisionDammage 
+} // class AplicationQuit 
 // namespace

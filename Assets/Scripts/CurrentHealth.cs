@@ -23,6 +23,7 @@ public class CurrentHealth : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private int health;    //cantidad de vida que cura
+    [SerializeField] private GameObject ParticulasCura;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -61,6 +62,7 @@ public class CurrentHealth : MonoBehaviour
         {
             UsePotion();
         }
+        PotionCount = GameManager.Instance.CantidadBotiquines();
     }
     #endregion
 
@@ -87,8 +89,12 @@ public class CurrentHealth : MonoBehaviour
         if (PotionCount > 0)
         {
             PotionCount--;
-            GameManager.Instance.Healt(health);
+            GameManager.Instance.CurarVida(health);
             GameManager.Instance.UsarBotiquin();
+            if (ParticulasCura != null)
+            {
+                Instantiate(ParticulasCura, transform.position, Quaternion.identity, transform);
+            }
         }
         else Debug.Log("ERROR: no hay consumible para utilizar");
     }
@@ -99,7 +105,6 @@ public class CurrentHealth : MonoBehaviour
         //desaparece de la pantalla
         if (collision.CompareTag("Potion"))
         {
-            PotionCount++;
             Destroy(collision.gameObject);
         }
     }

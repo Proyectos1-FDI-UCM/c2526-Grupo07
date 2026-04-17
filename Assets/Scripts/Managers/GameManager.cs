@@ -36,17 +36,11 @@ public class GameManager : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private int MaxHealthPoints; //Puntos de vida ACTUALES del personaje
-    [SerializeField]
-    private int MaxGranadas;
-    [SerializeField]
-    private GameObject PanelVictory;
-    [SerializeField]
-    private int MaxBotiquin;
-    [SerializeField]
-    private int MaxHealthInitial; //Vida máxima del jugador
-    //private Transform BarraVida;
+
+    //Cantidad máxima de atributos
+    [SerializeField] private int MaxGranadas;    //Cantidad máx de granadas
+    [SerializeField] private int MaxBotiquin;    //Cantidad máx de botiquines
+    [SerializeField] private int MaxVidaInicial; //Vida máxima del jugador
 
     #endregion
 
@@ -59,20 +53,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private static GameManager _instance;
     private float Scale;
+
+    //Cantidad de los distintos objetos y la vida
+    private int _vidaActual;     //Puntos de vida ACTUALES del personaje
+    private int _cargador;       //Ver la situación del cargador
+    private int _balasMax = 0;   //Ver las balas maximas de esa arma
+    private int _granadas = 0;   //Cantidad de granadas actuales
+    private int _botiquines = 0; //Cantidad de botiquines actuales
+
+    //Atributos auxiliares para controlar los objetos durante el cambio de escena
+    private int _vidaActualAux;
+    private int _cargadorAux;
+    private int _balasMaxAux = 0;
+    private int _granadasAux = 0;
+    private int _botiquinesAux = 0;
     
-    private int numGranadas;
-    private int Cargador; //Ver la situación del cargador
-    private int BalasMax = 0; //Ver las balas maximas de esa arma
-    private int granadas = 0;
-    private int botiquines = 0;
-
-    private int numGranadasAux;
-    private int CargadorAux;
-    private int BalasMaxAux = 0;
-    private int granadasAux = 0;
-    private int botiquinesAux = 0;
-    private int vidaActualAux = 0;
-
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -114,7 +109,7 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
             Init();
         } // if-else somos instancia nueva o no. 
-        MaxHealthPoints = MaxHealthInitial;
+        _vidaActual = MaxVidaInicial;
     }
 
     /// <summary>
@@ -123,9 +118,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
         TransferManagerSetup();
-        //Scale = BarraVida.localScale.x;
     }
    
     /// <summary>
@@ -139,7 +132,9 @@ public class GameManager : MonoBehaviour
             _instance = null;
         } // if somos la instancia principal
     }
-
+    public void Update()
+    {
+    }
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -157,8 +152,6 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-
-    
 
     /// <summary>
     /// Devuelve cierto si la instancia del singleton está creada y
@@ -198,50 +191,59 @@ public class GameManager : MonoBehaviour
         System.GC.Collect();
     } // ChangeScene
 
-    public void HealthPoints(int Damage)
+    //Método para restar la vida del personaje
+    public void RestarVida(int Damage)
     {
-        //si la bala colisiona con el jugador llama a este metodo
-        MaxHealthPoints -= Damage; // restar la vida del jugador
-        //BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale*Damage/ MaxHealthInitial)),0.5f); //acortar la barra de vida
-        // como se acorta en los dos extremos, muevo la barra de vida hacia la izquierda
-        //BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / MaxHealthInitial) /2f), BarraVida.position.y); 
-        TransferManagerSetup();
-        if (MaxHealthPoints <1) // si llega a cero, muere
+        _vidaActual -= Damage; // Restar la vida del jugador
+        if (_vidaActual <1)    // Si vida actual llega a 0, se llama a GameOver
         {
-            MaxHealthPoints = 0;
+            _vidaActual = 0;   //Para que la vida no salga en negativo
             LevelManager.Instance.GameOver();
-            //BarraVida.localScale = new Vector2(0f,0f);
         }
-    }
-    public void Municion(int balasMax, int balasAct)
-    {
-        Cargador = balasAct;
-        BalasMax = balasMax;
         TransferManagerSetup();
     }
+    //Método para curar la vida del personaje
+    public void CurarVida(int vida)
+    {
+        _vidaActual += vida;
+        if (_vidaActual > MaxVidaInicial) _vidaActual = MaxVidaInicial;
+        TransferManagerSetup();
+    }
+    //Método llamado por script "AimShoot" para las balas
+    public void SetMunicion(int balasMax, int balasAct)
+    {
+        _cargador = balasAct;
+        _balasMax = balasMax;
+        TransferManagerSetup();
+    }
+    //Método llamado cuando se usan granadas
     public void UsarGranadas()
     {
-        granadas--;
+        _granadas--;
         TransferManagerSetup();
     }
+    //Método llamado cuando se guardan granadas
     public void GuardarGranadas()
     {
-        granadas++;
+        _granadas++;
         TransferManagerSetup();
     }
+    //Método llamado cuando se usan botiquines
     public void UsarBotiquin()
     {
-        botiquines--;
+        _botiquines--;
         TransferManagerSetup();
     }
+    //Método llamado cuando se guardan botiquines
     public void GuardarBotiquines()
     {
-        botiquines++;
+        _botiquines++;
         TransferManagerSetup();
     }
+    //Método que devuelve true si el inventario de granadas esta lleno
     public bool GranadasFull()
     {
-        if (granadas == MaxGranadas)
+        if (_granadas == MaxGranadas)
         {
             return true;
         }
@@ -250,9 +252,10 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
+    //Método que devuelve true si el inventario de botiquines esta lleno
     public bool BotiquinesFull()
     {
-        if (botiquines == MaxBotiquin)
+        if (_botiquines == MaxBotiquin)
         {
             return true;
         }
@@ -261,81 +264,64 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
+    //Método que devuelve la cantidad de granadas actuales
     public int CantidadGranadas()
     {
-        return granadas;
+        return _granadas;
     }
+    //Método que devuelve la cantidad de botiquines actuales
     public int CantidadBotiquines()
     {
-        return botiquines;
+        return _botiquines;
     }
+    //Método para reiniciar la escena
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    public void Healt(int vida)
-    {
-        //Sumamos la cantidad de vida que quiere curar
-        //y guardar la nueva vida (vida curada)
-        MaxHealthPoints += vida;
-        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
-        TransferManagerSetup();
-    }
-    public void RestLife(int vida)
-    {
-        MaxHealthPoints -= vida;
-        if (MaxHealthPoints > MaxHealthInitial) MaxHealthPoints = MaxHealthInitial;
-        TransferManagerSetup() ;
     }
 
     //Metodo para poder acceder a la vida maxima desde otro script
     public int GetVidaMaxima()
     {
-        return MaxHealthInitial;
+        return MaxVidaInicial;
     }
     //Metodo para poder acceder a la vida actual desde otro script
     public int GetVidaActual()
     {
-        return MaxHealthPoints;
+        return _vidaActual;
     }
     //Metodo para mandar el estado del nivel al LevelManager
     public void TransferManagerSetup()
     {
         if (LevelManager.Instance != null)
         {
-            LevelManager.Instance.RecogerEstado(Cargador, BalasMax);
+            LevelManager.Instance.RecogerEstado(_cargador, _balasMax);
         }
     }
     //Metodo para retomar los datos que habian al inicio del nivel
     public void RestableceDatos()
     {
-        numGranadas = numGranadasAux;
-        Cargador = CargadorAux;
-        BalasMax = BalasMaxAux;
-        granadas = granadasAux;
-        botiquines = botiquinesAux;
-        MaxHealthPoints = vidaActualAux;
+        _cargador = _cargadorAux;
+        _balasMax = _balasMaxAux;
+        _granadas = _granadasAux;
+        _botiquines = _botiquinesAux;
+        _vidaActual = _vidaActualAux;
     }
     //Metodo para guardar los datos del inicio del nivel
     public void GuardarDatos(int escena)
     {
         if (escena == 1)
         {
-            MaxHealthPoints = MaxHealthInitial;
-            Cargador = BalasMax;
-            granadas = 0;
-            botiquines = 0;
+            _vidaActual = MaxVidaInicial;
+            _cargador = _balasMax;
+            _granadas = 0;
+            _botiquines = 0;
         }
-        numGranadasAux = numGranadas;
-        CargadorAux = Cargador;
-        BalasMaxAux = BalasMax;
-        granadasAux = granadas;
-        botiquinesAux = botiquines;
-        vidaActualAux = MaxHealthPoints;
-    }
-    public void SalirJuego()
-    {
-        Application.Quit();
+        _cargadorAux = _cargador;
+        _balasMaxAux = _balasMax;
+        _granadasAux = _granadas;
+        _botiquinesAux = _botiquines;
+        _vidaActualAux = _vidaActual;
     }
     #endregion
 

@@ -168,7 +168,7 @@ public class Explosion : MonoBehaviour
                     }
                     else if(Player != null)
                     {
-                        GameManager.Instance.HealthPoints(Damage);
+                        GameManager.Instance.RestarVida(Damage);
                         Player.RedFlash();
                     }
                 }

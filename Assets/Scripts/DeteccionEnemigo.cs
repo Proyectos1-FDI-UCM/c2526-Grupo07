@@ -77,40 +77,38 @@ public class DeteccionEnemigo : MonoBehaviour
         float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
         float distanciaY= Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
 
-        bool dirCambiada = false;
-
         // Solo actúa si el jugador está en la dirección que mira
-        if (move.GetDirection()==1 && DirToPlayer>0)    //cuando mira a la derecha
-        {
-            dirCambiada= true;
-        }
-        if (move.GetDirection() == -1 && DirToPlayer < 0)   //cuando mira a la izquierda
-        {
-            dirCambiada = true;
-        }
+        //devolver la direccion correcta del jugador
+        bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||     
+                           (move.GetDirection() == -1 && DirToPlayer < 0);
+        bool canSeePlayer = dirCambiada && distanciaY <= alturaMax;     //cuándo detecta el jugador
 
-        //se detecta si el jugador está en la direccion del enemigo
-        if (distanceX < ShootDis && dirCambiada==true && distanciaY<=alturaMax)   //jugador dentro de la "caja" pequeña
+        //antes de ello desactivamos la acción
+        move.SetChasing(false);
+        move.SetShooting(false);
+        shoot.SetCanShoot(false);
+        if (distanceX < ShootDis && canSeePlayer)   //jugador dentro de la "caja" pequeña
         {
             move.SetShooting(true);
+            shoot.SetCanShoot(true);
+
             excl.SetActive(true);
-            move.SetChasing(false);
-            if (shoot != null)
+            /*if (shoot != null)
             {
-                shoot.enabled = true;   //activar disparo al jugador
-            }
-            time = forgetTime;  //reinicia el tiempo
+                shoot.enabled = true;   //activar disparo
+            }*/
+            time = forgetTime;
         }
-        else if (distanceX <= ChaseDis && distanceX > ShootDis && dirCambiada == true && distanciaY<=alturaMax)    //"caja" grande
+        else if (distanceX < ChaseDis && distanceX > ShootDis && canSeePlayer)    //"caja" grande
         {
             move.SetChasing(true);
+
             excl.SetActive(true);
-            move.SetShooting(false);
-            if (shoot != null)
+            /*if (shoot != null)
             {
-                shoot.enabled = false;   //desactivar disparo al jugador
-            }
-            time = forgetTime;  //reinicia el tiempo
+                shoot.enabled = false;
+            }*/
+            time = forgetTime;
         }
         else //fuera de la distancia
         {
@@ -118,22 +116,23 @@ public class DeteccionEnemigo : MonoBehaviour
             time -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
             if (time <= 0)
             {
-                excl.SetActive(false);
                 move.SetShooting(false);
                 move.SetChasing(false);
-                if (shoot != null)
+                shoot.SetCanShoot(false);
+                excl.SetActive(false);
+                /*if (shoot != null)
                 {
                     shoot.enabled = false;   //desactivar disparo al jugador
-                }
+                }*/
             }
         }
     } 
     void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis, ShootDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis*2, ShootDis, 0));
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis,ChaseDis,0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis*2,ChaseDis,0));
     }
 
     // ---- MÉTODOS PÚBLICOS ----

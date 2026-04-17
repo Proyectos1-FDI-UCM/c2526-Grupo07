@@ -5,8 +5,6 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -15,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class TimerController : MonoBehaviour
+public class FlashRedAux : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -24,7 +22,7 @@ public class TimerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] public TextMeshProUGUI timerText;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -35,24 +33,28 @@ public class TimerController : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float timeSec;
-    private float timeMin;
+    private SpriteRenderer sr;
+    private bool redFlash = false;
+    float flashDuration = 0.1f;
+    float now;
+    Color OriginalColor;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
-        
+        sr = GetComponent<SpriteRenderer>();
+        OriginalColor = sr.color;
     }
 
     /// <summary>
@@ -60,25 +62,16 @@ public class TimerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        timeSec += Time.deltaTime;
-        if (timeSec>60)
+        if (redFlash)
         {
-            timeSec = 0;
-            timeMin++;
+            now += Time.deltaTime;
+            if (now > flashDuration)
+            {
+                sr.color = OriginalColor;
+                now = 0;
+                redFlash = false;
+            }
         }
-        if (timeSec < 10 && timeMin < 10)
-        {
-            timerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
-        }
-        else if (timeSec > 10 && timeMin < 10)
-        {
-            timerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
-        }
-        else
-        {
-            timerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
-        }
-        Debug.Log(timeMin * 60 + timeSec);
     }
     #endregion
 
@@ -89,12 +82,13 @@ public class TimerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public float GetTimeSeconds()
+    public void RedFlash()
     {
-        return timeMin * 60 + timeSec;
+        sr.color = Color.red;
+        redFlash = true;
     }
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -102,7 +96,7 @@ public class TimerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion   
+    #endregion
 
-} // class TimerController 
+} // class FlashRedAux 
 // namespace

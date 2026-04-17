@@ -5,7 +5,6 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 using UnityEngine.Animations;
 // Añadir aquí el resto de directivas using
@@ -72,7 +71,7 @@ public class LogicaFuego : MonoBehaviour
         if (player != null)
         {
             //Llama al GameManager para bajar vida
-            GameManager.Instance.HealthPoints(Daño);
+            GameManager.Instance.RestarVida(Daño);
         }
     }
     #endregion

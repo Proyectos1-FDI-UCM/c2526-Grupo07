@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class DeteccionEnemyAK : MonoBehaviour
+public class DeteccionAK : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,12 +22,11 @@ public class DeteccionEnemyAK : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
+    [SerializeField] private Transform player;  //objeto que persigue y dispara (jugador)
     [SerializeField] private float ChaseDis;    //distancia para perseguir
-    [SerializeField] private float ShootDis;    //distancia para disparo
-    [SerializeField] private Transform player;
-    [SerializeField] private int alturaMax;
-
-
+    [SerializeField] private float ShootDis;  //distancia para disparo
+    [SerializeField] private float alturaMax; //altura max para detectar al jugador
+    [SerializeField] private GameObject excl;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,9 +37,10 @@ public class DeteccionEnemyAK : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float perTime = 0;
-    private float forgetTime = 3;   //tiempo que deja de perseguir al jugador
-    private EnemyAK move;
+    private float forgetTime = 3;   //tiempo para dejar de perseguir
+    private float time = 0;
+    private EnemyAK move;   //script de movimiento de enemigo
+    private EnemyShoot shoot;   //script de disparo de enemigo
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -56,52 +56,66 @@ public class DeteccionEnemyAK : MonoBehaviour
     /// </summary>
     void Start()
     {
-        move= GetComponent<EnemyAK>();
+        move = GetComponent<EnemyAK>();
+        shoot = GetComponent<EnemyShoot>();
+        excl.SetActive(false);
     }
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
     void Update()
     {
-        float dirPlayer = player.position.x - transform.position.x;  //dirección que persigue hacia el jugador
-        //calculamos la distancia entre jugador y enemigo
-        float disX = Mathf.Abs(dirPlayer);
-        float disY = Mathf.Abs(player.position.y - transform.position.y);
-        bool dirCorrecta = false;
+        float DirToPlayer = player.position.x - transform.position.x;   //dirección hacia el jugador
 
-        if (move.GetDirection() == 1 && dirPlayer > 0) dirCorrecta = true;  //si mira a la derecha
-        if (move.GetDirection() == -1 && dirPlayer < 0) dirCorrecta = true;  //si mira a la izquierda
+        float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
+        float distanciaY = Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
 
-        if (disX < ShootDis && dirCorrecta == true && disY <= alturaMax)   //jugador dentro de la "caja" pequeña
+        // Solo actúa si el jugador está en la dirección que mira
+        //devolver la direccion correcta del jugador
+        bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||
+                           (move.GetDirection() == -1 && DirToPlayer < 0);
+        bool canSeePlayer = dirCambiada && distanciaY <= alturaMax;     //cuándo detecta el jugador
+
+        //antes de ello desactivamos la acción
+        move.SetChasing(false);
+        move.SetShooting(false);
+        shoot.SetCanShoot(false);
+        if (distanceX < ShootDis && canSeePlayer)   //jugador dentro de la "caja" pequeña
         {
             move.SetShooting(true);
-            move.SetChasing(false);
-            perTime = forgetTime;
+            shoot.SetCanShoot(true);
+
+            excl.SetActive(true);
+            time = forgetTime;  //reinicia el tiempo
         }
-        else if (disX <= ChaseDis && disX > ShootDis && dirCorrecta == true && disY <= alturaMax)
+        else if (distanceX <= ChaseDis && distanceX > ShootDis && canSeePlayer)    //"caja" grande
         {
             move.SetChasing(true);
-            move.SetShooting(false);
-            perTime = forgetTime;
+            excl.SetActive(true);
+            
+            time = forgetTime;  //reinicia el tiempo
         }
-
-        else     //fuera de la distancia
+        else //fuera de la distancia
         {
-            perTime -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
-            if (perTime <= 0)
+            excl.SetActive(true);
+            time -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
+            if (time <= 0)
             {
-                move.SetChasing(false);
+                //excl.SetActive(false);
                 move.SetShooting(false);
+                move.SetChasing(false);
+                shoot.SetCanShoot(false);
+                excl.SetActive(false);
+                if (shoot != null)
+                {
+                    shoot.enabled = false;   //desactivar disparo al jugador
+                }
             }
         }
     }
-    void OnDrawGizmos()
+    void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis*2, ShootDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis * 2, ShootDis, 0));
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis*2, ChaseDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis * 2, ChaseDis, 0));
     }
     #endregion
 
@@ -124,5 +138,5 @@ public class DeteccionEnemyAK : MonoBehaviour
 
     #endregion
 
-} // class DeteccionEnemyAK 
+} // class DeteccionAK 
 // namespace
