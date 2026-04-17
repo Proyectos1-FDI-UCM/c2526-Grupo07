@@ -66,34 +66,42 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     
     private static LevelManager _instance;
-
+    
+    //Vida
     private int _vidaActual; //Vida actual del jugador
     private int _vidaMax;    //Vida máxima del jugador
 
+    //Balas y munición
     private int _cargador;     //Situación del cargador
     private int _maxBalas = 0; //Balas maximas de esa arma
 
+    //Objetos
     private int _granadas = 0;   //Cantidad de granadas
     private int _botiquines = 0; //Cantidad de botiquines
 
-    private bool _juegoTerminado= false; //True si el juego termina
-
+    //Tiempo
     private float timeSec;   //Tiempo en segundos
     private float timeMin;   //Tiempo en minutos
     private float timeTotal; //Tiempo total en segundos
     private bool _isRunning; // determina si esta parado o no (usado para la pausa)
 
+    //Rehenes
     private int numRehenes; //Número de rehenes en el mapa
+
     //Player
     private PlayerController player;
     private AimShoot playerShoot;
+
     //Enemy
     private MoveEnemigo enemy;
     private EnemyShoot enemyShoot;
+
     //Boss
     private BossDash bossDash;
     private AtaqueJefe bossGranada;
     private LanzallamasJefe bossLanzallamas;
+
+    private bool _juegoTerminado = false; //True si el juego termina
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -107,7 +115,7 @@ public class LevelManager : MonoBehaviour
             // Somos la primera y única instancia
             _instance = this;
             Init();
-            //Desactivar paneles
+            // Desactivar paneles
             GameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
             PanelPausa.SetActive(false);
@@ -239,11 +247,14 @@ public class LevelManager : MonoBehaviour
         _isRunning = false;
         PanelPausa.SetActive(true);
 
+        if (IsFinalLevel)
+        {
+            bossDash.BossDashPause();
+            bossGranada.BossGranadaPause();
+            bossLanzallamas.BossLanzallamasPause();
+        }
         enemy.EnemyPause();
         enemyShoot.EnemyShootPausado();
-        bossDash.BossDashPause();
-        bossGranada.BossGranadaPause();
-        bossLanzallamas.BossLanzallamasPause();
         player.PlayerPause();
         playerShoot.PlayerShootPause();
     }
@@ -254,11 +265,14 @@ public class LevelManager : MonoBehaviour
         _isRunning = true;
         PanelPausa.SetActive(false);
 
+        if (IsFinalLevel)
+        {
+            bossDash.BossDashContinue();
+            bossGranada.BossGranadaContinue();
+            bossLanzallamas.BossLanzallamasContinue();
+        }
         enemy.EnemyContinue();
         enemyShoot.EnemyShootContinue();
-        bossDash.BossDashContinue();
-        bossGranada.BossGranadaContinue();
-        bossLanzallamas.BossLanzallamasContinue();
         player.PlayerContinue();
         playerShoot.PlayerShootContinue();
     }

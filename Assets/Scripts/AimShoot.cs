@@ -35,8 +35,8 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private float Cadencia = 1f;    //Balas por segundo
 
     //Sprites armas
-    [SerializeField] private GameObject SpritePistola;
-    [SerializeField] private GameObject SpriteRifle;
+    [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
+    [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
 
     //Recarga
     [SerializeField] private int Cargador = 10;        //Número de balas que se pueden disparar
@@ -115,6 +115,7 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
+        //Si el juego esta pausado no puede disparar
         if (pausado)
         {
             canShoot = false;
@@ -208,6 +209,8 @@ public class AimShoot : MonoBehaviour
     {
         return Camera.main.ScreenToWorldPoint(_mousePosition);
     }
+
+    //Método para cambiar de arma(lineal)
     public void CambioDeArma()
     {
         if (_armaActual == "Pistola")
@@ -281,6 +284,7 @@ public class AimShoot : MonoBehaviour
             SpriteRecarga.SetActive(false);
         }
     }
+    //Método llamado si se cambia a la pistola
     private void SetPistola()
     {
         _balasActuales = _balasActualesPistola;
@@ -294,6 +298,7 @@ public class AimShoot : MonoBehaviour
         SpritePistola.SetActive(true);
         SpriteRifle.SetActive(false);
     }
+    //Método llamado si se cambia al AK47
     private void SetRifle()
     {
         if (GameManager.Instance.TieneAK47())

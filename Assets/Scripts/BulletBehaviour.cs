@@ -22,12 +22,9 @@ public class BulletBehaviour : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float vidaMaxima = 3f; // Tiempo antes de destruirse una bala
-    [SerializeField] private float speed = 10f; // Velocidad de la bala
-    [SerializeField] private Aim aimVector;
-    [SerializeField] private int Damage;
-    private Vector2 velIn; // Velocidad de la bala
-
+    [SerializeField] private float DestroyTime = 3f; // Tiempo antes de destruirse una bala
+    [SerializeField] private float Speed = 10f;      // Velocidad de la bala
+    [SerializeField] private int Damage;             //Daño de la bala
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,8 +35,9 @@ public class BulletBehaviour : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float createBulletMoment; //Cuanto tiempo lleva la bala x creada
-    Rigidbody2D rb;
+
+    private float _createBulletMoment; //Cuanto tiempo lleva la bala x creada
+    private Rigidbody2D _rb; //RigidBody para manipular la velocidad de la bala
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -55,8 +53,9 @@ public class BulletBehaviour : MonoBehaviour
     /// </summary>
     void Start()
     {
-        createBulletMoment = Time.time;
+        _createBulletMoment = Time.time;
 
+        /*
         if (aimVector != null)
         {
             Vector3 dir = aimVector.AimDir(); // Usa tu método existente
@@ -73,7 +72,7 @@ public class BulletBehaviour : MonoBehaviour
                 Vector2 velocity = new Vector2(dir.x * factor, dir.y * factor);
                 rb.linearVelocity = velocity;
             }
-        }
+        }*/
     }
     private void OnTriggerEnter2D(Collider2D colision)
     {
@@ -88,7 +87,7 @@ public class BulletBehaviour : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Time.time - createBulletMoment > vidaMaxima) //Destruccion si la bala pasa un tiempo determinado, si el Time.time - el momento creacion bala es mayor que su vida
+        if (Time.time - _createBulletMoment > DestroyTime) //Destruccion si la bala pasa un tiempo determinado, si el Time.time - el momento creacion bala es mayor que su vida
         {
             Destroy(gameObject);
         }
@@ -107,9 +106,9 @@ public class BulletBehaviour : MonoBehaviour
     //Método llamado por disparo y apuntado para determinar la dirección de la bala
     public void Dir(Vector2 dir)
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         transform.right = dir;
-        rb.linearVelocity = (dir.normalized * speed);
+        _rb.linearVelocity = (dir.normalized * Speed);
     }
     #endregion
 

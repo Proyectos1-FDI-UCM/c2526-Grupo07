@@ -277,10 +277,12 @@ public class GameManager : MonoBehaviour
     {
         return _botiquines;
     }
+    //Método que guarda el ak47 al inventario
     public void RecogerAK47()
     {
         AK47 = true;
     }
+    //Método que confirma si el ak47 está en el inventario o no
     public bool TieneAK47()
     {
         return AK47;
