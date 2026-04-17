@@ -23,6 +23,7 @@ public class Recolect : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private TipoObjeto Objeto;
+    [SerializeField] private TipoArma Arma;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -35,8 +36,15 @@ public class Recolect : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private enum TipoObjeto
     {
+        None,
         Granada,
         Botiquin
+    }
+    private enum TipoArma
+    {
+        None,
+        AK47,
+        Lanzallamas
     }
 
     #endregion
@@ -69,15 +77,26 @@ public class Recolect : MonoBehaviour
         PlayerController player = other.GetComponent<PlayerController>();
         if (player != null && other != null)
         {
-            if (Objeto == TipoObjeto.Granada && GameManager.Instance.GranadasFull() == false)
+            if (Objeto != TipoObjeto.None)
             {
-                GameManager.Instance.GuardarGranadas();
-                Destroy(gameObject);
+                if (Objeto == TipoObjeto.Granada && GameManager.Instance.GranadasFull() == false)
+                {
+                    GameManager.Instance.GuardarGranadas();
+                    Destroy(gameObject);
+                }
+                else if (Objeto == TipoObjeto.Botiquin && GameManager.Instance.BotiquinesFull() == false)
+                {
+                    GameManager.Instance.GuardarBotiquines();
+                    Destroy(gameObject);
+                }
             }
-            if (Objeto == TipoObjeto.Botiquin && GameManager.Instance.BotiquinesFull() == false)
+            else if (Arma != TipoArma.None)
             {
-                GameManager.Instance.GuardarBotiquines();
-                Destroy(gameObject);
+                if (Arma == TipoArma.AK47 && !GameManager.Instance.TieneAK47())
+                {
+                    GameManager.Instance.RecogerAK47();
+                    Destroy(gameObject);
+                }
             }
         }
     }

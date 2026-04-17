@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.Rendering;
 // Añadir aquí el resto de directivas using
 
 
@@ -28,9 +29,14 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private int NumGranadas;    //Numero de granadas que se tiene
 
     //Balas
-    [SerializeField] private GameObject Bala;      //Objeto Bala que se crea al Dispara
-    [SerializeField] private Transform SalidaBala; //Posición donde saldrá la bala
-    [SerializeField] private float Cadencia = 1f;  //Balas por segundo
+    [SerializeField] private GameObject BalaPistola; //Objeto Bala de pistola que se crea al Dispara
+    [SerializeField] private GameObject BalaRifle;   //Objeto Bala de pistola que se crea al Dispara
+    [SerializeField] private Transform SalidaBala;   //Posición donde saldrá la bala
+    [SerializeField] private float Cadencia = 1f;    //Balas por segundo
+
+    //Sprites armas
+    [SerializeField] private GameObject SpritePistola;
+    [SerializeField] private GameObject SpriteRifle;
 
     //Recarga
     [SerializeField] private int Cargador = 10;        //Número de balas que se pueden disparar
@@ -50,10 +56,26 @@ public class AimShoot : MonoBehaviour
 
     //Direcciones de apuntado
     Vector3 _direction, _lastMousePos, _mousePosition; //Direcciones para disparar
+    private GameObject Bala; //Bala actual que sale
 
     //Disparo
     private float _tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
-    private int _balasActuales;        //Balas disponibles en el cargador
+    private int _balasActuales;        //Balas actuales
+
+    //Pistola
+    private int _balasActualesPistola;   //Balas disponibles en el cargador pistola
+    private const float _cadenciaPistola = 2f;   //Intervalo de disparo de la pistola
+    private const int _cargadorPistola = 10;     //Cargador de la pistola
+    private const int _tiempoRecargaPistola = 2; //Tiempo que tarda la pistola en recargar
+
+    //Rifle
+    private int _balasActualesRifle;     //Balas disponibles en el cargador rifle
+    private const float _cadenciaRifle = 10f;    //Intervalo de disparo de el rifle
+    private const int _cargadorRifle = 30;       //Cargador del rifle
+    private const int _tiempoRecargaRifle = 3;   //Tiempo que tarda el rifle en recargar
+
+    //Cambio de arma
+    private string _armaActual; //Arma actual que se usa
 
     //Recarga
     private bool _recargando = false;  //No está recargando, por ahora
@@ -74,9 +96,14 @@ public class AimShoot : MonoBehaviour
     void Start()
     {
         SpriteRecarga.SetActive(false);
+        SpriteRifle.SetActive(false);
         _direction = transform.position;
         _mousePosition = InputManager.Instance.GetAimMouseValue();
         _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
+        _balasActualesPistola = 10;
+        _balasActualesRifle = 30;
+        Bala = BalaPistola;
+        _armaActual = "Pistola";
         Debug.Log("Balas: " + _balasActuales);
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
     }
@@ -153,6 +180,10 @@ public class AimShoot : MonoBehaviour
                 }
             }
         }
+        if (InputManager.Instance.ChangeWeaponWasPressedThisFrame())
+        {
+            CambioDeArma();
+        }
     }
     #endregion
 
@@ -170,6 +201,19 @@ public class AimShoot : MonoBehaviour
     public Vector3 MousePos()
     {
         return Camera.main.ScreenToWorldPoint(_mousePosition);
+    }
+    public void CambioDeArma()
+    {
+        if (_armaActual == "Pistola")
+        {
+            _balasActualesPistola = _balasActuales;
+            SetRifle();
+        }
+        else if (_armaActual == "Rifle")
+        {
+            _balasActualesRifle = _balasActuales;
+            SetPistola();
+        }
     }
     #endregion
 
@@ -211,6 +255,35 @@ public class AimShoot : MonoBehaviour
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
         Debug.Log("Balas: " + _balasActuales);
         SpriteRecarga.SetActive(false);
+    }
+    private void SetPistola()
+    {
+        _balasActuales = _balasActualesPistola;
+        Cargador = _cargadorPistola;
+        Cadencia = _cadenciaPistola;
+        TiempoRecarga = _tiempoRecargaPistola;
+        Bala = BalaPistola;
+        _armaActual = "Pistola";
+        Debug.Log("Cambiado a pistola");
+        GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+        SpritePistola.SetActive(true);
+        SpriteRifle.SetActive(false);
+    }
+    private void SetRifle()
+    {
+        if (GameManager.Instance.TieneAK47())
+        {
+            _balasActuales = _balasActualesRifle;
+            Cargador = _cargadorRifle;
+            Cadencia = _cadenciaRifle;
+            TiempoRecarga = _tiempoRecargaRifle;
+            Bala = BalaRifle;
+            _armaActual = "Rifle";
+            Debug.Log("Cambiado a rifle");
+            GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+            SpritePistola.SetActive(false);
+            SpriteRifle.SetActive(true);
+        }
     }
     #endregion
 

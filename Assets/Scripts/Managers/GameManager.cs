@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
     private int _granadas = 0;   //Cantidad de granadas actuales
     private int _botiquines = 0; //Cantidad de botiquines actuales
 
+    //Inventario armas
+    private bool AK47 = false; //Inventario interno para ver si tiene rifle o no
+
     //Atributos auxiliares para controlar los objetos durante el cambio de escena
     private int _vidaActualAux;
     private int _cargadorAux;
@@ -273,6 +276,14 @@ public class GameManager : MonoBehaviour
     public int CantidadBotiquines()
     {
         return _botiquines;
+    }
+    public void RecogerAK47()
+    {
+        AK47 = true;
+    }
+    public bool TieneAK47()
+    {
+        return AK47;
     }
     //Método para reiniciar la escena
     public void ResetScene()

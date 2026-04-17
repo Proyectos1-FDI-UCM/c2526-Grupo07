@@ -136,15 +136,14 @@ public class BulletBehaviour : MonoBehaviour
                 GameManager.Instance.RestarVida(Damage);
                 player.RedFlash();
             }
-            Destroy(gameObject);
         }
         else if (enemy != null)
         {
             enemy.EnemyHealthPoint(Damage);
             enemy.RedFlash();
-            Destroy(gameObject);
         }
-        
+        Destroy(gameObject);
+
     }
     #endregion
 

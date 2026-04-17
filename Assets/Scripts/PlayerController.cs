@@ -102,7 +102,6 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         SpriteJugador = GetComponent<SpriteRenderer>();
-
         _originalColor = SpriteJugador.color; //Guardar color original
     }
 
@@ -192,7 +191,7 @@ public class PlayerController : MonoBehaviour
         Vector2 dir1 = new Vector2(dir.x, dir.y);
         _canMove = false;
         _rb.linearVelocity = Vector2.zero;
-        if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.1f;
+        if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.2f;
         else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.1f;
         else if (dir.x < 0) dir1.x = -1f;
         else dir1.x = 1f;
