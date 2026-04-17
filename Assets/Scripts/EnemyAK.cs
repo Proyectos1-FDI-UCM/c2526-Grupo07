@@ -5,17 +5,15 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-
+using UnityEngine;
 // Añadir aquí el resto de directivas using
+
+
 /// <summary>
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-using System;
-using System.Collections;
-using UnityEngine;
-
-public class MoveEnemigo : MonoBehaviour
+public class EnemyAK : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -24,12 +22,13 @@ public class MoveEnemigo : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
-    [SerializeField] private float duracion;       //duracion de tiempo en movimiento 
-    [SerializeField] private float duracionQuieto; // tiempo en que va a estar quieto
+    //[SerializeField] private float duracion;       //duracion de tiempo en movimiento 
+    //[SerializeField] private float duracionQuieto; // tiempo en que va a estar quieto
 
     [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player; //jugador para realizar las acciones
+    [SerializeField] private Collider2D plataforma;     //plataforma donde mueve el enemigo
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -40,19 +39,20 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-
     private bool _isChasing = false;  //controlar si está persiguiendo al jugador
     private bool _isShooting = false; //controlar si está disparando al jugador
     private int _direction = 1;       //direccion del enemigo
-    private float _tiempoInicio = 0;  //tiempo iniciado para el movimiento
-    private float _tiempoQuieto = 0;  //tiempo inicial en que va a estar quieto
+    //private float _tiempoInicio = 0;  //tiempo iniciado para el movimiento
+    //private float _tiempoQuieto = 0;  //tiempo inicial en que va a estar quieto
     private Rigidbody2D _rb;
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
+    //script disaro enemigoAK
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
@@ -67,6 +67,7 @@ public class MoveEnemigo : MonoBehaviour
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
@@ -75,59 +76,59 @@ public class MoveEnemigo : MonoBehaviour
         Vector2 offset = player.transform.position - transform.position;
         if (_isShooting)
         {
-            //cuando dispara se deja de mover
             _isChasing = false;
+            //cuando dispara se deja de mover
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
-             if (offset.x > 0 && _direction != 1)
-              {
-                 _direction *= -1;
-                 CambioDireccion();
-             }
-             if (offset.x < 0 && _direction != -1)
-             {
-                 _direction *= -1;
-                 CambioDireccion();
-             }
-             return;
-        }
-        if (_isChasing)
-        {
-             Perseguir();
-             if (offset.x > 0 && _direction != 1)
-             {
-                 _direction *= -1;
+            if (offset.x > 0 && _direction != 1)
+            {
+                _direction *= -1;
                 CambioDireccion();
-             }
+            }
             if (offset.x < 0 && _direction != -1)
             {
                 _direction *= -1;
                 CambioDireccion();
             }
-            _tiempoInicio = 0;
+            return;
+        }
+        if (_isChasing)
+        {
+            _isShooting = false;
+            Perseguir();
+            if (offset.x > 0 && _direction != 1)
+            {
+                _direction *= -1;
+                CambioDireccion();
+            }
+            if (offset.x < 0 && _direction != -1)
+            {
+                _direction *= -1;
+                CambioDireccion();
+            }
         }
         else MovAuto();
+        LimitarMov();
     }
     void FixedUpdate()
     {
-         if (_anim != null)
-         {
-             float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
-             _anim.SetFloat("enemySpeed", speed); //Para la transicion
-         }
+        if (_anim != null)
+        {
+            float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+            _anim.SetFloat("enemySpeed", speed); //Para la transicion
+        }
     }
-     void OnCollisionEnter2D(Collision2D collision)
-     {
-         //si se colisiona con un objeto(pared)
-         //se cambia de direccion
-         //y reinicia el tiempo de movimiento
-         if (collision.gameObject.CompareTag("Pared"))
-         {
-             _direction *= -1;
-             CambioDireccion();
-             _tiempoInicio = 0;
-         }
-     } 
-    
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        //si se colisiona con un objeto(pared)
+        //se cambia de direccion
+        //y reinicia el tiempo de movimiento
+        if (collision.gameObject.CompareTag("Pared"))
+        {
+            _direction *= -1;
+            CambioDireccion();
+        }
+    }
+
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -161,32 +162,35 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-         _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
     private void MovAuto()
     {
-            _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-            if (_tiempoInicio > duracion)
-            {
-                _tiempoQuieto += Time.deltaTime;
-                _rb.linearVelocity = Vector2.zero;
-                if (_tiempoQuieto > duracionQuieto)
-                {
-                    _direction *= -1;    //cambio de direccion, invertir
-                    CambioDireccion();
-                    _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-                    _tiempoQuieto = 0;
-                    _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
-                }
-            }
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
 
     private void CambioDireccion()
     {
         transform.localScale = new Vector3(_direction, 1, 1);
     }
-    #endregion
-}
- // class MoveEnemigo 
-  // namespace
+    private void LimitarMov()
+    {
+        Bounds b = plataforma.bounds;   //definir rango de la plataforma
+
+        float x = transform.position.x;
+        if (x <= b.min.x && _direction==-1)     //llega lim izq , cambio dir
+        {
+            _direction = 1;
+            CambioDireccion();
+        }
+        else if (x >= b.max.x && _direction==1) //llega lim der, cambio dir
+        {
+            _direction = -1;
+            CambioDireccion();
+        }
+        x = Mathf.Clamp(x, b.min.x, b.max.x);   //movimiento dentro de plataforma
+    }
+    #endregion   
+
+} // class EnemyAK 
+// namespace

@@ -218,7 +218,6 @@ public class LevelManager : MonoBehaviour
     public void Reiniciar()
     {
         Time.timeScale = 1;
-        GameManager.Instance.RestableceDatos();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void MenuInicial()
