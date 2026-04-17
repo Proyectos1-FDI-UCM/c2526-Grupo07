@@ -75,6 +75,7 @@ public class InputManager : MonoBehaviour
     private InputAction _changeWeapon;
     private InputAction _aimController;
     private InputAction _aimMouse;
+    //private InputAction _Pause;
 
     #endregion
 
@@ -290,6 +291,11 @@ public class InputManager : MonoBehaviour
     {
         return _aimMouse.WasReleasedThisFrame();
     }
+    ////pausa
+    //public bool PauseWasPressedThisFrame()
+    //{
+    //    return _Pause.WasPressedThisFrame();
+    //}
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

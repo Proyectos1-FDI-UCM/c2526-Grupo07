@@ -103,10 +103,6 @@ public class DeteccionAK : MonoBehaviour
                 move.SetChasing(false);
                 shoot.SetCanShoot(false);
                 excl.SetActive(false);
-                if (shoot != null)
-                {
-                    shoot.enabled = false;   //desactivar disparo al jugador
-                }
             }
         }
     }

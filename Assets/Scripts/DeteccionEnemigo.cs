@@ -93,10 +93,6 @@ public class DeteccionEnemigo : MonoBehaviour
             shoot.SetCanShoot(true);
 
             excl.SetActive(true);
-            /*if (shoot != null)
-            {
-                shoot.enabled = true;   //activar disparo
-            }*/
             time = forgetTime;
         }
         else if (distanceX < ChaseDis && distanceX > ShootDis && canSeePlayer)    //"caja" grande
@@ -104,10 +100,6 @@ public class DeteccionEnemigo : MonoBehaviour
             move.SetChasing(true);
 
             excl.SetActive(true);
-            /*if (shoot != null)
-            {
-                shoot.enabled = false;
-            }*/
             time = forgetTime;
         }
         else //fuera de la distancia
@@ -120,10 +112,6 @@ public class DeteccionEnemigo : MonoBehaviour
                 move.SetChasing(false);
                 shoot.SetCanShoot(false);
                 excl.SetActive(false);
-                /*if (shoot != null)
-                {
-                    shoot.enabled = false;   //desactivar disparo al jugador
-                }*/
             }
         }
     } 

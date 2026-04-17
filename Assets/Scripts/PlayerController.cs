@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     // privados se nombren en formato _camelCase (comienza con _, 
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
-    // Ejemplo: _maxHealthPoints
+    // Ejemplo: _maxHealthPoints   
 
     //Tiempo
     private float _now;                 //Tiempo del juego
@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
     private float _flashInitialTime;    //Tiempo inicio del color rojo
-
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -102,7 +101,6 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         SpriteJugador = GetComponent<SpriteRenderer>();
-
         _originalColor = SpriteJugador.color; //Guardar color original
     }
 
@@ -111,11 +109,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
-        
+        //Guardar tiempos
         _lastTimeDashed += Time.deltaTime;
         _now += Time.deltaTime;
 
+        //Activar animación de cuchillo
         if (_anim != null)
         {
             if (!_anim.GetBool("isAttacking"))
@@ -134,6 +132,7 @@ public class PlayerController : MonoBehaviour
         Cuchillo();
         DesCuchillo();
 
+        //Si el jugador es empujado, tarda un rato antes de poder moverse
         if (_onKnockback != false)
         {
             if (_now - _knockbackFinish > _knockbackDuration)
@@ -143,11 +142,15 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //Si el jugador está en el aire no puede dashear
+        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
         if (hit.collider != null)
         {
             if (!_canDash) _canDash = true;
         }
         else _canDash = false;
+
+        //Ejecuta el dash si ha pasado del cooldown
         if (InputManager.Instance.DashWasPressedThisFrame())
         {
             if (_lastTimeDashed >= CooldownDash)
@@ -156,6 +159,8 @@ public class PlayerController : MonoBehaviour
             }
             else Debug.Log("Refrescando");
         }
+
+        //Si a recibido daño, ejecuta un efecto visual de flash rojo
         if (_redFlash)
         {
             _flashInitialTime += Time.deltaTime;
@@ -169,6 +174,7 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        //Movimiento del jugador 
         if (InputManager.Instance)
         {
             if (SpriteJugador != null && _canMove != false)
@@ -187,23 +193,43 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
+    //Cuando el jugador choca con objetos que lo empujan
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
         _canMove = false;
         _rb.linearVelocity = Vector2.zero;
-        if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.1f;
-        else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.1f;
+        if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.2f;
+        else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.2f;
         else if (dir.x < 0) dir1.x = -1f;
         else dir1.x = 1f;
+        dir.y = 1f;
         _rb.AddForce(fuerzaEmpuje * dir1, ForceMode2D.Impulse);
         _onKnockback = true;
         _knockbackDuration = 1.5f;
     }
 
+    //Activar efecto visual de flash rojo al recibir daño
     public void RedFlash()
     {
         AnimationSprite.RedFlash();
+    }
+    
+    //Cuando esta pausado el juego, el jugador no se puede mover
+    public void PlayerPause() 
+    {
+        Debug.Log("pausado");
+        _canMove = false;
+        _canDash = false;
+        
+    }
+
+    //Cuando deja de estar en pausa, el jugador se puede mover 
+    public void PlayerContinue()
+    {
+        _canMove = true;
+        _canDash = true;
     }
     #endregion
 
@@ -320,6 +346,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");
+    }
+    private void Pause() // hace que el player este pausado
+    {
+        _rb.linearVelocity = Vector2.zero;
+        _canDash = false;
     }
 }
     #endregion

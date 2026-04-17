@@ -40,6 +40,7 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
+
     private bool _isChasing = false;  //controlar si está persiguiendo al jugador
     private bool _isShooting = false; //controlar si está disparando al jugador
     private int _direction = 1;       //direccion del enemigo
@@ -48,6 +49,7 @@ public class MoveEnemigo : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
+    private bool _canMove;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -65,6 +67,7 @@ public class MoveEnemigo : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _canMove = true;
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -75,27 +78,28 @@ public class MoveEnemigo : MonoBehaviour
         if (_isShooting)
         {
             //cuando dispara se deja de mover
+            _isChasing = false;
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
-            if (offset.x > 0 && _direction != 1)
-            {
-                _direction *= -1;
-                CambioDireccion();
-            }
-            if (offset.x < 0 && _direction != -1)
-            {
-                _direction *= -1;
-                CambioDireccion();
-            }
-            return;
+             if (offset.x > 0 && _direction != 1)
+              {
+                 _direction *= -1;
+                 CambioDireccion();
+             }
+             if (offset.x < 0 && _direction != -1)
+             {
+                 _direction *= -1;
+                 CambioDireccion();
+             }
+             return;
         }
         if (_isChasing)
         {
-            Perseguir();
-            if (offset.x > 0 && _direction != 1)
-            {
-                _direction *= -1;
+             Perseguir();
+             if (offset.x > 0 && _direction != 1)
+             {
+                 _direction *= -1;
                 CambioDireccion();
-            }
+             }
             if (offset.x < 0 && _direction != -1)
             {
                 _direction *= -1;
@@ -107,24 +111,25 @@ public class MoveEnemigo : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (_anim != null)
-        {
-            float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
-            _anim.SetFloat("enemySpeed", speed); //Para la transicion
-        }
+         if (_anim != null)
+         {
+             float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+             _anim.SetFloat("enemySpeed", speed); //Para la transicion
+         }
     }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        //si se colisiona con un objeto(pared)
-        //se cambia de direccion
-        //y reinicia el tiempo de movimiento
-        if (collision.gameObject.CompareTag("Pared"))
-        {
-            _direction *= -1;
-            CambioDireccion();
-            _tiempoInicio = 0;
-        }
-    }
+     void OnCollisionEnter2D(Collision2D collision)
+     {
+         //si se colisiona con un objeto(pared)
+         //se cambia de direccion
+         //y reinicia el tiempo de movimiento
+         if (collision.gameObject.CompareTag("Pared"))
+         {
+             _direction *= -1;
+             CambioDireccion();
+             _tiempoInicio = 0;
+         }
+     } 
+    
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -148,6 +153,14 @@ public class MoveEnemigo : MonoBehaviour
     {
         _isShooting = shooting;
     }
+    public void EnemyPause()
+    {
+        _canMove = false;
+    }
+    public void EnemyContinue()
+    {
+        _canMove = true;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -158,30 +171,37 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        if (_canMove)
+        {
+          _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        }
     }
     private void MovAuto()
     {
-        _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-        if (_tiempoInicio > duracion)
+        if (_canMove)
         {
-            _tiempoQuieto += Time.deltaTime;
-            _rb.linearVelocity = Vector2.zero;
-            if (_tiempoQuieto > duracionQuieto)
+            _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
+            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+            if (_tiempoInicio > duracion)
             {
-                _direction *= -1;    //cambio de direccion, invertir
-                CambioDireccion();
-                _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-                _tiempoQuieto = 0;
-                _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                _tiempoQuieto += Time.deltaTime;
+                _rb.linearVelocity = Vector2.zero;
+                if (_tiempoQuieto > duracionQuieto)
+                {
+                    _direction *= -1;    //cambio de direccion, invertir
+                    CambioDireccion();
+                    _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+                    _tiempoQuieto = 0;
+                    _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                }
             }
         }
     }
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(_direction, 1, 1);
+        if (_canMove)
+        { transform.localScale = new Vector3(_direction, 1, 1); }
     }
     #endregion
 }

@@ -47,6 +47,7 @@ public class EnemyShoot : MonoBehaviour
     private float minInterval;
     private bool _canShoot;
     Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
+    private bool pausado = false; // si el juego esta pausado o no
 
     #endregion
 
@@ -97,7 +98,15 @@ public class EnemyShoot : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void SetCanShoot(bool canShoot)
     {
-        _canShoot = canShoot;
+        _canShoot = canShoot; 
+    }
+    public void EnemyShootPausado()
+    {
+        pausado = true;
+    }
+    public void EnemyShootContinue()
+    {
+        pausado = false;
     }
     #endregion
     // ---- MÉTODOS PRIVADOS ----
