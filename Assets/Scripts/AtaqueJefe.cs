@@ -95,6 +95,7 @@ public class AtaqueJefe : MonoBehaviour
 
                 LanzarGranada();
                 Lanzallamas();
+                if (_CanGranada) { Time.timeScale = 0f; }
                 time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
             else
@@ -148,15 +149,14 @@ public class AtaqueJefe : MonoBehaviour
 
             if (rb != null)
             {
-                //arco de movimiento
                 Vector2 direccion = (player.position - puntoAtaque.position).normalized;    //vector horizontal hacia el jugador
                 float fuerzaX = direccion.x * vel;    //aplicar fuerza x
                 float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
-                rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
-
-                Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
-                explosion.SetDireccion(direccion);
-
+                //arco de movimiento
+                
+                    rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
+                    Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
+                    explosion.SetDireccion(direccion);
             }
         }
     }

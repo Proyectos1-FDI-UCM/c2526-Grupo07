@@ -239,13 +239,16 @@ public class LevelManager : MonoBehaviour
         _isRunning = false;
         PanelPausa.SetActive(true);
 
-        enemy.EnemyPause();
-        enemyShoot.EnemyShootPausado();
-        bossDash.BossDashPause();
-        bossGranada.BossGranadaPause();
-        bossLanzallamas.BossLanzallamasPause();
+        if (IsFinalLevel)
+        {
+            bossDash.BossDashPause();
+            bossGranada.BossGranadaPause();
+            bossLanzallamas.BossLanzallamasPause();
+        }
         player.PlayerPause();
         playerShoot.PlayerShootPause();
+        enemy.EnemyPause();
+        enemyShoot.EnemyShootPausado();
     }
     // metodo que hace continuar el juego despues de la pausa
     // usarlo para el boton de continue
@@ -253,14 +256,17 @@ public class LevelManager : MonoBehaviour
     {   
         _isRunning = true;
         PanelPausa.SetActive(false);
-
-        enemy.EnemyContinue();
-        enemyShoot.EnemyShootContinue();
-        bossDash.BossDashContinue();
-        bossGranada.BossGranadaContinue();
-        bossLanzallamas.BossLanzallamasContinue();
+        if (IsFinalLevel)
+        {
+            bossDash.BossDashContinue();
+            bossGranada.BossGranadaContinue();
+            bossLanzallamas.BossLanzallamasContinue();
+        }
+        
         player.PlayerContinue();
         playerShoot.PlayerShootContinue();
+        enemy.EnemyContinue();
+        enemyShoot.EnemyShootContinue();
     }
     #endregion
 
