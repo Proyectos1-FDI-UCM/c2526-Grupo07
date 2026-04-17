@@ -102,9 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4160c59e287f3ce47af34a0cddd6fee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 3
-  speed: 20
-  aimVector: {fileID: 0}
+  DestroyTime: 3
+  Speed: 12
   Damage: 10
 --- !u!50 &-6279652754209634581
 Rigidbody2D:

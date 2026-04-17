@@ -24,20 +24,21 @@ public class Explosion : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private Vector2 velIn;
-    [SerializeField]
-    private float TiempoGranada = 2f; //El tiempo en segundos que tarda en explotar la granada
-    [SerializeField]
-    private float RadioGranada = 2f; //El radio de explosión de la granada
-    [SerializeField]
-    private int Damage; //El daño que causa
-    [SerializeField]
-    private FollowCamera camara;
-    [SerializeField]
-    private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
-    [SerializeField]
-    private GameObject Particulas;
+
+    [SerializeField] private Vector2 VelIn;
+
+    [SerializeField] private float TiempoGranada = 2f; //El tiempo en segundos que tarda en explotar la granada
+
+    [SerializeField] private float RadioGranada = 2f; //El radio de explosión de la granada
+
+    [SerializeField] private int Damage; //El daño que causa
+
+    [SerializeField] private FollowCamera Camara;
+
+    [SerializeField] private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
+
+    [SerializeField] private GameObject Particulas;
+
 
     #endregion
 
@@ -50,9 +51,9 @@ public class Explosion : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
 
-    private float tiempo; //El tiempo que se reducirá para que explote la granada
-    private Rigidbody2D rb;
-    private float direction;
+    private float _tiempo; //El tiempo que se reducirá para que explote la granada
+    private Rigidbody2D _rb;
+    private float _direction;
     private Animator _animator; //Será el componente Animator
     private bool _destruida = false; //Comprueba si explotó
 
@@ -71,10 +72,10 @@ public class Explosion : MonoBehaviour
     /// </summary>
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        velIn.x *= direction;
-        rb.linearVelocity = velIn;
-        tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
+        _rb = GetComponent<Rigidbody2D>();
+        VelIn.x *= _direction;
+        _rb.linearVelocity = VelIn;
+        _tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
         _animator = GetComponent<Animator>(); // Recoge el Animator de la granada
         
         //Comprueba si la granada fue lanzada para iniciar la animación
@@ -95,9 +96,9 @@ public class Explosion : MonoBehaviour
             return;
         }
         //Reduce el tiempo de explosión
-        tiempo -= Time.deltaTime;
+        _tiempo -= Time.deltaTime;
         //Cuando llega a cero explota
-        if(tiempo <= 0)
+        if(_tiempo <= 0)
         {
             Explotar();
         }
@@ -113,8 +114,8 @@ public class Explosion : MonoBehaviour
     // Ejemplo: GetPlayerController
     public void SetDireccion(Vector3 dir)
     {
-        if (dir.x < 0) direction = -1f;
-        else direction = 1f;
+        if (dir.x < 0) _direction = -1f;
+        else _direction = 1f;
     }
     #endregion
 
@@ -175,8 +176,8 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        rb.linearVelocity = Vector2.zero; //Quita la velocidad de la granada para que la animación de explosión no se mueva
-        rb.simulated = false; //Quita las físicas de la granada
+        _rb.linearVelocity = Vector2.zero; //Quita la velocidad de la granada para que la animación de explosión no se mueva
+        _rb.simulated = false; //Quita las físicas de la granada
         if (Particulas != null)
         {
             // Crea las partículas de la explosión
