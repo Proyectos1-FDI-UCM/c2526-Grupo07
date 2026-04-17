@@ -49,7 +49,6 @@ public class MoveEnemigo : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
-    private bool _canMove;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -67,7 +66,6 @@ public class MoveEnemigo : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _canMove = true;
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -151,14 +149,6 @@ public class MoveEnemigo : MonoBehaviour
     {
         _isShooting = shooting;
     }
-    public void EnemyPause()
-    {
-        _canMove = false;
-    }
-    public void EnemyContinue()
-    {
-        _canMove = true;
-    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -169,15 +159,11 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-        if (_canMove)
-        {
-            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-        }
+        
+         _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
     private void MovAuto()
     {
-        if (_canMove)
-        {
             _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
             _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
             if (_tiempoInicio > duracion)
@@ -193,13 +179,11 @@ public class MoveEnemigo : MonoBehaviour
                     _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
                 }
             }
-        }
     }
 
     private void CambioDireccion()
     {
-        if (_canMove)
-        { transform.localScale = new Vector3(_direction, 1, 1); }
+        transform.localScale = new Vector3(_direction, 1, 1);
     }
     
     #endregion
