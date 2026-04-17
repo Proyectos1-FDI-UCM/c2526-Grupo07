@@ -40,6 +40,7 @@ public class MoveEnemigo : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
+
     private bool _isChasing = false;  //controlar si está persiguiendo al jugador
     private bool _isShooting = false; //controlar si está disparando al jugador
     private int _direction = 1;       //direccion del enemigo
@@ -48,6 +49,7 @@ public class MoveEnemigo : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
+    private bool _canMove;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -65,45 +67,46 @@ public class MoveEnemigo : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _canMove = true;
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
-        Vector2 offset = player.transform.position - transform.position;
-        if (_isShooting)
-        {
-            //cuando dispara se deja de mover
-            _rb.linearVelocity = new Vector3(0, _rb.linearVelocityY, 0);
-            if (offset.x > 0 && _direction != 1)
+            Vector2 offset = player.transform.position - transform.position;
+            if (_isShooting)
             {
-                _direction *= -1;
-                CambioDireccion();
+                //cuando dispara se deja de mover
+                _rb.linearVelocity = new Vector3(0, _rb.linearVelocityY, 0);
+                if (offset.x > 0 && _direction != 1)
+                {
+                    _direction *= -1;
+                    CambioDireccion();
+                }
+                if (offset.x < 0 && _direction != -1)
+                {
+                    _direction *= -1;
+                    CambioDireccion();
+                }
+                return;
             }
-            if (offset.x < 0 && _direction != -1) 
+            if (_isChasing)
             {
-                _direction *= -1;
-                CambioDireccion();
+                Perseguir();
+                if (offset.x > 0 && _direction != 1)
+                {
+                    _direction *= -1;
+                    CambioDireccion();
+                }
+                if (offset.x < 0 && _direction != -1)
+                {
+                    _direction *= -1;
+                    CambioDireccion();
+                }
+                _tiempoInicio = 0;
             }
-            return;
-        }
-        if (_isChasing)
-        {
-            Perseguir();
-            if (offset.x > 0 && _direction != 1)
-            {
-                _direction *= -1;
-                CambioDireccion();
-            }
-            if (offset.x < 0 && _direction != -1)
-            {
-                _direction *= -1;
-                CambioDireccion();
-            }
-            _tiempoInicio = 0;
-        }
-        else MovAuto();
+            else MovAuto();
     }
     void FixedUpdate()
     {
@@ -148,6 +151,14 @@ public class MoveEnemigo : MonoBehaviour
     {
         _isShooting = shooting;
     }
+    public void EnemyPause()
+    {
+        _canMove = false;
+    }
+    public void EnemyContinue()
+    {
+        _canMove = true;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -158,30 +169,37 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        if (_canMove)
+        {
+            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        }
     }
     private void MovAuto()
     {
-        _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-        if (_tiempoInicio > duracion)
+        if (_canMove)
         {
-            _tiempoQuieto += Time.deltaTime;
-            _rb.linearVelocity = Vector2.zero; 
-            if (_tiempoQuieto> duracionQuieto)
+            _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
+            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+            if (_tiempoInicio > duracion)
             {
-                _direction *= -1;    //cambio de direccion, invertir
-                CambioDireccion();
-                _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-                _tiempoQuieto = 0;   
-                _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                _tiempoQuieto += Time.deltaTime;
+                _rb.linearVelocity = Vector2.zero;
+                if (_tiempoQuieto > duracionQuieto)
+                {
+                    _direction *= -1;    //cambio de direccion, invertir
+                    CambioDireccion();
+                    _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+                    _tiempoQuieto = 0;
+                    _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                }
             }
         }
     }
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(_direction, 1, 1);
+        if (_canMove)
+        { transform.localScale = new Vector3(_direction, 1, 1); }
     }
     
     #endregion

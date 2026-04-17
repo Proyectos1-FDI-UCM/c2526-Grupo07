@@ -48,6 +48,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private GameObject GameOverPanel; //Menú game over
     [SerializeField] private GameObject PanelVictoria; //Menú victoria
+    [SerializeField] private GameObject PanelPausa; //Menú victoria
 
     [SerializeField] private int TiempoLimite;         //Tiempo limite para una de las estrellas
     [SerializeField] public TextMeshProUGUI TimerText; //Texto para ver el tiempo
@@ -80,8 +81,19 @@ public class LevelManager : MonoBehaviour
     private float timeSec;   //Tiempo en segundos
     private float timeMin;   //Tiempo en minutos
     private float timeTotal; //Tiempo total en segundos
+    private bool _isRunning; // determina si esta parado o no (usado para la pausa)
 
     private int numRehenes; //Número de rehenes en el mapa
+    //Player
+    private PlayerController player;
+    private AimShoot playerShoot;
+    //Enemy
+    private MoveEnemigo enemy;
+    private EnemyShoot enemyShoot;
+    //Boss
+    private BossDash bossDash;
+    private AtaqueJefe bossGranada;
+    private LanzallamasJefe bossLanzallamas;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -98,14 +110,24 @@ public class LevelManager : MonoBehaviour
             //Desactivar paneles
             GameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
+            PanelPausa.SetActive(false);
         }
     }
 
     void Start()
     {
+        _isRunning = true;
         _vidaMax = GameManager.Instance.GetVidaMaxima();
         numRehenes = GameObject.FindGameObjectsWithTag("Rehen").Length;
         IniciarBarraVida(_vidaMax, _vidaActual);
+        // Llamada a otros componentes (esto se utilizara dentro del pausa)
+        player = FindAnyObjectByType<PlayerController>();
+        playerShoot = FindAnyObjectByType<AimShoot>();
+        enemy = FindAnyObjectByType<MoveEnemigo>();
+        enemyShoot = FindAnyObjectByType<EnemyShoot>();
+        bossDash = FindAnyObjectByType<BossDash>();
+        bossGranada = FindAnyObjectByType<AtaqueJefe>();
+        bossLanzallamas = FindAnyObjectByType<LanzallamasJefe>();
 
         UpdateGUI();
         GameManager.Instance.TransferManagerSetup();
@@ -171,12 +193,14 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
+        Pause();
         _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
         GameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
+        Pause();
         _juegoTerminado = true;
         if (IsFinalLevel)
         {
@@ -208,6 +232,36 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene("Menu");
     }
+    // metodo que hace pausar la escena
+    // usarlo cuando demos al esc, cuando aparece el panel de victoria o de derrota
+    public void Pause() 
+    {
+        _isRunning = false;
+        PanelPausa.SetActive(true);
+
+        enemy.EnemyPause();
+        enemyShoot.EnemyShootPausado();
+        bossDash.BossDashPause();
+        bossGranada.BossGranadaPause();
+        bossLanzallamas.BossLanzallamasPause();
+        player.PlayerPause();
+        playerShoot.PlayerShootPause();
+    }
+    // metodo que hace continuar el juego despues de la pausa
+    // usarlo para el boton de continue
+    public void Continue()
+    {   
+        _isRunning = true;
+        PanelPausa.SetActive(false);
+
+        enemy.EnemyContinue();
+        enemyShoot.EnemyShootContinue();
+        bossDash.BossDashContinue();
+        bossGranada.BossGranadaContinue();
+        bossLanzallamas.BossLanzallamasContinue();
+        player.PlayerContinue();
+        playerShoot.PlayerShootContinue();
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -233,22 +287,25 @@ public class LevelManager : MonoBehaviour
         TextAmmo.text = _cargador + "/" + _maxBalas;
         TextBotiquines.text = "x" + _botiquines;
         TextGranadas.text = "x" + _granadas;
-        if (timeSec > 60)
+        if (_isRunning)
         {
-            timeSec = 0;
-            timeMin++;
-        }
-        if (timeSec < 10 && timeMin < 10)
-        {
-            TimerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
-        }
-        else if (timeSec > 10 && timeMin < 10)
-        {
-            TimerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
-        }
-        else
-        {
-            TimerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+            if (timeSec > 60)
+            {
+                timeSec = 0;
+                timeMin++;
+            }
+            if (timeSec < 10 && timeMin < 10)
+            {
+                TimerText.text = "0" + timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+            }
+            else if (timeSec > 10 && timeMin < 10)
+            {
+                TimerText.text = "0" + timeMin + ":" + Mathf.Floor(timeSec).ToString();
+            }
+            else
+            {
+                TimerText.text = +timeMin + ":0" + Mathf.Floor(timeSec).ToString();
+            }
         }
     }
     private void IniciarBarraVida(int VidaMax, int VidaActual)

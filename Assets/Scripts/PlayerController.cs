@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     // privados se nombren en formato _camelCase (comienza con _, 
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
-    // Ejemplo: _maxHealthPoints
+    // Ejemplo: _maxHealthPoints   
 
     //Tiempo
     private float _now;                 //Tiempo del juego
@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
     private float _flashInitialTime;    //Tiempo inicio del color rojo
-
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -204,6 +203,19 @@ public class PlayerController : MonoBehaviour
     {
         AnimationSprite.RedFlash();
     }
+    
+    public void PlayerPause() 
+    {
+        Debug.Log("pausado");
+        _canMove = false;
+        _canDash = false;
+        
+    }
+    public void PlayerContinue()
+    {
+        _canMove = true;
+        _canDash = true;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -319,6 +331,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");
+    }
+    private void Pause() // hace que el player este pausado
+    {
+        _rb.linearVelocity = Vector2.zero;
+        _canDash = false;
     }
 }
     #endregion
