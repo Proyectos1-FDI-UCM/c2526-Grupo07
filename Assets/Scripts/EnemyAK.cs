@@ -74,8 +74,11 @@ public class EnemyAK : MonoBehaviour
     void Update()
     {
         Vector2 offset = player.transform.position - transform.position;
+
+        _anim.SetBool("Attack", false);
         if (_isShooting)
         {
+            _anim.SetBool("Attack", true);
             _isChasing = false;
             //cuando dispara se deja de mover
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
@@ -93,6 +96,7 @@ public class EnemyAK : MonoBehaviour
         }
         if (_isChasing)
         {
+            _anim.SetBool("Attack", false);
             _isShooting = false;
             Perseguir();
             if (offset.x > 0 && _direction != 1)
@@ -109,6 +113,7 @@ public class EnemyAK : MonoBehaviour
         else MovAuto();
         LimitarMov();
     }
+
     void FixedUpdate()
     {
         if (_anim != null)
@@ -117,6 +122,7 @@ public class EnemyAK : MonoBehaviour
             _anim.SetFloat("enemySpeed", speed); //Para la transicion
         }
     }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         //si se colisiona con un objeto(pared)
