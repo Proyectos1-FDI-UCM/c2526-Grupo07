@@ -238,22 +238,7 @@ public class PlayerController : MonoBehaviour
         _redFlash = true;
         _parpadeando = true;
     }
-    
-    //Cuando esta pausado el juego, el jugador no se puede mover
-    public void PlayerPause() 
-    {
-        Debug.Log("pausado");
-        _canMove = false;
-        _canDash = false;
-        
-    }
-
-    //Cuando deja de estar en pausa, el jugador se puede mover 
-    public void PlayerContinue()
-    {
-        _canMove = true;
-        _canDash = true;
-    }
+   
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -370,7 +355,6 @@ public class PlayerController : MonoBehaviour
         }
         else Debug.Log("No pudo dashear");
     }
-
     private void CambioParpadeo()
     {
         if (SpriteJugador.color == _transparency)
@@ -381,11 +365,6 @@ public class PlayerController : MonoBehaviour
         {
             SpriteJugador.color = _transparency;
         }
-    }
-    private void Pause() // hace que el player este pausado
-    {
-        _rb.linearVelocity = Vector2.zero;
-        _canDash = false;
     }
 }
     #endregion

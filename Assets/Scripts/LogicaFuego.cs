@@ -91,6 +91,10 @@ public class LogicaFuego : MonoBehaviour
         rb.linearVelocity = dir.normalized * Velocidad;
     }
 
+    public void ModifyDestroyTime(float newTime)
+    {
+        TiempoEnDestruirse = newTime;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

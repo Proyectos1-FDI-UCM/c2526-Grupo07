@@ -49,7 +49,6 @@ public class MoveEnemigo : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
-    private bool _canMove;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -67,67 +66,68 @@ public class MoveEnemigo : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _canMove = true;
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
     {
-            Vector2 offset = player.transform.position - transform.position;
-            if (_isShooting)
+        Vector2 offset = player.transform.position - transform.position;
+        if (_isShooting)
+        {
+            //cuando dispara se deja de mover
+            _isChasing = false;
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+             if (offset.x > 0 && _direction != 1)
+              {
+                 _direction *= -1;
+                 CambioDireccion();
+             }
+             if (offset.x < 0 && _direction != -1)
+             {
+                 _direction *= -1;
+                 CambioDireccion();
+             }
+             return;
+        }
+        if (_isChasing)
+        {
+             Perseguir();
+             if (offset.x > 0 && _direction != 1)
+             {
+                 _direction *= -1;
+                CambioDireccion();
+             }
+            if (offset.x < 0 && _direction != -1)
             {
-                //cuando dispara se deja de mover
-                _rb.linearVelocity = new Vector3(0, _rb.linearVelocityY, 0);
-                if (offset.x > 0 && _direction != 1)
-                {
-                    _direction *= -1;
-                    CambioDireccion();
-                }
-                if (offset.x < 0 && _direction != -1)
-                {
-                    _direction *= -1;
-                    CambioDireccion();
-                }
-                return;
+                _direction *= -1;
+                CambioDireccion();
             }
-            if (_isChasing)
-            {
-                Perseguir();
-                if (offset.x > 0 && _direction != 1)
-                {
-                    _direction *= -1;
-                    CambioDireccion();
-                }
-                if (offset.x < 0 && _direction != -1)
-                {
-                    _direction *= -1;
-                    CambioDireccion();
-                }
-                _tiempoInicio = 0;
-            }
-            else MovAuto();
+            _tiempoInicio = 0;
+        }
+        else MovAuto();
     }
     void FixedUpdate()
     {
-        if (_anim != null)
-        {
-            float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
-            _anim.SetFloat("enemySpeed", speed); //Para la transicion
-        }
+         if (_anim != null)
+         {
+             float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+             _anim.SetFloat("enemySpeed", speed); //Para la transicion
+         }
     }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        //si se colisiona con un objeto(pared)
-        //se cambia de direccion
-        //y reinicia el tiempo de movimiento
-        if (collision.gameObject.CompareTag("Pared"))
-        {
-            _direction *= -1;
-            CambioDireccion();
-            _tiempoInicio = 0;
-        }
-    }
+     void OnCollisionEnter2D(Collision2D collision)
+     {
+         //si se colisiona con un objeto(pared)
+         //se cambia de direccion
+         //y reinicia el tiempo de movimiento
+         if (collision.gameObject.CompareTag("Pared"))
+         {
+             _direction *= -1;
+             CambioDireccion();
+             _tiempoInicio = 0;
+         }
+     } 
+    
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -151,14 +151,6 @@ public class MoveEnemigo : MonoBehaviour
     {
         _isShooting = shooting;
     }
-    public void EnemyPause()
-    {
-        _canMove = false;
-    }
-    public void EnemyContinue()
-    {
-        _canMove = true;
-    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -169,15 +161,10 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-        if (_canMove)
-        {
-            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-        }
+         _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
     private void MovAuto()
     {
-        if (_canMove)
-        {
             _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
             _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
             if (_tiempoInicio > duracion)
@@ -193,15 +180,13 @@ public class MoveEnemigo : MonoBehaviour
                     _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
                 }
             }
-        }
     }
 
     private void CambioDireccion()
     {
-        if (_canMove)
-        { transform.localScale = new Vector3(_direction, 1, 1); }
+        transform.localScale = new Vector3(_direction, 1, 1);
     }
-    
     #endregion
-} // class MoveEnemigo 
+}
+ // class MoveEnemigo 
   // namespace

@@ -40,7 +40,6 @@ public class LanzallamasJefe : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     Vector2 offset;
     private float TiempoEntreBalas;
-    private bool _CanLanzallamas; // puede lanzar llamas
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -57,7 +56,6 @@ public class LanzallamasJefe : MonoBehaviour
     void Start()
     {
         TiempoEntreBalas = 0f;
-        _CanLanzallamas = true;
     }
 
     /// <summary>
@@ -81,15 +79,6 @@ public class LanzallamasJefe : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void BossLanzallamasPause()
-    {
-        _CanLanzallamas = false;
-
-    }
-    public void BossLanzallamasContinue()
-    {
-        _CanLanzallamas = true;
-    }
 
     #endregion
 
@@ -101,13 +90,10 @@ public class LanzallamasJefe : MonoBehaviour
     // mayúscula, incluida la primera letra)
     public void UsarLanzallamas()
     {
-        if(_CanLanzallamas)
-        {   
             offset = PosJugador.position - transform.position;
             GameObject Fueguito = Instantiate(Fuego, SalidaFuego.position, SalidaFuego.rotation);
             LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
             DireccionFuego.Dir(offset);
-        }
     }
 
     #endregion   

@@ -51,7 +51,6 @@ public class AtaqueJefe : MonoBehaviour
     Vector2 offset; //Vector a donde apunta el lanzallams
     private float TiempoEntreBalas; // Cadencia del lanzallamas
 
-    private bool _CanGranada; // puede lanzar granada
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -71,7 +70,6 @@ public class AtaqueJefe : MonoBehaviour
 
         TiempoEntreBalas = 0f; //Para la cadencia del lanzallamas
 
-        _CanGranada = true;
     }
 
     /// <summary>
@@ -118,15 +116,6 @@ public class AtaqueJefe : MonoBehaviour
     {
         anim.SetBool("attackGran", false);
     }
-    public void BossGranadaPause()
-    {
-        _CanGranada = false;
-
-    }
-    public void BossGranadaContinue()
-    {
-        _CanGranada = true;
-    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -137,8 +126,6 @@ public class AtaqueJefe : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void LanzarGranada()
     {
-        if (_CanGranada)
-        {
             if (granadaPrefab == null || puntoAtaque == null || player == null) return;
 
             //añadir un origen y posicion del punto de ataque para granada
@@ -148,17 +135,15 @@ public class AtaqueJefe : MonoBehaviour
 
             if (rb != null)
             {
-                //arco de movimiento
                 Vector2 direccion = (player.position - puntoAtaque.position).normalized;    //vector horizontal hacia el jugador
                 float fuerzaX = direccion.x * vel;    //aplicar fuerza x
                 float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
-                rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
-
-                Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
-                explosion.SetDireccion(direccion);
-
+                //arco de movimiento
+                
+                    rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
+                    Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
+                    explosion.SetDireccion(direccion);
             }
-        }
     }
 
     private void Lanzallamas()

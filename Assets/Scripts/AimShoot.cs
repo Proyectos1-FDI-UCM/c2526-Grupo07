@@ -83,7 +83,6 @@ public class AimShoot : MonoBehaviour
     #endregion
     //pausa
     private bool canShoot = true; // determina si el jugador puede disparar (variable creado para la pausa)
-    private bool pausado = false; // determina si el juego esta pausado o no
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -117,10 +116,6 @@ public class AimShoot : MonoBehaviour
     void Update()
     {
         //Si el juego esta pausado no puede disparar
-        if (pausado)
-        {
-            canShoot = false;
-        }
         _mousePosition = InputManager.Instance.GetAimMouseValue();
         if (InputManager.Instance.AimControllerIsPressed())
         {
@@ -225,16 +220,7 @@ public class AimShoot : MonoBehaviour
             SetPistola();
         }
     }
-    public bool PlayerShootPause()
-    {
-        return pausado = true;
-    }
-    public bool PlayerShootContinue()
-    {
-        canShoot = true;
-        return pausado = false;
 
-    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -246,8 +232,6 @@ public class AimShoot : MonoBehaviour
     //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
     private void Disparar()
     {
-        if(canShoot)
-        {
             //Crea la bala en su posición de salida
             //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
             GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
@@ -260,30 +244,23 @@ public class AimShoot : MonoBehaviour
 
             // Reiniciamos el tiempo de disparo según la cadencia
             _tiempoDisparo = 1f / Cadencia;
-        }
     }
     //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
     private void EmpezarRecarga()
     {
-        if(canShoot)
-        {
             _recargando = true;
             _recibirTiempoRecarga = _tiempoRecarga;
             Debug.Log("Recargando");
             SpriteRecarga.SetActive(true);
-        }
     }
     //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
     private void TerminarRecarga()
     {
-        if (canShoot)
-        {
             _recargando = false;
             _balasActuales = Cargador;
             GameManager.Instance.SetMunicion(Cargador, _balasActuales);
             Debug.Log("Balas: " + _balasActuales);
             SpriteRecarga.SetActive(false);
-        }
     }
     //Método llamado si se cambia a la pistola
     private void SetPistola()

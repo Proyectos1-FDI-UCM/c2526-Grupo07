@@ -88,20 +88,10 @@ public class LevelManager : MonoBehaviour
     //Rehenes
     private int numRehenes; //Número de rehenes en el mapa
 
-    //Player
-    private PlayerController player;
-    private AimShoot playerShoot;
-
-    //Enemy
-    private MoveEnemigo enemy;
-    private EnemyShoot enemyShoot;
-
-    //Boss
-    private BossDash bossDash;
-    private AtaqueJefe bossGranada;
-    private LanzallamasJefe bossLanzallamas;
-
     private bool _juegoTerminado = false; //True si el juego termina
+
+    // pause
+    private float time; 
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -128,20 +118,16 @@ public class LevelManager : MonoBehaviour
         _vidaMax = GameManager.Instance.GetVidaMaxima();
         numRehenes = GameObject.FindGameObjectsWithTag("Rehen").Length;
         IniciarBarraVida(_vidaMax, _vidaActual);
-        // Llamada a otros componentes (esto se utilizara dentro del pausa)
-        player = FindAnyObjectByType<PlayerController>();
-        playerShoot = FindAnyObjectByType<AimShoot>();
-        enemy = FindAnyObjectByType<MoveEnemigo>();
-        enemyShoot = FindAnyObjectByType<EnemyShoot>();
-        bossDash = FindAnyObjectByType<BossDash>();
-        bossGranada = FindAnyObjectByType<AtaqueJefe>();
-        bossLanzallamas = FindAnyObjectByType<LanzallamasJefe>();
 
         UpdateGUI();
         GameManager.Instance.TransferManagerSetup();
     }
     private void Update()
     {
+        if (InputManager.Instance.PauseWasPressedThisFrame())
+        {
+            Pause();
+        }
         timeSec += Time.deltaTime;
         timeTotal += Time.deltaTime;
         UpdateGUI();
@@ -201,14 +187,14 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        Pause();
+        Time.timeScale = 1f;
         _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
         GameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
-        Pause();
+        Time.timeScale = 1f;
         _juegoTerminado = true;
         if (IsFinalLevel)
         {
@@ -232,7 +218,6 @@ public class LevelManager : MonoBehaviour
     public void Reiniciar()
     {
         Time.timeScale = 1;
-        GameManager.Instance.RestableceDatos();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void MenuInicial()
@@ -244,37 +229,16 @@ public class LevelManager : MonoBehaviour
     // usarlo cuando demos al esc, cuando aparece el panel de victoria o de derrota
     public void Pause() 
     {
-        _isRunning = false;
         PanelPausa.SetActive(true);
-
-        if (IsFinalLevel)
-        {
-            bossDash.BossDashPause();
-            bossGranada.BossGranadaPause();
-            bossLanzallamas.BossLanzallamasPause();
-        }
-        enemy.EnemyPause();
-        enemyShoot.EnemyShootPausado();
-        player.PlayerPause();
-        playerShoot.PlayerShootPause();
+        time = Time.timeScale;
+        Time.timeScale = 0f;
     }
     // metodo que hace continuar el juego despues de la pausa
     // usarlo para el boton de continue
     public void Continue()
-    {   
-        _isRunning = true;
+    {
         PanelPausa.SetActive(false);
-
-        if (IsFinalLevel)
-        {
-            bossDash.BossDashContinue();
-            bossGranada.BossGranadaContinue();
-            bossLanzallamas.BossLanzallamasContinue();
-        }
-        enemy.EnemyContinue();
-        enemyShoot.EnemyShootContinue();
-        player.PlayerContinue();
-        playerShoot.PlayerShootContinue();
+        Time.timeScale = time;
     }
     #endregion
 

@@ -75,6 +75,7 @@ public class InputManager : MonoBehaviour
     private InputAction _changeWeapon;
     private InputAction _aimController;
     private InputAction _aimMouse;
+    private InputAction _pause;
     //private InputAction _Pause;
 
     #endregion
@@ -291,7 +292,11 @@ public class InputManager : MonoBehaviour
     {
         return _aimMouse.WasReleasedThisFrame();
     }
-    ////pausa
+    //pausa
+    public bool PauseWasPressedThisFrame()
+    {
+        return _pause.WasPressedThisFrame();
+    }
     //public bool PauseWasPressedThisFrame()
     //{
     //    return _Pause.WasPressedThisFrame();
@@ -333,6 +338,7 @@ public class InputManager : MonoBehaviour
         _changeWeapon = _theController.Player.ChangeWeapon;
         _aimController = _theController.Player.AimController;
         _aimMouse = _theController.Player.AimMouse;
+        _pause = _theController.Player.Pause;
     }
 
     /// <summary>
