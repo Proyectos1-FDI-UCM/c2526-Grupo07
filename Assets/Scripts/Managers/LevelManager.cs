@@ -187,14 +187,14 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        Pause();
+        Time.timeScale = 1f;
         _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
         GameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
-        Pause();
+        Time.timeScale = 1f;
         _juegoTerminado = true;
         if (IsFinalLevel)
         {

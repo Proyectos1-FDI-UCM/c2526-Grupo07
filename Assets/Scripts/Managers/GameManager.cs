@@ -192,6 +192,7 @@ public class GameManager : MonoBehaviour
         GuardarDatos(index);
         UnityEngine.SceneManagement.SceneManager.LoadScene(index);
         System.GC.Collect();
+        Time.timeScale = 1;
     } // ChangeScene
 
     //Método para restar la vida del personaje
