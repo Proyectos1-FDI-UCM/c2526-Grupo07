@@ -20,6 +20,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Nivel Final.unity
     guid: 1f50d6d784f3e674f9b3d93e4c41cd85
+  - enabled: 1
+    path: Assets/Scenes/Escenas Pruebas/Test Jefe Final.unity
+    guid: ce3f37d15a8250a4d98b5788b5be744e
+  - enabled: 1
+    path: Assets/Scenes/Escenas Pruebas/Test Granadas.unity
+    guid: 0b7a5009ef1279b4aba267ea27b1175a
+  - enabled: 1
+    path: Assets/Scenes/Escenas Pruebas/Test Recoleccion e Inventario.unity
+    guid: b831635ce7f96ec4a93cfefd00a5bdda
+  - enabled: 1
+    path: Assets/Scenes/Escenas Pruebas/Test Dash.unity
+    guid: b14158fa755a2994fb4a919378f91a6c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
