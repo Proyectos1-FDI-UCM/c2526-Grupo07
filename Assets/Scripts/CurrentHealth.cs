@@ -24,6 +24,7 @@ public class CurrentHealth : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField] private int health;    //cantidad de vida que cura
     [SerializeField] private GameObject ParticulasCura;
+    [SerializeField] private GameObject botiquin; 
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
