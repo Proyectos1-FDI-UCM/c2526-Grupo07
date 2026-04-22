@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject PanelPausa; //Menú victoria
 
     [SerializeField] private int TiempoLimite;         //Tiempo limite para una de las estrellas
-    [SerializeField] public TextMeshProUGUI TimerText; //Texto para ver el tiempo
+    [SerializeField] private TextMeshProUGUI TimerText; //Texto para ver el tiempo
 
     [SerializeField] private GameObject[] SpriteEstrellas; //Sprite para las estrellas logradas
 

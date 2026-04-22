@@ -38,9 +38,6 @@ public class PlayerController : MonoBehaviour
     //Cuchillo
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
-
-    //Sprites y animación
-    [SerializeField] private FlashRedAux AnimationSprite;   //(BORRAR/ARREGLAR) Para hacer el flash rojo del jugador
     [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
 
     #endregion
@@ -82,7 +79,13 @@ public class PlayerController : MonoBehaviour
     private Color _originalColor;       //Color original del personaje
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
-    private float _flashInitialTime;    //Tiempo inicio del color rojo
+    private float _recibeDaño;          //Tiempo inicial cuando ha recibido daño
+
+    private Color _transparency;            //Transparencia del jugador
+    private float _parpadeoDuracion = 1.5f; //Parpadeo cuando es invulnerable
+    private float _intervaloParpadeo = 0.2f;//El intervalo entre un parpadeo y otro
+    private bool _parpadeando = false;      //Estado que indica si está parpadeando o no
+    private float _tiempoInicioParpadeo;    //Tiempo para parpadear
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -101,6 +104,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         SpriteJugador = GetComponent<SpriteRenderer>();
+        _transparency.a = 0.1f;
         _originalColor = SpriteJugador.color; //Guardar color original
     }
 
@@ -160,17 +164,34 @@ public class PlayerController : MonoBehaviour
             else Debug.Log("Refrescando");
         }
 
-        //Si a recibido daño, ejecuta un efecto visual de flash rojo
-        if (_redFlash)
+        //Si ha recibido daño, ejecuta un efecto visual de flash rojo
+        if (_redFlash || _parpadeando)
         {
-            _flashInitialTime += Time.deltaTime;
-            if (_flashInitialTime > _flashDuration)
+            _recibeDaño += Time.deltaTime;
+            if (_recibeDaño > _flashDuration && _redFlash)
             {
                 SpriteJugador.color = _originalColor;
-                _flashInitialTime = 0;
+                _recibeDaño = 0;
                 _redFlash = false;
             }
+            if (_recibeDaño < _parpadeoDuracion && _parpadeando)
+            {
+                _tiempoInicioParpadeo += Time.deltaTime;
+
+                if (_tiempoInicioParpadeo > _intervaloParpadeo)
+                {
+                    CambioParpadeo();
+                    _tiempoInicioParpadeo = 0;
+                }
+            }
+            else
+            {
+                SpriteJugador.color = _originalColor;
+                _recibeDaño = 0;
+                _parpadeando = false;
+            }
         }
+
     }
     void FixedUpdate()
     {
@@ -213,7 +234,9 @@ public class PlayerController : MonoBehaviour
     //Activar efecto visual de flash rojo al recibir daño
     public void RedFlash()
     {
-        AnimationSprite.RedFlash();
+        SpriteJugador.color = Color.red;
+        _redFlash = true;
+        _parpadeando = true;
     }
     
     //Cuando esta pausado el juego, el jugador no se puede mover
@@ -346,6 +369,18 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");
+    }
+
+    private void CambioParpadeo()
+    {
+        if (SpriteJugador.color == _transparency)
+        {
+            SpriteJugador.color = _originalColor;
+        }
+        else
+        {
+            SpriteJugador.color = _transparency;
+        }
     }
     private void Pause() // hace que el player este pausado
     {

@@ -67,10 +67,11 @@ public class MaquinaExp : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-        if (player != null)
+        if (player != null && !GameManager.Instance.Invulnerabilidad())
         {
             //Cuando colisiona con jugador, le aplica un empuje en dirección offset
             player.Empuje(FuerzaEmpuje, offset);
+            player.RedFlash();
             GameManager.Instance.RestarVida(Damage);
         }
     }
