@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Escenas Pruebas/Test Dash.unity
     guid: b14158fa755a2994fb4a919378f91a6c
+  - enabled: 1
+    path: Assets/Scenes/Escenas Pruebas/Selector de Pruebas.unity
+    guid: 98b0fefeaf4909f4ca4514cd6824e5ac
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
