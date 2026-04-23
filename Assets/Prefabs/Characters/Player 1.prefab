@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 8194916256295523749}
   - component: {fileID: 2668556366638921185}
   - component: {fileID: -2988813051740651968}
+  - component: {fileID: 2891559705947123877}
   m_Layer: 9
   m_Name: Player 1
   m_TagString: Player
@@ -186,9 +187,9 @@ Transform:
   m_Children:
   - {fileID: 727959638272555828}
   - {fileID: 1545692577432091246}
-  - {fileID: 2757870553870726204}
   - {fileID: 2460368893323837546}
   - {fileID: 8866820238238675413}
+  - {fileID: 2757870553870726204}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8470541403790486971
@@ -212,8 +213,8 @@ MonoBehaviour:
   CooldownDash: 3
   DistanciaDash: 5
   CooldownChuchillo: 3
-  Arma: {fileID: 0}
-  AnimationSprite: {fileID: 0}
+  HitboxCuchillo: {fileID: 0}
+  SpriteJugador: {fileID: 0}
 --- !u!50 &114778734128497918
 Rigidbody2D:
   serializedVersion: 5
@@ -378,6 +379,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   ParticulasCura: {fileID: 4551401581269892856, guid: 25b12f3237d7f914db839ed8aaca4776, type: 3}
+  botiquin: {fileID: 0}
+--- !u!114 &2891559705947123877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5130568479498740769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bbda22d34462344ebe3bc49f9909b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PuntoLanzamiento: {fileID: 0}
+  PrefabGranada: {fileID: 0}
+  FuerzaLanzamiento: 12
+  AnguloLanzamiento: 40
+  IconoGranada: {fileID: 0}
+  IconoBotiquin: {fileID: 0}
 --- !u!1 &7758915492945043005
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,13 +443,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Granada: {fileID: 6464184301813551628, guid: fcbf803d1d52a954eaf8f641d6677aad, type: 3}
-  Bala: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
+  NumGranadas: 0
+  BalaPistola: {fileID: 0}
+  BalaRifle: {fileID: 0}
   SalidaBala: {fileID: 8866820238238675413}
-  numGranadas: 0
   Cadencia: 1
+  SpritePistola: {fileID: 0}
+  SpriteRifle: {fileID: 0}
   Cargador: 10
-  TiempoRecarga: 2
-  recarga: {fileID: 0}
+  TiempoRecargaPistola: 0.5
+  TiempoRecargaRifle: 1.5
+  SpriteRecarga: {fileID: 0}
 --- !u!1 &8913274079982296147
 GameObject:
   m_ObjectHideFlags: 0

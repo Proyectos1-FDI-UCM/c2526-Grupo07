@@ -259,7 +259,7 @@ public class InputManager : MonoBehaviour
     //Cambiar Objeto
     public bool ChangeObjectWasPressedThisFrame()
     {
-        return _useObject.WasPressedThisFrame();
+        return _changeObject.WasPressedThisFrame();
     }
     //Cambiar Arma
     public bool ChangeWeaponWasPressedThisFrame()
