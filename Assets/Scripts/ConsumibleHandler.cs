@@ -118,20 +118,19 @@ public class ConsumibleHandler : MonoBehaviour
 
     private void UsarBotiquin()
     {
-        if (_gameManager.CantidadBotiquines() <= 0) return;
-
-        //Solo gasta y cura si la vida no está llena
-        if (_gameManager.GetVidaActual() < _gameManager.GetVidaMaxima())
+        if (_gameManager.CantidadBotiquines() <= 0)
         {
-            _gameManager.UsarBotiquin();
-            _gameManager.CurarVida(_gameManager.GetVidaMaxima());
-            Debug.Log("[ConsumibleHandler] Botiquín usado. Vida restaurada.");
+            Debug.Log("[ConsumibleHandler] No quedan botiquines.");
+            return;
         }
-        else
+        if (_gameManager.GetVidaActual() >= _gameManager.GetVidaMaxima())
         {
-            Debug.Log("[ConsumibleHandler] Vida al máximo. Botiquín no gastado.");
+            Debug.Log("[ConsumibleHandler] La vida ya está al máximo. No se gasta el botiquín.");
+            return;
         }
-
+        _gameManager.UsarBotiquin();
+        _gameManager.CurarVida(_gameManager.GetVidaMaxima());
+        Debug.Log("[ConsumibleHandler] Botiquín usado. Vida restaurada al máximo.");
         CambioAutomaticoSiVacio();
     }
 
@@ -144,10 +143,17 @@ public class ConsumibleHandler : MonoBehaviour
 
         if (rb != null)
         {
-            float dir = (transform.localScale.x < 0) ? -1f : 1f;
+            float direccionHorizontal = 1f;
+            if (transform.localScale.x < 0)
+            {
+                direccionHorizontal = -1f;
+            }
             float anguloRad = AnguloLanzamiento * Mathf.Deg2Rad;
-            Vector2 fuerza = new Vector2(Mathf.Cos(anguloRad) * dir, Mathf.Sin(anguloRad)) * FuerzaLanzamiento;
-            rb.AddForce(fuerza, ForceMode2D.Impulse);
+            float componenteX = Mathf.Cos(anguloRad) * direccionHorizontal;
+            float componenteY = Mathf.Sin(anguloRad);
+            Vector2 direccionLanzamiento = new Vector2(componenteX, componenteY);
+
+            rb.AddForce(direccionLanzamiento * FuerzaLanzamiento, ForceMode2D.Impulse);
         }
     }
 
