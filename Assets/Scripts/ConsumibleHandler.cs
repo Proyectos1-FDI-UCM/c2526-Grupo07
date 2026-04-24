@@ -1,14 +1,15 @@
 //---------------------------------------------------------
-// Gestor independiente de consumibles (Granadas y Botiquines)
+// Gestiona el cambio y uso de consumibles del jugador (Granadas y Botiquines).
 // Responsable de la creación de este archivo
-// Nombre del juego
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
 using UnityEngine;
 
 /// <summary>
-/// Enumeración para identificar el tipo de consumible equipado.
+/// Enumeración que representa el tipo de consumible que el jugador tiene equipado.
+/// Ninguno indica que no hay ningún consumible seleccionado.
 /// </summary>
 public enum TipoConsumible
 {
@@ -18,10 +19,11 @@ public enum TipoConsumible
 }
 
 /// <summary>
-/// Componente encargado de gestionar el cambio, uso y lanzamiento de consumibles.
-/// Se comunica exclusivamente con GameManager para modificar cantidades y vida,
-/// y con InputManager para leer las entradas del jugador.
-/// Cada consumible tiene su propia lógica de uso independiente.
+/// Gestiona el sistema de consumibles del jugador: granadas y botiquines.
+/// Permite al jugador cambiar entre consumibles, usarlos y lanzarlos.
+/// Las granadas se lanzan con trayectoria parabólica y explotan tras un tiempo,
+/// causando daño en área. Los botiquines restauran toda la vida del jugador.
+/// Se comunica con GameManager para consultar y modificar cantidades y vida.
 /// </summary>
 public class ConsumibleHandler : MonoBehaviour
 {
@@ -33,17 +35,14 @@ public class ConsumibleHandler : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
 
-    [Header("Referencias")]
-    [SerializeField] private Transform PuntoLanzamiento;
-    [SerializeField] private GameObject PrefabGranada;
+    [SerializeField] private Transform PuntoLanzamiento;  // Punto desde el que se lanza la granada
+    [SerializeField] private GameObject PrefabGranada;    // Prefab de la granada a instanciar
 
-    [Header("Configuración Granada")]
-    [SerializeField] private float FuerzaLanzamiento = 12f;
-    [SerializeField] private float AnguloLanzamiento = 40f;
+    [SerializeField] private float FuerzaLanzamiento = 12f;  // Fuerza con la que se lanza la granada
+    [SerializeField] private float AnguloLanzamiento = 40f;  // Ángulo de lanzamiento en grados
 
-    [Header("HUD Iconos")]
-    [SerializeField] private GameObject IconoGranada;
-    [SerializeField] private GameObject IconoBotiquin;
+    [SerializeField] private GameObject IconoGranada;    // Icono de la granada en el HUD
+    [SerializeField] private GameObject IconoBotiquin;   // Icono del botiquín en el HUD
 
     #endregion
 
@@ -56,8 +55,8 @@ public class ConsumibleHandler : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
 
-    private TipoConsumible _consumibleEquipado = TipoConsumible.Ninguno;
-    private GameManager _gameManager;
+    private TipoConsumible _consumibleEquipado = TipoConsumible.Ninguno; // Consumible actualmente equipado
+    private GameManager _gameManager;                                     // Referencia al GameManager singleton
 
     #endregion
 
@@ -84,11 +83,16 @@ public class ConsumibleHandler : MonoBehaviour
     void Update()
     {
         if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
+        {
             CambiarConsumible();
+        }
 
         if (InputManager.Instance.UseObjectWasPressedThisFrame())
+        {
             UsarConsumibleEquipado();
+        }
     }
+
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -109,69 +113,105 @@ public class ConsumibleHandler : MonoBehaviour
     // mayúscula, incluida la primera letra)
 
     /// <summary>
-    /// Alterna entre granada y botiquín, saltando automáticamente aquellos que estén en cantidad 0.
+    /// Alterna el consumible equipado entre Granada y Botiquín,
+    /// omitiendo automáticamente aquellos cuya cantidad sea cero.
+    /// Si no hay ninguno disponible, establece el equipado como Ninguno.
     /// </summary>
     private void CambiarConsumible()
     {
-        int granadas = _gameManager.CantidadGranadas();
-        int botiquines = _gameManager.CantidadBotiquines();
+        int cantidadGranadas = _gameManager.CantidadGranadas();
+        int cantidadBotiquines = _gameManager.CantidadBotiquines();
 
-        if (granadas <= 0 && botiquines <= 0)
+        if (cantidadGranadas <= 0 && cantidadBotiquines <= 0)
         {
             _consumibleEquipado = TipoConsumible.Ninguno;
+            Debug.Log("[ConsumibleHandler] No hay consumibles disponibles.");
             ActualizarHUD();
             return;
         }
 
-        // Ciclo inteligente: omite consumibles vacíos
         if (_consumibleEquipado == TipoConsumible.Ninguno || _consumibleEquipado == TipoConsumible.Botiquin)
-            _consumibleEquipado = (granadas > 0) ? TipoConsumible.Granada : TipoConsumible.Botiquin;
+        {
+            if (cantidadGranadas > 0)
+            {
+                _consumibleEquipado = TipoConsumible.Granada;
+            }
+            else
+            {
+                _consumibleEquipado = TipoConsumible.Botiquin;
+            }
+        }
         else
-            _consumibleEquipado = (botiquines > 0) ? TipoConsumible.Botiquin : TipoConsumible.Granada;
+        {
+            if (cantidadBotiquines > 0)
+            {
+                _consumibleEquipado = TipoConsumible.Botiquin;
+            }
+            else
+            {
+                _consumibleEquipado = TipoConsumible.Granada;
+            }
+        }
 
+        Debug.Log("[ConsumibleHandler] Consumible equipado: " + _consumibleEquipado);
         ActualizarHUD();
     }
 
     /// <summary>
-    /// Ruta de uso que delega en la lógica independiente de cada consumible.
+    /// Redirige la lógica de uso al consumible actualmente equipado.
     /// </summary>
     private void UsarConsumibleEquipado()
     {
-        switch (_consumibleEquipado)
+        if (_consumibleEquipado == TipoConsumible.Granada)
         {
-            case TipoConsumible.Granada:
-                UsarGranada();
-                break;
-            case TipoConsumible.Botiquin:
-                UsarBotiquin();
-                break;
+            UsarGranada();
+        }
+        else if (_consumibleEquipado == TipoConsumible.Botiquin)
+        {
+            UsarBotiquin();
+        }
+        else
+        {
+            Debug.Log("[ConsumibleHandler] No hay consumible equipado para usar.");
         }
     }
 
     /// <summary>
-    /// Lógica independiente para usar y lanzar una granada.
+    /// Consume una granada del inventario y la lanza con trayectoria parabólica.
+    /// Si no quedan granadas, no hace nada.
+    /// Tras el uso, cambia automáticamente al otro consumible si este se agotó.
     /// </summary>
     private void UsarGranada()
     {
-        if (_gameManager.CantidadGranadas() <= 0) return;
+        if (_gameManager.CantidadGranadas() <= 0)
+        {
+            Debug.Log("[ConsumibleHandler] No quedan granadas.");
+            return;
+        }
 
         _gameManager.UsarGranadas();
         LanzarGranada();
+        Debug.Log("[ConsumibleHandler] Granada lanzada. Granadas restantes: " + _gameManager.CantidadGranadas());
         CambioAutomaticoSiVacio();
     }
 
     /// <summary>
-    /// Lógica independiente para usar un botiquín.
-    /// Solo se consume si la vida actual es inferior a la máxima.
+    /// Consume un botiquín del inventario y restaura toda la vida del jugador.
+    /// Solo se gasta si la vida actual es inferior a la máxima.
+    /// Si no quedan botiquines, no hace nada.
+    /// Tras el uso, cambia automáticamente al otro consumible si este se agotó.
     /// </summary>
     private void UsarBotiquin()
     {
-        if (_gameManager.CantidadBotiquines() <= 0) return;
+        if (_gameManager.CantidadBotiquines() <= 0)
+        {
+            Debug.Log("[ConsumibleHandler] No quedan botiquines.");
+            return;
+        }
 
-        // Verificación crítica: no gastar botiquín si ya tiene vida máxima
         if (_gameManager.GetVidaActual() >= _gameManager.GetVidaMaxima())
         {
-            Debug.Log("[ConsumibleHandler] Vida ya al máximo. No se gasta el botiquín.");
+            Debug.Log("[ConsumibleHandler] La vida ya está al máximo. No se gasta el botiquín.");
             return;
         }
 
@@ -182,13 +222,14 @@ public class ConsumibleHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Instancia y lanza la granada con trayectoria parabólica en 2D.
+    /// Instancia el prefab de la granada en el punto de lanzamiento
+    /// y le aplica una fuerza en dirección parabólica según el ángulo y la dirección del jugador.
     /// </summary>
     private void LanzarGranada()
     {
         if (PrefabGranada == null || PuntoLanzamiento == null)
         {
-            Debug.LogWarning("[ConsumibleHandler] Asigna PrefabGranada y PuntoLanzamiento en el Inspector.");
+            Debug.Log("[ConsumibleHandler] Falta asignar PrefabGranada o PuntoLanzamiento en el Inspector.");
             return;
         }
 
@@ -197,38 +238,76 @@ public class ConsumibleHandler : MonoBehaviour
 
         if (rb != null)
         {
-            float dir = transform.localScale.x > 0 ? 1f : -1f;
+            float direccionHorizontal = 1f;
+            if (transform.localScale.x < 0)
+            {
+                direccionHorizontal = -1f;
+            }
+
             float anguloRad = AnguloLanzamiento * Mathf.Deg2Rad;
-            Vector2 direccion = new Vector2(Mathf.Cos(anguloRad) * dir, Mathf.Sin(anguloRad));
-            rb.AddForce(direccion * FuerzaLanzamiento, ForceMode2D.Impulse);
+            float componenteX = Mathf.Cos(anguloRad) * direccionHorizontal;
+            float componenteY = Mathf.Sin(anguloRad);
+            Vector2 direccionLanzamiento = new Vector2(componenteX, componenteY);
+
+            rb.AddForce(direccionLanzamiento * FuerzaLanzamiento, ForceMode2D.Impulse);
         }
     }
 
     /// <summary>
-    /// Cambia automáticamente al otro consumible si el actual se ha agotado.
+    /// Si el consumible actualmente equipado se ha agotado,
+    /// cambia automáticamente al otro si está disponible,
+    /// o establece Ninguno si ambos están vacíos.
     /// </summary>
     private void CambioAutomaticoSiVacio()
     {
-        if (_consumibleEquipado == TipoConsumible.Granada && _gameManager.CantidadGranadas() <= 0 && _gameManager.CantidadBotiquines() > 0)
-            _consumibleEquipado = TipoConsumible.Botiquin;
-        else if (_consumibleEquipado == TipoConsumible.Botiquin && _gameManager.CantidadBotiquines() <= 0 && _gameManager.CantidadGranadas() > 0)
-            _consumibleEquipado = TipoConsumible.Granada;
-        else if (_gameManager.CantidadGranadas() <= 0 && _gameManager.CantidadBotiquines() <= 0)
-            _consumibleEquipado = TipoConsumible.Ninguno;
+        if (_consumibleEquipado == TipoConsumible.Granada && _gameManager.CantidadGranadas() <= 0)
+        {
+            if (_gameManager.CantidadBotiquines() > 0)
+            {
+                _consumibleEquipado = TipoConsumible.Botiquin;
+                Debug.Log("[ConsumibleHandler] Sin granadas. Cambio automático a Botiquín.");
+            }
+            else
+            {
+                _consumibleEquipado = TipoConsumible.Ninguno;
+                Debug.Log("[ConsumibleHandler] Sin granadas ni botiquines. Consumible: Ninguno.");
+            }
+        }
+        else if (_consumibleEquipado == TipoConsumible.Botiquin && _gameManager.CantidadBotiquines() <= 0)
+        {
+            if (_gameManager.CantidadGranadas() > 0)
+            {
+                _consumibleEquipado = TipoConsumible.Granada;
+                Debug.Log("[ConsumibleHandler] Sin botiquines. Cambio automático a Granada.");
+            }
+            else
+            {
+                _consumibleEquipado = TipoConsumible.Ninguno;
+                Debug.Log("[ConsumibleHandler] Sin granadas ni botiquines. Consumible: Ninguno.");
+            }
+        }
 
         ActualizarHUD();
     }
 
     /// <summary>
-    /// Actualiza la visibilidad de los iconos en el HUD según el consumible equipado.
+    /// Actualiza la visibilidad de los iconos del HUD
+    /// según el consumible que el jugador tiene equipado en ese momento.
     /// </summary>
     private void ActualizarHUD()
     {
-        if (IconoGranada != null) IconoGranada.SetActive(_consumibleEquipado == TipoConsumible.Granada);
-        if (IconoBotiquin != null) IconoBotiquin.SetActive(_consumibleEquipado == TipoConsumible.Botiquin);
+        if (IconoGranada != null)
+        {
+            IconoGranada.SetActive(_consumibleEquipado == TipoConsumible.Granada);
+        }
+
+        if (IconoBotiquin != null)
+        {
+            IconoBotiquin.SetActive(_consumibleEquipado == TipoConsumible.Botiquin);
+        }
     }
 
-    #endregion   
+    #endregion
 
 } // class ConsumibleHandler 
   // namespace
