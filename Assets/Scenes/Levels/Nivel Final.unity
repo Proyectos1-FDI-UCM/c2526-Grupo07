@@ -1981,11 +1981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &1081319139 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 7201556185361341473, guid: 08889b12369dc2d49942f35569508076, type: 3}
-  m_PrefabInstance: {fileID: 1485226556}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1157085140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2452,7 +2447,8 @@ MonoBehaviour:
   SpritePistola: {fileID: 1396294326}
   SpriteRifle: {fileID: 1007537163}
   Cargador: 10
-  TiempoRecarga: 3
+  TiempoRecargaPistola: 0.5
+  TiempoRecargaRifle: 1.5
   SpriteRecarga: {fileID: 757973099}
 --- !u!4 &1396294328
 Transform:
@@ -2593,6 +2589,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_Size.x
+      value: 1.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_Size.y
+      value: 2.6466668
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -6482346157127834526, guid: 300513939b2cf8241bd54e3053abdd8f, type: 3}
+    - target: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: Apuntado
       value: 
@@ -2608,7 +2620,7 @@ PrefabInstance:
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: SpriteJugador
       value: 
-      objectReference: {fileID: 1081319139}
+      objectReference: {fileID: 1485226563}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: HitboxCuchillo
       value: 
@@ -2616,7 +2628,7 @@ PrefabInstance:
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: AnimationSprite
       value: 
-      objectReference: {fileID: 1485226558}
+      objectReference: {fileID: 0}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: Saltable.m_Bits
       value: 64
@@ -2630,6 +2642,7 @@ PrefabInstance:
     - {fileID: 7758915492945043005, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 3296633764568319356, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 8913274079982296147, guid: 08889b12369dc2d49942f35569508076, type: 3}
+    - {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
@@ -2641,27 +2654,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1485226560}
-    - targetCorrespondingSourceObject: {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1485226558}
   m_SourcePrefab: {fileID: 100100000, guid: 08889b12369dc2d49942f35569508076, type: 3}
---- !u!1 &1485226557 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
-  m_PrefabInstance: {fileID: 1485226556}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1485226558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485226557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 163042820293e2c4f9e14b2bb69dd98f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1485226559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
@@ -2681,6 +2674,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   ParticulasCura: {fileID: 0}
+  botiquin: {fileID: 0}
+--- !u!212 &1485226563 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
+  m_PrefabInstance: {fileID: 1485226556}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1532522985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8634885188236667374, guid: 05a609f20d379254ea7c561416abc8fc, type: 3}
