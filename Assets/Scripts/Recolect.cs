@@ -86,6 +86,7 @@ public class Recolect : MonoBehaviour
                 }
                 else if (Objeto == TipoObjeto.Botiquin && GameManager.Instance.BotiquinesFull() == false)
                 {
+                    Debug.Log("Me ejecuto");
                     GameManager.Instance.GuardarBotiquines();
                     Destroy(gameObject);
                 }

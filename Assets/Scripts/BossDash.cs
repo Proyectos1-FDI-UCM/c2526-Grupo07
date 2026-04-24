@@ -28,6 +28,8 @@ public class BossDash : MonoBehaviour
     [SerializeField] private float DashTime = 0.8f; // duracion del dash
     [SerializeField] private float DashColdDown = 3f; // duracion entre cada dash 
     [SerializeField] private int DashDamage = 10;
+
+    [SerializeField] private Transform player;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -42,9 +44,10 @@ public class BossDash : MonoBehaviour
     private float Timer2;
     private Rigidbody2D rb;
     private BoxCollider2D col;
-    private bool Dashing = false;
     private int dir = -1;
-    private bool _CanDash;
+    private bool isDashing = false;
+
+    private Animator _anim; //animacion de dash
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -63,15 +66,36 @@ public class BossDash : MonoBehaviour
         Timer = 0;
         rb = GetComponent<Rigidbody2D>();
         col = rb.GetComponent<BoxCollider2D>();
-        _CanDash = true;
+        _anim = GetComponent<Animator>();
     }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
-    {   
-        Dash();
+    {
+        Vector2 offset = player.transform.position - transform.position;
+        if(offset.x < 0 && dir!= 1)
+        {
+            dir *= -1;
+            CambioDireccion();
+            Dash();
+            _anim.SetBool("IsDashing", isDashing);
+        }
+        if (offset.x > 0 && dir != -1)
+        {
+            dir *= -1;
+            CambioDireccion();
+            Dash();
+            _anim.SetBool("IsDashing", isDashing);
+        }
+        else
+        {
+            Dash();
+            //_anim.SetFloat("attackDash", rb.linearVelocity.x);
+            _anim.SetBool("IsDashing", isDashing);
+        }
+        return;
     }
     #endregion
 
@@ -82,15 +106,6 @@ public class BossDash : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void BossDashPause()
-    {
-        Debug.Log("jefeDashpausado");
-        _CanDash = false;
-    }
-    public void BossDashContinue()
-    {
-        _CanDash = true;
-    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -101,29 +116,32 @@ public class BossDash : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Dash()
     {
-        if (_CanDash)
+        float InitialG = rb.gravityScale;
+        Timer += Time.deltaTime;
+        isDashing = false;
+        Debug.Log("im not dashing");
+        if (Timer > DashColdDown) //ColdDown
         {
-            float InitialG = rb.gravityScale;
-            Timer += Time.deltaTime;
-            if (Timer > DashColdDown) //ColdDown
+            Timer2 += Time.deltaTime;
+            rb.linearVelocity = Vector2.zero;
+            Debug.Log("im dashing");
+            if (Timer2 > DashTime) //Duración del Dash
             {
-                Timer2 += Time.deltaTime;
-                rb.linearVelocity = Vector2.zero;
-                if (Timer2 > DashTime) //Duración del Dash
-                {
-                    Dashing = true;
-                    rb.gravityScale = 0;
-                    dir *= -1;    //cambio de direccion, invertir
-                    rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
-                    Vector3 scale = transform.localScale;
-                    scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
-                    transform.localScale = scale;
-                    Timer = 0;
-                    Timer2 = 0;   //vuelve a sincronizar el tiempo
-                }
+                isDashing = true;
+                rb.gravityScale = 0;
+                dir *= -1;    //cambio de direccion, invertir
+                rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
+                Vector2 scale = transform.localScale;
+                scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
+                transform.localScale = scale;
+                Timer = 0;
+                Timer2 = 0;   //vuelve a sincronizar el tiempo
             }
-            rb.gravityScale = InitialG;
         }
+    }
+    private void CambioDireccion()
+    {
+        transform.localScale = new Vector3(dir*-1, 1, 1);
     }
     #endregion   
 

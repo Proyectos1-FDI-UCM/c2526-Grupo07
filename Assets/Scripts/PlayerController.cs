@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
     [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
 
+    [SerializeField] private AudioSource soundDash;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -79,6 +81,7 @@ public class PlayerController : MonoBehaviour
     private Color _originalColor;       //Color original del personaje
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
+
     private float _recibeDaño;          //Tiempo inicial cuando ha recibido daño
 
     private Color _transparency;            //Transparencia del jugador
@@ -160,6 +163,7 @@ public class PlayerController : MonoBehaviour
             if (_lastTimeDashed >= CooldownDash)
             {
                 Dash();
+                soundDash.Play();
             }
             else Debug.Log("Refrescando");
         }

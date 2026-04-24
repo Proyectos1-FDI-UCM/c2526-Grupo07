@@ -215,6 +215,7 @@ MonoBehaviour:
   CooldownChuchillo: 3
   HitboxCuchillo: {fileID: 0}
   SpriteJugador: {fileID: 0}
+  soundDash: {fileID: 0}
 --- !u!50 &114778734128497918
 Rigidbody2D:
   serializedVersion: 5
@@ -392,12 +393,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bbda22d34462344ebe3bc49f9909b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PuntoLanzamiento: {fileID: 0}
-  PrefabGranada: {fileID: 0}
+  PuntoLanzamiento: {fileID: 2460368893323837546}
+  PrefabGranada: {fileID: 6464184301813551628, guid: fcbf803d1d52a954eaf8f641d6677aad, type: 3}
   FuerzaLanzamiento: 12
   AnguloLanzamiento: 40
-  IconoGranada: {fileID: 0}
-  IconoBotiquin: {fileID: 0}
+  IconoGranada: {fileID: 6464184301813551628, guid: fcbf803d1d52a954eaf8f641d6677aad, type: 3}
+  IconoBotiquin: {fileID: 3372975816169420437, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
 --- !u!1 &7758915492945043005
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,6 +449,7 @@ MonoBehaviour:
   BalaRifle: {fileID: 0}
   SalidaBala: {fileID: 8866820238238675413}
   Cadencia: 1
+  PistolaSFX: {fileID: 0}
   SpritePistola: {fileID: 0}
   SpriteRifle: {fileID: 0}
   Cargador: 10
