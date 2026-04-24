@@ -83,6 +83,8 @@ public class PlayerController : MonoBehaviour
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
     private float _flashInitialTime;    //Tiempo inicio del color rojo
+
+    private SoundController sound;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -155,6 +157,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_lastTimeDashed >= CooldownDash)
             {
+                sound.SonidoDash();
                 Dash();
             }
             else Debug.Log("Refrescando");

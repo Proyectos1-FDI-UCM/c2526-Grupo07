@@ -382,7 +382,7 @@ Transform:
   m_GameObject: {fileID: 199440379}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.41, y: 4.16, z: 0}
+  m_LocalPosition: {x: -8.62, y: 4.03, z: 0}
   m_LocalScale: {x: 1.3283521, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee6c77d1908cd246b401797204ed435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 199440383}
+  Target: {fileID: 561604778}
   PrefabBullet: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   MaxBalasPorSeg: 5
   HoraDisparo: 2
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a367a1b9068b6d44fb2b90477462fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 199440383}
+  player: {fileID: 561604778}
   ChaseDis: 5
   ShootDis: 3
   alturaMax: 1
@@ -831,7 +831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee6c77d1908cd246b401797204ed435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 199440383}
+  Target: {fileID: 0}
   PrefabBullet: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   MaxBalasPorSeg: 5
   HoraDisparo: 2
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vel: 3
-  player: {fileID: 199440383}
+  player: {fileID: 0}
   plataforma: {fileID: 1408628726}
 --- !u!114 &1158182949
 MonoBehaviour:
@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6008851755fd8944c912f7ffa9d23701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 199440383}
+  player: {fileID: 0}
   ChaseDis: 5
   ShootDis: 3
   alturaMax: 1
