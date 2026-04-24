@@ -1667,6 +1667,7 @@ MonoBehaviour:
   DashTime: 0.5
   DashColdDown: 5
   DashDamage: 10
+  player: {fileID: 1230260055}
 --- !u!212 &960067419
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2444,6 +2445,7 @@ MonoBehaviour:
   BalaRifle: {fileID: 3495812759742759153, guid: d545d72907636394b9fff23273025c95, type: 3}
   SalidaBala: {fileID: 1628735563}
   Cadencia: 2
+  PistolaSFX: {fileID: 0}
   SpritePistola: {fileID: 1396294326}
   SpriteRifle: {fileID: 1007537163}
   Cargador: 10
@@ -3244,6 +3246,10 @@ PrefabInstance:
     - target: {fileID: 3372975816169420437, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
       propertyPath: m_Name
       value: BotiquinDrop
+      objectReference: {fileID: 0}
+    - target: {fileID: 3372975816169420437, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
