@@ -72,8 +72,9 @@ public class BossDash : MonoBehaviour
     /// </summary>
     void Update()
     {
-        _anim.SetFloat("attackDash", rb.linearVelocity.x);
+        //_anim.SetFloat("attackDash", rb.linearVelocity.x);
         Dash();
+        _anim.SetBool("IsDashing", isDashing);
     }
     #endregion
 
@@ -106,11 +107,10 @@ public class BossDash : MonoBehaviour
             if (Timer2 > DashTime) //Duración del Dash
             {
                 isDashing = true;
-                //Debug.Log("im dashing");
                 rb.gravityScale = 0;
                 dir *= -1;    //cambio de direccion, invertir
                 rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
-                Vector3 scale = transform.localScale;
+                Vector2 scale = transform.localScale;
                 scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
                 transform.localScale = scale;
                 Timer = 0;
