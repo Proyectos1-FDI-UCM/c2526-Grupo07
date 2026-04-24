@@ -173,7 +173,7 @@ public class MoveEnemigo : MonoBehaviour
             if (_tiempoInicio > duracion)
             {
                 _tiempoQuieto += Time.deltaTime;
-                _rb.linearVelocity = Vector2.zero;
+                _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
                 if (_tiempoQuieto > duracionQuieto)
                 {
                     _direction *= -1;    //cambio de direccion, invertir
@@ -188,7 +188,7 @@ public class MoveEnemigo : MonoBehaviour
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(_direction, 1, 1);
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
     #endregion
 }

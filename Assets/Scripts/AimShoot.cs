@@ -33,6 +33,7 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private GameObject BalaRifle;   //Objeto Bala de pistola que se crea al Dispara
     [SerializeField] private Transform SalidaBala;   //Posición donde saldrá la bala
     [SerializeField] private float Cadencia = 1f;    //Balas por segundo
+    [SerializeField] private AudioSource PistolaSFX; //Sonido del disparo
 
     //Sprites armas
     [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
@@ -174,7 +175,7 @@ public class AimShoot : MonoBehaviour
         {
             if (InputManager.Instance.UseObjectWasPressedThisFrame())
             {
-                if (GameManager.Instance.CantidadGranadas() > 0)
+                if (GameManager.Instance.CantidadGranadas() > 0 && GameManager.Instance.UsandoGranadas())
                 {
                     GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
                     Explosion bomba = newGranada.GetComponent<Explosion>();
@@ -232,18 +233,23 @@ public class AimShoot : MonoBehaviour
     //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
     private void Disparar()
     {
-            //Crea la bala en su posición de salida
-            //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
-            GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
-            BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
-            balaDir.Dir(_direction);
-            // Restamos una bala al cargador
-            _balasActuales--;
-            GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-            Debug.Log("Balas: " + _balasActuales);
+        //Crea la bala en su posición de salida
+        //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        if (_armaActual == "Pistola")
+        {
+            PistolaSFX.Play();
+        }
+        GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+        balaDir.Dir(_direction);
 
-            // Reiniciamos el tiempo de disparo según la cadencia
-            _tiempoDisparo = 1f / Cadencia;
+        // Restamos una bala al cargador
+        _balasActuales--;
+        GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+        Debug.Log("Balas: " + _balasActuales);
+
+        // Reiniciamos el tiempo de disparo según la cadencia
+        _tiempoDisparo = 1f / Cadencia;
     }
     //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
     private void EmpezarRecarga()

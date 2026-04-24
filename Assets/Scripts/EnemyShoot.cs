@@ -33,6 +33,8 @@ public class EnemyShoot : MonoBehaviour
     private float HoraDisparo;
     [SerializeField]
     private Transform SalidaBala;
+    [SerializeField]
+    private AudioSource SonidoDisparo;
 
     #endregion
 
@@ -82,7 +84,7 @@ public class EnemyShoot : MonoBehaviour
             GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
             BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
             balaDir.Dir(offset);
-
+            SonidoDisparo.Play();
             HoraDisparo = Time.time;
         }
     }

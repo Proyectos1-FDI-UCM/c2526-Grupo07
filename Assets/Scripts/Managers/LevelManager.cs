@@ -37,10 +37,10 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI TextAmmo; //Cantidad de balas
 
-    [SerializeField] private GameObject SpriteGranada;     //Sprite de la granada
+    [SerializeField] private SpriteRenderer SpriteGranada;     //Sprite de la granada
     [SerializeField] private TextMeshProUGUI TextGranadas; //Número de granadas
 
-    [SerializeField] private GameObject SpriteBotiquin;      //Sprite del botiquín
+    [SerializeField] private SpriteRenderer SpriteBotiquin;      //Sprite del botiquín
     [SerializeField] private TextMeshProUGUI TextBotiquines; //Número de botiquines
 
     [SerializeField] private Slider BarraDeVida;             //Sprite de barra de vida
@@ -90,6 +90,11 @@ public class LevelManager : MonoBehaviour
 
     private bool _juegoTerminado = false; //True si el juego termina
 
+    //BORRAR
+    private Color _transparency1;
+    private Color _originalSpriteGranada;
+    private Color _originalSpriteBotiquin;
+
     // pause
     private float time; 
     #endregion
@@ -109,6 +114,9 @@ public class LevelManager : MonoBehaviour
             GameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
             PanelPausa.SetActive(false);
+            _transparency1.a = 0.5f;
+            _originalSpriteBotiquin = SpriteBotiquin.color;
+            _originalSpriteGranada = SpriteGranada.color;
         }
     }
 
@@ -127,6 +135,16 @@ public class LevelManager : MonoBehaviour
         if (InputManager.Instance.PauseWasPressedThisFrame())
         {
             Pause();
+        }
+        if (GameManager.Instance.UsandoBotiquines())
+        {
+            SpriteGranada.color = _transparency1;
+            SpriteBotiquin.color = _originalSpriteBotiquin;
+        }
+        if (GameManager.Instance.UsandoGranadas())
+        {
+            SpriteBotiquin.color = _transparency1;
+            SpriteGranada.color = _originalSpriteGranada;
         }
         timeSec += Time.deltaTime;
         timeTotal += Time.deltaTime;
