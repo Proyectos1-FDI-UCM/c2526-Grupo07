@@ -29,6 +29,9 @@ public class EnemyAK : MonoBehaviour
     [SerializeField] private Transform player; //jugador para realizar las acciones
     [SerializeField] private Collider2D plataforma;     //plataforma donde mueve el enemigo
 
+    [SerializeField] private AudioSource soundMove;
+
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----

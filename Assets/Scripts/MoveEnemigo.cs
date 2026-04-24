@@ -30,6 +30,8 @@ public class MoveEnemigo : MonoBehaviour
 
     [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player; //jugador para realizar las acciones
+
+    [SerializeField] private AudioSource soundMove;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -161,6 +163,7 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
+        soundMove.Play();
          _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
     private void MovAuto()
@@ -180,6 +183,7 @@ public class MoveEnemigo : MonoBehaviour
                     _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
                 }
             }
+            soundMove.Play();
     }
 
     private void CambioDireccion()

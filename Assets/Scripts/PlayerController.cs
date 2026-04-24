@@ -41,6 +41,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
 
     [SerializeField] private AudioSource soundDash;
+    [SerializeField] private AudioSource soundJump;
+    [SerializeField] private AudioSource soundMove;
+    [SerializeField] private AudioSource soundDead;
+    [SerializeField] private AudioSource soundDamage;
 
     #endregion
 
@@ -263,10 +267,14 @@ public class PlayerController : MonoBehaviour
         {
             //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
         if (hit.collider != null && InputManager.Instance.JumpIsPressed())
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
     }
     //Método para moverse horizontalmente y dash
@@ -298,6 +306,10 @@ public class PlayerController : MonoBehaviour
                     _isDashing = false;
                     _anim.SetBool("isDashing", _isDashing);
                 }
+            }
+            if(horizontalInput!=0 && !_isDashing)
+            {
+                soundMove.Play();
             }
         }
     }

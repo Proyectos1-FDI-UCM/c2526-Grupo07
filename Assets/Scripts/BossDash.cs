@@ -30,6 +30,7 @@ public class BossDash : MonoBehaviour
     [SerializeField] private int DashDamage = 10;
 
     [SerializeField] private Transform player;
+    [SerializeField] private AudioSource sonidoDash;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -79,22 +80,15 @@ public class BossDash : MonoBehaviour
         {
             dir *= -1;
             CambioDireccion();
-            Dash();
-            _anim.SetBool("IsDashing", isDashing);
         }
         if (offset.x > 0 && dir != -1)
         {
             dir *= -1;
             CambioDireccion();
-            Dash();
-            _anim.SetBool("IsDashing", isDashing);
         }
-        else
-        {
-            Dash();
-            //_anim.SetFloat("attackDash", rb.linearVelocity.x);
-            _anim.SetBool("IsDashing", isDashing);
-        }
+        Dash();
+        //_anim.SetFloat("attackDash", rb.linearVelocity.x);
+        _anim.SetBool("IsDashing", isDashing);
         return;
     }
     #endregion
@@ -128,6 +122,9 @@ public class BossDash : MonoBehaviour
             if (Timer2 > DashTime) //Duración del Dash
             {
                 isDashing = true;
+
+                sonidoDash.Play();
+
                 rb.gravityScale = 0;
                 dir *= -1;    //cambio de direccion, invertir
                 rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
