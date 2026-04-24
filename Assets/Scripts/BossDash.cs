@@ -28,6 +28,8 @@ public class BossDash : MonoBehaviour
     [SerializeField] private float DashTime = 0.8f; // duracion del dash
     [SerializeField] private float DashColdDown = 3f; // duracion entre cada dash 
     [SerializeField] private int DashDamage = 10;
+
+    [SerializeField] private Transform player;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -72,9 +74,28 @@ public class BossDash : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //_anim.SetFloat("attackDash", rb.linearVelocity.x);
-        Dash();
-        _anim.SetBool("IsDashing", isDashing);
+        Vector2 offset = player.transform.position - transform.position;
+        if(offset.x < 0 && dir!= 1)
+        {
+            dir *= -1;
+            CambioDireccion();
+            Dash();
+            _anim.SetBool("IsDashing", isDashing);
+        }
+        if (offset.x > 0 && dir != -1)
+        {
+            dir *= -1;
+            CambioDireccion();
+            Dash();
+            _anim.SetBool("IsDashing", isDashing);
+        }
+        else
+        {
+            Dash();
+            //_anim.SetFloat("attackDash", rb.linearVelocity.x);
+            _anim.SetBool("IsDashing", isDashing);
+        }
+        return;
     }
     #endregion
 
@@ -117,6 +138,10 @@ public class BossDash : MonoBehaviour
                 Timer2 = 0;   //vuelve a sincronizar el tiempo
             }
         }
+    }
+    private void CambioDireccion()
+    {
+        transform.localScale = new Vector3(dir*-1, 1, 1);
     }
     #endregion   
 
