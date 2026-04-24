@@ -142,7 +142,7 @@ public class AtaqueJefe : MonoBehaviour
 
                 //arco de movimiento
                 rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
-                Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
+                GranadaBoss explosion = granada.GetComponent<GranadaBoss>();    //aplicar direccion de granada tirada
                 explosion.SetDireccion(direccion);
             }
     }
