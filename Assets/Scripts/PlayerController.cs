@@ -366,6 +366,8 @@ public class PlayerController : MonoBehaviour
             SpriteJugador.color = _transparency;
         }
     }
+
+
 }
     #endregion
 // class PlayerController 
