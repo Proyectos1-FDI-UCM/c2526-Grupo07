@@ -175,7 +175,7 @@ public class AimShoot : MonoBehaviour
         {
             if (InputManager.Instance.UseObjectWasPressedThisFrame())
             {
-                if (GameManager.Instance.CantidadGranadas() > 0)
+                if (GameManager.Instance.CantidadGranadas() > 0 && GameManager.Instance.UsandoGranadas())
                 {
                     GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
                     Explosion bomba = newGranada.GetComponent<Explosion>();
