@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 
 /// <summary>
@@ -60,6 +61,8 @@ public class GameManager : MonoBehaviour
     private int _balasMax = 0;   //Ver las balas maximas de esa arma
     private int _granadas = 0;   //Cantidad de granadas actuales
     private int _botiquines = 0; //Cantidad de botiquines actuales
+    private bool _usandoGranadas = false;
+    private bool _usandoBotiquines = false;
 
     //Inventario armas
     private bool _AK47 = false; //Inventario interno para ver si tiene rifle o no
@@ -118,6 +121,7 @@ public class GameManager : MonoBehaviour
             Init();
         } // if-else somos instancia nueva o no. 
         _vidaActual = MaxVidaInicial;
+        _usandoGranadas = true;
     }
 
     /// <summary>
@@ -150,6 +154,22 @@ public class GameManager : MonoBehaviour
             {
                 _invulnerableTiempoInicial = 0;
                 _invulnerable = false;
+            }
+        }
+        if (InputManager.Instance)
+        {
+            if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
+            {
+                if (_usandoBotiquines)
+                {
+                    _usandoGranadas = true;
+                    _usandoBotiquines = false;
+                }
+                else if (_usandoGranadas)
+                {
+                    _usandoBotiquines = true;
+                    _usandoGranadas = false;
+                }
             }
         }
     }
@@ -242,8 +262,11 @@ public class GameManager : MonoBehaviour
     //Método llamado cuando se usan granadas
     public void UsarGranadas()
     {
-        _granadas--;
-        TransferManagerSetup();
+        if (_usandoGranadas)
+        {
+            _granadas--;
+            TransferManagerSetup();
+        }
     }
     //Método llamado cuando se guardan granadas
     public void GuardarGranadas()
@@ -254,8 +277,11 @@ public class GameManager : MonoBehaviour
     //Método llamado cuando se usan botiquines
     public void UsarBotiquin()
     {
-        _botiquines--;
-        TransferManagerSetup();
+        if (_usandoBotiquines)
+        {
+            _botiquines--;
+            TransferManagerSetup();
+        }
     }
     //Método llamado cuando se guardan botiquines
     public void GuardarBotiquines()
@@ -296,6 +322,14 @@ public class GameManager : MonoBehaviour
     public int CantidadBotiquines()
     {
         return _botiquines;
+    }
+    public bool UsandoGranadas()
+    {
+        return _usandoGranadas;
+    }
+    public bool UsandoBotiquines()
+    {
+        return _usandoBotiquines;
     }
     //Método que guarda el ak47 al inventario
     public void RecogerAK47()
