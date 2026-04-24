@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 43fe760463499a04cbf004a498068323
+guid: 9c4c44f920ee9ca4dbb40dddcc4f53e3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3254020683973946045
-    second: BossBashing_0
+      213: -2807610674805441247
+    second: IMG_1096-Photoroom_0
   - first:
-      213: 4682730435975160632
-    second: BossBashing_1
+      213: 4745210237612155914
+    second: IMG_1096-Photoroom_1
   - first:
-      213: 7128327108058984827
-    second: BossBashing_2
+      213: 5317838819281579473
+    second: IMG_1096-Photoroom_2
   - first:
-      213: 6835316975839961837
-    second: BossBashing_3
+      213: 3957412689507974371
+    second: IMG_1096-Photoroom_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -60,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 250
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,89 +109,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BossBashing_0
+      name: IMG_1096-Photoroom_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 54
-        width: 37
-        height: 41
+        x: 169
+        y: 787
+        width: 499
+        height: 555
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34595ffad6567d2d0800000000000000
-      internalID: -3254020683973946045
+      spriteID: 12d70a477fc5909d0800000000000000
+      internalID: -2807610674805441247
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BossBashing_1
+      name: IMG_1096-Photoroom_1
       rect:
         serializedVersion: 2
-        x: 52
-        y: 53
-        width: 38
-        height: 41
+        x: 764
+        y: 787
+        width: 502
+        height: 547
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 833a53775866cf040800000000000000
-      internalID: 4682730435975160632
+      spriteID: a046b65e19f5ad140800000000000000
+      internalID: 4745210237612155914
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BossBashing_2
+      name: IMG_1096-Photoroom_2
       rect:
         serializedVersion: 2
-        x: 11
-        y: 9
-        width: 37
-        height: 41
+        x: 166
+        y: 143
+        width: 509
+        height: 562
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b71b4aebcb7ece260800000000000000
-      internalID: 7128327108058984827
+      spriteID: 1ddaf042b32ccc940800000000000000
+      internalID: 5317838819281579473
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BossBashing_3
+      name: IMG_1096-Photoroom_3
       rect:
         serializedVersion: 2
-        x: 53
-        y: 8
-        width: 37
-        height: 41
+        x: 766
+        y: 137
+        width: 500
+        height: 562
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: de26320139cebde50800000000000000
-      internalID: 6835316975839961837
+      spriteID: 3ecfeb3bfdd8be630800000000000000
+      internalID: 3957412689507974371
       vertices: []
       indices: 
       edges: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 14c566c6b8fdef34996e52d36684d5ee
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BossBashing_0: -3254020683973946045
-      BossBashing_1: 4682730435975160632
-      BossBashing_2: 7128327108058984827
-      BossBashing_3: 6835316975839961837
+      IMG_1096-Photoroom_0: -2807610674805441247
+      IMG_1096-Photoroom_1: 4745210237612155914
+      IMG_1096-Photoroom_2: 5317838819281579473
+      IMG_1096-Photoroom_3: 3957412689507974371
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
