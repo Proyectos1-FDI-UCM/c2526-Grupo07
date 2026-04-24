@@ -56,6 +56,7 @@ public class Explosion : MonoBehaviour
     private float _direction;
     private Animator _animator; //Será el componente Animator
     private bool _destruida = false; //Comprueba si explotó
+    private int _damageReduction; 
 
     #endregion
 
@@ -77,7 +78,8 @@ public class Explosion : MonoBehaviour
         _rb.linearVelocity = VelIn;
         _tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
         _animator = GetComponent<Animator>(); // Recoge el Animator de la granada
-        
+        _damageReduction = (int)(Damage * 0.5f);
+
         //Comprueba si la granada fue lanzada para iniciar la animación
         if (_animator != null)
         {
@@ -167,9 +169,9 @@ public class Explosion : MonoBehaviour
                         VidaEnemigo.EnemyHealthPoint(Damage);
                         VidaEnemigo.RedFlash();
                     }
-                    else if(Player != null)
+                    else if(Player != null && !GameManager.Instance.Invulnerabilidad())
                     {
-                        GameManager.Instance.RestarVida(Damage);
+                        GameManager.Instance.RestarVida(_damageReduction);
                         Player.RedFlash();
                     }
                 }

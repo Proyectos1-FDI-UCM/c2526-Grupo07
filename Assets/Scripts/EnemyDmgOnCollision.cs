@@ -63,9 +63,9 @@ public class EnemyDmgOnCollision : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerController Player = collision.gameObject.GetComponent<PlayerController>();
-        if (Player != null)
+        if (Player != null && !GameManager.Instance.Invulnerabilidad())
         {
-            Debug.Log("Hola");
+            Player.RedFlash();
             GameManager.Instance.RestarVida(Damage);
         }
     }

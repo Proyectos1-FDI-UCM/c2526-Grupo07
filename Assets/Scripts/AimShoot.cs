@@ -39,9 +39,10 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
 
     //Recarga
-    [SerializeField] private int Cargador = 10;        //Número de balas que se pueden disparar
-    [SerializeField] private float TiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar>
-    [SerializeField] private GameObject SpriteRecarga; //Sprite del símbolo de recarga
+    [SerializeField] private int Cargador = 10;                 //Número de balas que se pueden disparar
+    [SerializeField] private float TiempoRecargaPistola = 0.5f; //Tiempo que tarda la pistola en recargar
+    [SerializeField] private float TiempoRecargaRifle = 1.5f;   //Tiempo que tarda el rifle en recargar
+    [SerializeField] private GameObject SpriteRecarga;          //Sprite del símbolo de recarga
 
     #endregion
 
@@ -61,25 +62,24 @@ public class AimShoot : MonoBehaviour
     //Disparo
     private float _tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
     private int _balasActuales;        //Balas actuales
+    private float _tiempoRecarga = 0f;  //Tiempo que el jugador tarda en recargar
 
     //Pistola
     private int _balasActualesPistola;   //Balas disponibles en el cargador pistola
     private const float _cadenciaPistola = 2f;   //Intervalo de disparo de la pistola
     private const int _cargadorPistola = 10;     //Cargador de la pistola
-    private const int _tiempoRecargaPistola = 2; //Tiempo que tarda la pistola en recargar
 
     //Rifle
     private int _balasActualesRifle;     //Balas disponibles en el cargador rifle
     private const float _cadenciaRifle = 10f;    //Intervalo de disparo de el rifle
     private const int _cargadorRifle = 30;       //Cargador del rifle
-    private const int _tiempoRecargaRifle = 3;   //Tiempo que tarda el rifle en recargar
 
     //Cambio de arma
     private string _armaActual; //Arma actual que se usa
 
     //Recarga
     private bool _recargando = false;  //No está recargando, por ahora
-    private float _tiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
+    private float _recibirTiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
     #endregion
     //pausa
     private bool canShoot = true; // determina si el jugador puede disparar (variable creado para la pausa)
@@ -103,6 +103,7 @@ public class AimShoot : MonoBehaviour
         _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         _balasActualesPistola = 10;
         _balasActualesRifle = 30;
+        _tiempoRecarga = TiempoRecargaPistola;
         Bala = BalaPistola;
         _armaActual = "Pistola";
         Debug.Log("Balas: " + _balasActuales);
@@ -137,10 +138,10 @@ public class AimShoot : MonoBehaviour
         //Comprueba si está recargando, si es así, reduce el tiempo de recarga
         if (_recargando)
         {
-            _tiempoRecarga -= Time.deltaTime;
+            _recibirTiempoRecarga -= Time.deltaTime;
 
             // Cuando el tiempo de recarga termina, se llena el cargador 
-            if (_tiempoRecarga <= 0f)
+            if (_recibirTiempoRecarga <= 0f)
             {
                 TerminarRecarga(); //Llena el cargador y "recargando" se vuelve falso
             }
@@ -248,7 +249,7 @@ public class AimShoot : MonoBehaviour
     private void EmpezarRecarga()
     {
             _recargando = true;
-            _tiempoRecarga = TiempoRecarga;
+            _recibirTiempoRecarga = _tiempoRecarga;
             Debug.Log("Recargando");
             SpriteRecarga.SetActive(true);
     }
@@ -267,7 +268,7 @@ public class AimShoot : MonoBehaviour
         _balasActuales = _balasActualesPistola;
         Cargador = _cargadorPistola;
         Cadencia = _cadenciaPistola;
-        TiempoRecarga = _tiempoRecargaPistola;
+        _tiempoRecarga = TiempoRecargaPistola;
         Bala = BalaPistola;
         _armaActual = "Pistola";
         Debug.Log("Cambiado a pistola");
@@ -283,7 +284,7 @@ public class AimShoot : MonoBehaviour
             _balasActuales = _balasActualesRifle;
             Cargador = _cargadorRifle;
             Cadencia = _cadenciaRifle;
-            TiempoRecarga = _tiempoRecargaRifle;
+            _tiempoRecarga = TiempoRecargaRifle;
             Bala = BalaRifle;
             _armaActual = "Rifle";
             Debug.Log("Cambiado a rifle");

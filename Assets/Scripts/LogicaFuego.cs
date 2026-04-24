@@ -72,6 +72,7 @@ public class LogicaFuego : MonoBehaviour
         {
             //Llama al GameManager para bajar vida
             GameManager.Instance.RestarVida(Daño);
+            player.RedFlash();
         }
     }
     #endregion

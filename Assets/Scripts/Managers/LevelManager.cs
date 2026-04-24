@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject PanelPausa; //Menú victoria
 
     [SerializeField] private int TiempoLimite;         //Tiempo limite para una de las estrellas
-    [SerializeField] public TextMeshProUGUI TimerText; //Texto para ver el tiempo
+    [SerializeField] private TextMeshProUGUI TimerText; //Texto para ver el tiempo
 
     [SerializeField] private GameObject[] SpriteEstrellas; //Sprite para las estrellas logradas
 
@@ -187,14 +187,14 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        Pause();
+        Time.timeScale = 1f;
         _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
         GameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
-        Pause();
+        Time.timeScale = 1f;
         _juegoTerminado = true;
         if (IsFinalLevel)
         {

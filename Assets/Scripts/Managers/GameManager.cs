@@ -62,7 +62,12 @@ public class GameManager : MonoBehaviour
     private int _botiquines = 0; //Cantidad de botiquines actuales
 
     //Inventario armas
-    private bool AK47 = false; //Inventario interno para ver si tiene rifle o no
+    private bool _AK47 = false; //Inventario interno para ver si tiene rifle o no
+
+    //Invulnerabilidad
+    private bool _invulnerable = false;       //True si el jugador es invulnerable a daños
+    private float _invulnerableDuracion = 1.5f; //Tiempo que es invulnerable
+    private float _invulnerableTiempoInicial; //Tiempo inicial al ser invulnerable
 
     //Atributos auxiliares para controlar los objetos durante el cambio de escena
     private int _vidaActualAux;
@@ -137,6 +142,16 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
+        if (_invulnerable)
+        {
+            _invulnerableTiempoInicial += Time.deltaTime; 
+
+            if (_invulnerableTiempoInicial > _invulnerableDuracion)
+            {
+                _invulnerableTiempoInicial = 0;
+                _invulnerable = false;
+            }
+        }
     }
     #endregion
 
@@ -192,12 +207,17 @@ public class GameManager : MonoBehaviour
         GuardarDatos(index);
         UnityEngine.SceneManagement.SceneManager.LoadScene(index);
         System.GC.Collect();
+        Time.timeScale = 1;
     } // ChangeScene
 
     //Método para restar la vida del personaje
     public void RestarVida(int Damage)
     {
-        _vidaActual -= Damage; // Restar la vida del jugador
+        if (!_invulnerable)    //Solo recibe daño si no es invulnerable
+        {
+            _vidaActual -= Damage; // Restar la vida del jugador
+            _invulnerable = true;
+        }
         if (_vidaActual <1)    // Si vida actual llega a 0, se llama a GameOver
         {
             _vidaActual = 0;   //Para que la vida no salga en negativo
@@ -280,12 +300,16 @@ public class GameManager : MonoBehaviour
     //Método que guarda el ak47 al inventario
     public void RecogerAK47()
     {
-        AK47 = true;
+        _AK47 = true;
     }
-    //Método que confirma si el ak47 está en el inventario o no
+    //Método que confirma que hay ak47
     public bool TieneAK47()
     {
-        return AK47;
+        return _AK47;
+    }
+    public bool Invulnerabilidad()
+    {
+        return _invulnerable;
     }
     //Método para reiniciar la escena
     public void ResetScene()

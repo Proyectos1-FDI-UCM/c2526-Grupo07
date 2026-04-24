@@ -23,7 +23,7 @@ public class BulletBehaviour : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private float DestroyTime = 3f; // Tiempo antes de destruirse una bala
-    [SerializeField] private float Speed = 10f;      // Velocidad de la bala
+    [SerializeField] private float speed = 10f;      // Velocidad de la bala
     [SerializeField] private int Damage;             //Daño de la bala
     #endregion
 
@@ -108,7 +108,7 @@ public class BulletBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         transform.right = dir;
-        _rb.linearVelocity = (dir.normalized * Speed);
+        _rb.linearVelocity = (dir.normalized * speed);
     }
     #endregion
 
@@ -131,9 +131,12 @@ public class BulletBehaviour : MonoBehaviour
             { return; }
             else
             {
-                //Llama al GameManager para bajar vida
-                GameManager.Instance.RestarVida(Damage);
-                player.RedFlash();
+                if (!GameManager.Instance.Invulnerabilidad())
+                {
+                    //Llama al GameManager para bajar vida
+                    GameManager.Instance.RestarVida(Damage);
+                    player.RedFlash();
+                }
             }
         }
         else if (enemy != null)

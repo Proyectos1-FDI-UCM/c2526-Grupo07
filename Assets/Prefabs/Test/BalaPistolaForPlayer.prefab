@@ -168,4 +168,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DestroyTime: 3
   Speed: 15
-  Damage: 15
+  Damage: 20

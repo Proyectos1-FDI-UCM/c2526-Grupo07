@@ -861,7 +861,7 @@ PrefabInstance:
       objectReference: {fileID: 1777128192}
     - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
       propertyPath: MaxVidaInicial
-      value: 5000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
       propertyPath: TextBotiquines
@@ -2805,11 +2805,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2833448746243915632, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
   m_PrefabInstance: {fileID: 1807025189}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &745505801 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 7201556185361341473, guid: 08889b12369dc2d49942f35569508076, type: 3}
-  m_PrefabInstance: {fileID: 1338739949}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &752544086
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,23 +3023,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e18ad164fe699874d89763322ac5a694, type: 3}
---- !u!1 &889177996 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
-  m_PrefabInstance: {fileID: 1338739949}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &889177998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889177996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 163042820293e2c4f9e14b2bb69dd98f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &924447221
 GameObject:
   m_ObjectHideFlags: 0
@@ -4392,7 +4370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.03753568
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4441,7 +4419,7 @@ PrefabInstance:
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: sr
       value: 
-      objectReference: {fileID: 745505801}
+      objectReference: {fileID: 0}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: Apuntado
       value: 
@@ -4463,13 +4441,17 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: DistanciaDash
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: HitboxCuchillo
       value: 
       objectReference: {fileID: 657184114}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: AnimationSprite
       value: 
-      objectReference: {fileID: 889177998}
+      objectReference: {fileID: 0}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: Saltable.m_Bits
       value: 8256
@@ -4478,11 +4460,16 @@ PrefabInstance:
       propertyPath: groundLayer.m_Bits
       value: 8256
       objectReference: {fileID: 0}
+    - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: InvulnerabilidadDuracion
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7758915492945043005, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 3296633764568319356, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 8913274079982296147, guid: 08889b12369dc2d49942f35569508076, type: 3}
+    - {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
@@ -4490,10 +4477,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
       addedObject: {fileID: 657184115}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 889177998}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08889b12369dc2d49942f35569508076, type: 3}
 --- !u!1 &1363321341
 GameObject:
@@ -5419,7 +5403,7 @@ Transform:
   m_GameObject: {fileID: 1629212670}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.3, y: 0.3, z: 2}
+  m_LocalPosition: {x: 19.25, y: 0.3, z: 2}
   m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6353,7 +6337,8 @@ MonoBehaviour:
   SpritePistola: {fileID: 1047633227}
   SpriteRifle: {fileID: 1210613721}
   Cargador: 10
-  TiempoRecarga: 3
+  TiempoRecargaPistola: 0.5
+  TiempoRecargaRifle: 1
   SpriteRecarga: {fileID: 982731142}
 --- !u!212 &1893516685
 SpriteRenderer:

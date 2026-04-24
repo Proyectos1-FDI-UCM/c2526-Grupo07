@@ -10,6 +10,7 @@ TagManager:
   - Puerta
   - Enemigo
   - Rehen
+  - suelo
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Water
   - UI
   - Suelo
-  - 
+  - JugadorInvulnerabilidad
   - JugadorDuringDash
   - Jugador
   - Granada
