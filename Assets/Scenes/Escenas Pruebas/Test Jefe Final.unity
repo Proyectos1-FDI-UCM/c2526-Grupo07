@@ -238,7 +238,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 1f209e7fbaa9aea4b94d296e15d9e055, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -581,7 +581,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f612b349d95d9864497cf1e706776f73, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 930952908}
   puntoAtaque: {fileID: 425709928}
-  granadaPrefab: {fileID: 7698826228684791750, guid: bb61e2375383f504fb88786ede660522, type: 3}
+  granadaPrefab: {fileID: 1638915236273304310, guid: 5231168aae1d5234ca60742cb2b4a09c, type: 3}
   fuerzaVertical: 7
   vel: 6
   rangoAtaque: 8
@@ -3821,6 +3821,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4842631172274466460, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5156871609939789942, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3899,6 +3903,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5156871609939789942, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5621551336970876325, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136414696611449476, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
