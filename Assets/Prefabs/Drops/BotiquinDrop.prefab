@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1045294511165446346}
   - component: {fileID: 7150645516363996766}
   - component: {fileID: 2202606655170578629}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BotiquinDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
