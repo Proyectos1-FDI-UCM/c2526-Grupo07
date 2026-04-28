@@ -187,6 +187,10 @@ PrefabInstance:
       propertyPath: Objeto
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -394,6 +398,10 @@ PrefabInstance:
       propertyPath: Objeto
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -472,6 +480,10 @@ PrefabInstance:
       propertyPath: Objeto
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -626,6 +638,38 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6024986483833291400, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
   m_PrefabInstance: {fileID: 9076796039129622692}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &177332902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 177332903}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &177332903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177332902}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.2935961, y: 1.740917, z: 7.2234144}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 463857975}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &255008068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1277,6 +1321,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GranadaDrop (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1334,6 +1382,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GranadaDrop (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1396,6 +1448,135 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3eeeaccf46f684f6da400b898bbc2f73, type: 3}
+--- !u!1 &463857974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 463857975}
+  - component: {fileID: 463857976}
+  m_Layer: 0
+  m_Name: Pop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &463857975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463857974}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 177332903}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &463857976
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463857974}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 27733b465ab17ca45a25ee0cceea847f, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.2
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &554470370
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1448,6 +1629,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GranadaDrop (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2581,6 +2766,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 657184115}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: soundPop
+      value: 
+      objectReference: {fileID: 463857976}
+    - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: Velocidad
       value: 7
       objectReference: {fileID: 0}
@@ -2900,6 +3089,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GranadaDrop (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2937,6 +3130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  DoorFX: {fileID: 0}
 --- !u!61 &1481093235
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3702,6 +3896,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AK47Drop
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: f8dd5c3c1d0511a4590ca6461af22efa, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3775,6 +3973,10 @@ PrefabInstance:
       propertyPath: Objeto
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3919,6 +4121,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GranadaDrop
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4270,6 +4476,10 @@ PrefabInstance:
       propertyPath: Objeto
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4625,6 +4835,10 @@ PrefabInstance:
       propertyPath: Objeto
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4715,6 +4929,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GranadaDrop (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7150645516363996766, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
+      propertyPath: SoundPop
+      value: 
+      objectReference: {fileID: 463857976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5097,3 +5315,4 @@ SceneRoots:
   - {fileID: 1338739949}
   - {fileID: 1100216126}
   - {fileID: 1702200416}
+  - {fileID: 177332903}

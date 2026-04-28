@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     
     //Sonido
     [SerializeField] private AudioSource soundDash;
+    [SerializeField] private AudioSource soundPop;
 
     #endregion
 
@@ -241,6 +242,12 @@ public class PlayerController : MonoBehaviour
         SpriteJugador.color = Color.red;
         _redFlash = true;
         _parpadeando = true;
+    }
+
+    //Reproducir sonido al recoger objeto
+    public void PlayPop()
+    {
+        soundPop.Play();
     }
    
     #endregion
