@@ -59,7 +59,7 @@ public class CurrentHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             UsePotion();
         }
@@ -87,7 +87,7 @@ public class CurrentHealth : MonoBehaviour
         //jugador utiliza el botiquín
         //cura una cantidad de vida determinada
         //desaparece el botiquin utilizado
-        if (PotionCount > 0)
+        if (PotionCount > 0 && GameManager.Instance.UsandoBotiquines())
         {
             PotionCount--;
             GameManager.Instance.CurarVida(health);
@@ -104,10 +104,11 @@ public class CurrentHealth : MonoBehaviour
         //si el jugador se colisiona con el botiquín
         //se guarda en el inventario
         //desaparece de la pantalla
+        /*
         if (collision.CompareTag("Potion"))
         {
             Destroy(collision.gameObject);
-        }
+        }*/
     }
     #endregion   
 

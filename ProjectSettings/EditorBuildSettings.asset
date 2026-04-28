@@ -16,7 +16,7 @@ EditorBuildSettings:
     guid: c698f311c2359fc4d85d1cdd37321915
   - enabled: 1
     path: Assets/Scenes/Test/EscalerasCinematica.unity
-    guid: 3000dfc9604c4394792a6f98554d9b5c
+    guid: 86589c51408cbbf4ba53d31bc34a2c1a
   - enabled: 1
     path: Assets/Scenes/Levels/Nivel Final.unity
     guid: 1f50d6d784f3e674f9b3d93e4c41cd85
@@ -28,10 +28,10 @@ EditorBuildSettings:
     guid: 0b7a5009ef1279b4aba267ea27b1175a
   - enabled: 1
     path: Assets/Scenes/Escenas Pruebas/Test Recoleccion e Inventario.unity
-    guid: b831635ce7f96ec4a93cfefd00a5bdda
+    guid: b06c91653cf78d946b91e3a815af0a31
   - enabled: 1
-    path: Assets/Scenes/Escenas Pruebas/Test Dash.unity
-    guid: b14158fa755a2994fb4a919378f91a6c
+    path: Assets/Scenes/Escenas Pruebas/Test Dash 1.unity
+    guid: cd0fd638a69c1db45b21c5d08bb6f12f
   - enabled: 1
     path: Assets/Scenes/Escenas Pruebas/Selector de Pruebas.unity
     guid: 98b0fefeaf4909f4ca4514cd6824e5ac

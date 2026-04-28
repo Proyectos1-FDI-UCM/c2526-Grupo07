@@ -184,7 +184,7 @@ public class MoveEnemigo : MonoBehaviour
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(_direction, 1, 1);
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
     #endregion
 }
