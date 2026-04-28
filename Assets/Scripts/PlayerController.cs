@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
     //Movimiento
     [SerializeField] private float Velocidad = 7f; //Velocidad para correr
     [SerializeField] private float SaltoMax = 12f; //Ajustar la altura máxima a la que puede salta
@@ -39,7 +38,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
     [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
-
+    
+    //Sonido
     [SerializeField] private AudioSource soundDash;
 
     #endregion
@@ -278,12 +278,19 @@ public class PlayerController : MonoBehaviour
 
             // Actualizamos animación de caminar
             _anim.SetFloat("speed", Mathf.Abs(horizontalInput));
-            // Girar sprite según dirección
-            if (horizontalInput != 0)
+            // Girar el gameObject entero según dirección
+            
+            //VERSION ANTIGUA
+            //if (horizontalInput != 0)
+            //{
+            //    Vector2 scale = transform.localScale;
+            //    scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
+            //    transform.localScale = scale;
+            //}
+            //NUEVA VERSION GIRANDO SOLO EL SPRITE
+            if (SpriteJugador != null && horizontalInput != 0)
             {
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
+                SpriteJugador.flipX = horizontalInput < 0;
             }
             if (_isDashing == false)
             {
