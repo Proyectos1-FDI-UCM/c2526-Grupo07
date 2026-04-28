@@ -108,8 +108,8 @@ public class Dialogos : MonoBehaviour
                 PanelNames.transform.position = Vector3.Lerp(PanelNames.transform.position, NamesEndPos.transform.position, Smothness);
                 SpriteLeft.transform.localScale = Vector3.Lerp(SpriteLeft.transform.localScale, _leftInitialScale - new Vector3(30f, 30f, 30f), Smothness);
                 SpriteRight.transform.localScale = Vector3.Lerp(SpriteRight.transform.localScale, _rightInitialScale, Smothness);
-                SpriteLeft.color = Color.Lerp(SpriteLeft.color, new Color32(255, 255, 255, 100), Smothness);
-                SpriteRight.color = Color.Lerp(SpriteRight.color, new Color32(255, 255, 255, 70), Smothness);
+                SpriteLeft.color = Color.Lerp(SpriteLeft.color, new Color32(255, 255, 255, 70), Smothness);
+                SpriteRight.color = Color.Lerp(SpriteRight.color, new Color32(255, 255, 255, 255), Smothness);
             }
             if (InputManager.Instance.JumpWasPressedThisFrame()) CalculaFrase();
         }
