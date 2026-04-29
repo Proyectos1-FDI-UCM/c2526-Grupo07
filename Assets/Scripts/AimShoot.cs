@@ -82,8 +82,8 @@ public class AimShoot : MonoBehaviour
     private bool _recargando = false;  //No está recargando, por ahora
     private float _recibirTiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
     #endregion
-    //pausa
-    private bool canShoot = true; // determina si el jugador puede disparar (variable creado para la pausa)
+    //angulo
+    private bool facingRight = false;
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -125,6 +125,21 @@ public class AimShoot : MonoBehaviour
 
             float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);
+            //booleano que determina si el raton esta mirando hacia la derecha o la izquierda
+            bool mouseRight;
+            if (angle > -90 && angle <= 90) { mouseRight = true; }
+            else { mouseRight = false; }
+            // dependiendo de la posicion del raton cambia de un sentido a otro
+            if (mouseRight && !facingRight)
+            {
+                transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+                facingRight = true;
+            }
+            else if (!mouseRight && facingRight)
+            {
+                transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
+                facingRight = false;
+            }
         }
         else if (_mousePosition != _lastMousePos)
         {
@@ -135,6 +150,20 @@ public class AimShoot : MonoBehaviour
 
             float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);
+            bool mouseRight;
+            if (angle>-90 && angle <= 90) { mouseRight = true; }
+            else { mouseRight = false; }
+
+            if (mouseRight)
+            {
+                if (transform.localScale.y < 0)
+                { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
+            }
+            else if (!mouseRight)
+            {
+                if (transform.localScale.y>0)
+                { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
+            }
         }
         //Comprueba si está recargando, si es así, reduce el tiempo de recarga
         if (_recargando)

@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
     //Movimiento
     [SerializeField] private float Velocidad = 7f; //Velocidad para correr
     [SerializeField] private float SaltoMax = 12f; //Ajustar la altura máxima a la que puede salta
@@ -39,11 +38,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
     [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
-
+    
+    //Sonido
     [SerializeField] private AudioSource soundDash;
     [SerializeField] private AudioSource soundJump;
     [SerializeField] private AudioSource soundMove;
     [SerializeField] private AudioSource soundDead;
+    [SerializeField] private AudioSource soundPop;
     [SerializeField] private AudioSource soundDamage;
 
     #endregion
@@ -63,8 +64,9 @@ public class PlayerController : MonoBehaviour
     //RigidBody y movimiento
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
-    
+
     //Dash
+    private bool _lookingRight = true;  //Ver a qué dirección Dashear
     private bool _canDash = true;       //Ver si se puede Dashear o no
     private bool _isDashing = false;    //Ver si está el dash activo
     private float _dashStartTime;       //Tiempo cuando empieza el Dash
@@ -167,7 +169,6 @@ public class PlayerController : MonoBehaviour
             if (_lastTimeDashed >= CooldownDash)
             {
                 Dash();
-                soundDash.Play();
             }
             else Debug.Log("Refrescando");
         }
@@ -245,6 +246,13 @@ public class PlayerController : MonoBehaviour
         SpriteJugador.color = Color.red;
         _redFlash = true;
         _parpadeando = true;
+        soundDamage.Play();
+    }
+
+    //Reproducir sonido al recoger objeto
+    public void PlayPop()
+    {
+        soundPop.Play();
     }
    
     #endregion
@@ -286,12 +294,20 @@ public class PlayerController : MonoBehaviour
 
             // Actualizamos animación de caminar
             _anim.SetFloat("speed", Mathf.Abs(horizontalInput));
-            // Girar sprite según dirección
-            if (horizontalInput != 0)
+            // Girar el gameObject entero según dirección
+            
+            //VERSION ANTIGUA
+            //if (horizontalInput != 0)
+            //{
+            //    Vector2 scale = transform.localScale;
+            //    scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
+            //    transform.localScale = scale;
+            //}
+            //NUEVA VERSION GIRANDO SOLO EL SPRITE
+            if (SpriteJugador != null && horizontalInput != 0)
             {
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
+                SpriteJugador.flipX = horizontalInput < 0;
+                _lookingRight = horizontalInput > 0;
             }
             if (_isDashing == false)
             {
@@ -358,7 +374,8 @@ public class PlayerController : MonoBehaviour
         float dir;
         if (_canDash)
         {
-            if (transform.localScale.x > 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
+            soundDash.Play();
+            if (_lookingRight) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
             _dashStartTime = Time.time; //Momento en el que inicia el Dash

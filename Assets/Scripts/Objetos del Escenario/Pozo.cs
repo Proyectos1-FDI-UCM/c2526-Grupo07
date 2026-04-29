@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class Recolect : MonoBehaviour
+public class Pozo : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,10 +22,9 @@ public class Recolect : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private TipoObjeto Objeto;
-    [SerializeField] private TipoArma Arma;
+    [SerializeField] int Danio = 100;
     #endregion
-
+    
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -34,28 +33,16 @@ public class Recolect : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private enum TipoObjeto
-    {
-        None,
-        Granada,
-        Botiquin
-    }
-    private enum TipoArma
-    {
-        None,
-        AK47,
-        Lanzallamas
-    }
 
     #endregion
-
+    
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-
+    
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-
+    
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
@@ -72,35 +59,15 @@ public class Recolect : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter2D(Collider2D other)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if (player != null && other != null)
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
         {
-            if (Objeto != TipoObjeto.None)
-            {
-                if (Objeto == TipoObjeto.Granada && GameManager.Instance.GranadasFull() == false)
-                {
-                    player.PlayPop();
-                    GameManager.Instance.GuardarGranadas();
-                    Destroy(gameObject);
-                }
-                else if (Objeto == TipoObjeto.Botiquin && GameManager.Instance.BotiquinesFull() == false)
-                {
-                    player.PlayPop();
-                    GameManager.Instance.GuardarBotiquines();
-                    Destroy(gameObject);
-                }
-            }
-            else if (Arma != TipoArma.None)
-            {
-                if (Arma == TipoArma.AK47 && !GameManager.Instance.TieneAK47())
-                {
-                    player.PlayPop();
-                    GameManager.Instance.RecogerAK47();
-                    Destroy(gameObject);
-                }
-            }
+            //Llama al GameManager para bajar vida
+            GameManager.Instance.RestarVida(Danio);
+            player.RedFlash();
         }
     }
     #endregion
@@ -124,5 +91,5 @@ public class Recolect : MonoBehaviour
 
     #endregion
 
-} // class Recolect 
+} // class Pozo 
 // namespace
