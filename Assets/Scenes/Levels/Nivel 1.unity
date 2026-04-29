@@ -740,7 +740,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f612b349d95d9864497cf1e706776f73, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -829,9 +829,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8002702552915593950, guid: 08492a9dfea170f4787dfab8e61cfc39, type: 3}
   m_PrefabInstance: {fileID: 1893944351}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &151471552 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3561019157475799881, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+--- !u!212 &151471554 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6024986483833291400, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
   m_PrefabInstance: {fileID: 9076796039129622692}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &163571026 stripped
@@ -1293,7 +1293,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f612b349d95d9864497cf1e706776f73, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1867,7 +1867,7 @@ PrefabInstance:
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: SpriteGranada
       value: 
-      objectReference: {fileID: 2062756315}
+      objectReference: {fileID: 2062756317}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: gameOverPanel
       value: 
@@ -1883,7 +1883,7 @@ PrefabInstance:
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: SpriteBotiquin
       value: 
-      objectReference: {fileID: 151471552}
+      objectReference: {fileID: 151471554}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: TextBotiquines
       value: 
@@ -2737,7 +2737,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f612b349d95d9864497cf1e706776f73, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5415,7 +5415,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f612b349d95d9864497cf1e706776f73, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6040,7 +6040,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f612b349d95d9864497cf1e706776f73, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6887,9 +6887,9 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &2062756315 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5639884994800072415, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+--- !u!212 &2062756317 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8145168413479798964, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
   m_PrefabInstance: {fileID: 9076796039129622692}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2093921996

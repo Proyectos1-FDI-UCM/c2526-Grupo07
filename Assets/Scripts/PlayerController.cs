@@ -223,7 +223,6 @@ public class PlayerController : MonoBehaviour
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
-        _canMove = false;
         _rb.linearVelocity = Vector2.zero;
         if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.2f;
         else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.2f;
