@@ -33,7 +33,10 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private GameObject BalaRifle;   //Objeto Bala de pistola que se crea al Dispara
     [SerializeField] private Transform SalidaBala;   //Posición donde saldrá la bala
     [SerializeField] private float Cadencia = 1f;    //Balas por segundo
-    [SerializeField] private AudioSource PistolaSFX; //Sonido del disparo
+    [SerializeField] private AudioSource PistolaSFX; //Sonido del disparo pistola
+    [SerializeField] private AudioSource RecargaPistolaSFX; //Sonido recarga pistola
+    [SerializeField] private AudioSource RifleSFX; //Sonido del disparo rifle
+    [SerializeField] private AudioSource RecargaRifleSFX; //Sonido recarga pistola
 
     //Sprites armas
     [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
@@ -268,6 +271,10 @@ public class AimShoot : MonoBehaviour
         {
             PistolaSFX.Play();
         }
+        else if(_armaActual == "Rifle")
+        {
+            RifleSFX.Play();
+        }
         GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
         BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
         balaDir.Dir(_direction);
@@ -283,10 +290,19 @@ public class AimShoot : MonoBehaviour
     //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
     private void EmpezarRecarga()
     {
-            _recargando = true;
-            _recibirTiempoRecarga = _tiempoRecarga;
-            Debug.Log("Recargando");
-            SpriteRecarga.SetActive(true);
+        _recargando = true;
+        _recibirTiempoRecarga = _tiempoRecarga;
+        Debug.Log("Recargando");
+        if (_armaActual == "Pistola")
+        {
+            RecargaPistolaSFX.Play();
+        }
+        else if (_armaActual == "Rifle")
+        {
+            RecargaRifleSFX.Play();
+        }
+
+        SpriteRecarga.SetActive(true);
     }
     //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
     private void TerminarRecarga()

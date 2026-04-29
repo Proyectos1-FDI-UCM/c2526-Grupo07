@@ -101,14 +101,6 @@ public class CurrentHealth : MonoBehaviour
     }
     private void OnTriggerEnter2D (Collider2D collision)
     {
-        //si el jugador se colisiona con el botiquín
-        //se guarda en el inventario
-        //desaparece de la pantalla
-        /*
-        if (collision.CompareTag("Potion"))
-        {
-            Destroy(collision.gameObject);
-        }*/
     }
     #endregion   
 

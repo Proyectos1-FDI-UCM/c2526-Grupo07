@@ -77,7 +77,7 @@ public class MoveEnemigo : MonoBehaviour
         {
             //cuando dispara se deja de mover
             _isChasing = false;
-            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+
              if (offset.x > 0 && _direction != 1)
               {
                  _direction *= -1;
@@ -92,7 +92,7 @@ public class MoveEnemigo : MonoBehaviour
         }
         if (_isChasing)
         {
-             Perseguir();
+
              if (offset.x > 0 && _direction != 1)
              {
                  _direction *= -1;
@@ -105,15 +105,23 @@ public class MoveEnemigo : MonoBehaviour
             }
             _tiempoInicio = 0;
         }
-        else MovAuto();
     }
     void FixedUpdate()
     {
-         if (_anim != null)
-         {
-             float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
-             _anim.SetFloat("enemySpeed", speed); //Para la transicion
-         }
+        if (_anim != null)
+        {
+           float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+           _anim.SetFloat("enemySpeed", speed); //Para la transicion
+        }
+        if (_isShooting)
+        {
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+        }
+        if (_isChasing)
+        {
+            Perseguir();
+        }
+        else MovAuto();
     }
      void OnCollisionEnter2D(Collision2D collision)
      {
