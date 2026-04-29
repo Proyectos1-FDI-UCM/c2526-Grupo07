@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 // Añadir aquí el resto de directivas using
@@ -48,6 +49,7 @@ public class EnemyShoot : MonoBehaviour
     // Ejemplo: _maxHealthPoints
     private float minInterval;
     private bool _canShoot;
+    private float _now;
     Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
 
     #endregion
@@ -73,19 +75,20 @@ public class EnemyShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (!_canShoot) return;
-
-        float now = Time.time;
-
-        if (now - HoraDisparo > minInterval)
+        if (_canShoot)
         {
-            //Guardo en offset la direccion entre el objeto y el target
-            offset = Target.position - transform.position;
-            GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
-            BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
-            balaDir.Dir(offset);
-            SonidoDisparo.Play();
-            HoraDisparo = Time.time;
+            _now += Time.deltaTime;
+            Debug.Log(_now);
+            if (_now > minInterval)
+            {
+                //Guardo en offset la direccion entre el objeto y el target
+                offset = Target.position - transform.position;
+                GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
+                BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+                balaDir.Dir(offset);
+                SonidoDisparo.Play();
+                _now = 0;
+            }
         }
     }
     #endregion

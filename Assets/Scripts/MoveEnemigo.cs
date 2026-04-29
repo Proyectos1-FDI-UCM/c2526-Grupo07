@@ -90,7 +90,7 @@ public class MoveEnemigo : MonoBehaviour
              }
              return;
         }
-        if (_isChasing)
+        else if (_isChasing)
         {
 
              if (offset.x > 0 && _direction != 1)
@@ -117,7 +117,7 @@ public class MoveEnemigo : MonoBehaviour
         {
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
         }
-        if (_isChasing)
+        else if (_isChasing)
         {
             Perseguir();
         }

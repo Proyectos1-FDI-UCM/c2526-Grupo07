@@ -135,7 +135,10 @@ public class LevelManager : MonoBehaviour
     {
         if (InputManager.Instance.PauseWasPressedThisFrame())
         {
-            Pause();
+            if (!_juegoTerminado)
+            {
+                Pause();
+            }
         }
         if (GameManager.Instance.UsandoBotiquines())
         {
