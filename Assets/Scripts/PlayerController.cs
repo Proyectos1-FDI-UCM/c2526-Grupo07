@@ -307,7 +307,7 @@ public class PlayerController : MonoBehaviour
                     _anim.SetBool("isDashing", _isDashing);
                 }
             }
-            if(horizontalInput!=0 && !_isDashing)
+            if (horizontalInput != 0 )
             {
                 soundMove.Play();
             }
