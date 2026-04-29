@@ -104,6 +104,7 @@ public class AtaqueJefe : MonoBehaviour
                 Lanzallamas();
                 time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
+            return;
         }
     }
     #endregion

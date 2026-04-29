@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour
     
     //Sonido
     [SerializeField] private AudioSource soundDash;
+    [SerializeField] private AudioSource soundJump;
+    [SerializeField] private AudioSource soundMove;
+    [SerializeField] private AudioSource soundDead;
     [SerializeField] private AudioSource soundPop;
     [SerializeField] private AudioSource soundCuchillo;
     [SerializeField] private AudioSource soundDamage;
@@ -273,10 +276,14 @@ public class PlayerController : MonoBehaviour
         {
             //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
         if (hit.collider != null && InputManager.Instance.JumpIsPressed())
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
     }
     //Método para moverse horizontalmente y dash
@@ -316,6 +323,10 @@ public class PlayerController : MonoBehaviour
                     _isDashing = false;
                     _anim.SetBool("isDashing", _isDashing);
                 }
+            }
+            if (horizontalInput != 0 )
+            {
+                soundMove.Play();
             }
         }
     }
@@ -364,6 +375,7 @@ public class PlayerController : MonoBehaviour
         float dir;
         if (_canDash)
         {
+            soundDash.Play();
             if (_lookingRight) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
