@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class Pozo : MonoBehaviour
+public class Cartel : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,9 +22,10 @@ public class Pozo : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] int Danio = 100;
+    [SerializeField] private GameObject cartel;
+
     #endregion
-    
+
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -35,23 +36,33 @@ public class Pozo : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-   
+    private void Start()
+    {
+        cartel.SetActive(false);
+    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision) //Detecta cuando entra el jugador para sacar la señal
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
-            //Llama al GameManager para bajar vida
-            GameManager.Instance.RestarVida(Danio);
-            player.RedFlash();
+            cartel.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)//Detecta cuando sale el jugador para desactivar la señal
+    {
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            cartel.SetActive(false);
         }
     }
     #endregion
@@ -75,5 +86,5 @@ public class Pozo : MonoBehaviour
 
     #endregion
 
-} // class Pozo 
+} // class Cartel 
 // namespace
