@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     //Sonido
     [SerializeField] private AudioSource soundDash;
     [SerializeField] private AudioSource soundPop;
+    [SerializeField] private AudioSource soundDamage;
 
     #endregion
 
@@ -60,8 +61,9 @@ public class PlayerController : MonoBehaviour
     //RigidBody y movimiento
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
-    
+
     //Dash
+    private bool _lookingRight = true;  //Ver a qué dirección Dashear
     private bool _canDash = true;       //Ver si se puede Dashear o no
     private bool _isDashing = false;    //Ver si está el dash activo
     private float _dashStartTime;       //Tiempo cuando empieza el Dash
@@ -242,6 +244,7 @@ public class PlayerController : MonoBehaviour
         SpriteJugador.color = Color.red;
         _redFlash = true;
         _parpadeando = true;
+        soundDamage.Play();
     }
 
     //Reproducir sonido al recoger objeto
@@ -298,6 +301,7 @@ public class PlayerController : MonoBehaviour
             if (SpriteJugador != null && horizontalInput != 0)
             {
                 SpriteJugador.flipX = horizontalInput < 0;
+                _lookingRight = horizontalInput > 0;
             }
             if (_isDashing == false)
             {
@@ -360,7 +364,7 @@ public class PlayerController : MonoBehaviour
         float dir;
         if (_canDash)
         {
-            if (transform.localScale.x > 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
+            if (_lookingRight) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
             _dashStartTime = Time.time; //Momento en el que inicia el Dash
