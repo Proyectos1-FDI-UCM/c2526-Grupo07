@@ -27,6 +27,8 @@ public class Dialogos : MonoBehaviour
     [SerializeField] private GameObject DialogoCanvas;
     [SerializeField] private GameObject PanelNames;
     [SerializeField] private GameObject NamesEndPos;
+    [SerializeField] private SpriteRenderer SpriteLeft;
+    [SerializeField] private SpriteRenderer SpriteRight;
     [SerializeField] private TMPro.TextMeshProUGUI TextoNames;
     [SerializeField] private TMPro.TextMeshProUGUI TextoFrase;
     [SerializeField] private float Smothness = 0.5f;
@@ -48,6 +50,8 @@ public class Dialogos : MonoBehaviour
     private bool _dialogosActivos = false;
     private bool _isLeft = true;
     private Vector3 _nameInitialPos;
+    private Vector3 _leftInitialScale;
+    private Vector3 _rightInitialScale;
     private Animator _player;
     private float _timePlayerWasTouched = 0f;
     private int _dialogosVistos = 0;
@@ -81,6 +85,8 @@ public class Dialogos : MonoBehaviour
                 DialogoCanvas.SetActive(true);
                 _dialogosActivos = true;
                 _nameInitialPos = PanelNames.transform.position;
+                _leftInitialScale = SpriteLeft.transform.localScale;
+                _rightInitialScale = SpriteRight.transform.localScale;
                 _playerTouched = false;
                 CalculaFrase();
             }
@@ -90,10 +96,18 @@ public class Dialogos : MonoBehaviour
             if (_isLeft)
             {
                 PanelNames.transform.position = Vector3.Lerp(PanelNames.transform.position, _nameInitialPos, Smothness);
+                SpriteLeft.transform.localScale = Vector3.Lerp(SpriteLeft.transform.localScale, _leftInitialScale, Smothness);
+                SpriteRight.transform.localScale = Vector3.Lerp(SpriteRight.transform.localScale, _rightInitialScale - new Vector3(30f, 30f, 30f), Smothness);
+                SpriteLeft.color = Color.Lerp(SpriteLeft.color, new Color32(255, 255, 255, 255), Smothness);
+                SpriteRight.color = Color.Lerp(SpriteRight.color, new Color32(255, 255, 255, 70), Smothness);
             }
             else
             {
                 PanelNames.transform.position = Vector3.Lerp(PanelNames.transform.position, NamesEndPos.transform.position, Smothness);
+                SpriteLeft.transform.localScale = Vector3.Lerp(SpriteLeft.transform.localScale, _leftInitialScale - new Vector3(30f, 30f, 30f), Smothness);
+                SpriteRight.transform.localScale = Vector3.Lerp(SpriteRight.transform.localScale, _rightInitialScale, Smothness);
+                SpriteLeft.color = Color.Lerp(SpriteLeft.color, new Color32(255, 255, 255, 70), Smothness);
+                SpriteRight.color = Color.Lerp(SpriteRight.color, new Color32(255, 255, 255, 255), Smothness);
             }
             if (InputManager.Instance.JumpWasPressedThisFrame()) CalculaFrase();
         }
@@ -122,7 +136,7 @@ public class Dialogos : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void ResumeWeba()
+    private void ResumeCinema()
     {
         _player.enabled = true;
         Cinema.CinematicResume();
@@ -159,7 +173,7 @@ public class Dialogos : MonoBehaviour
         else
         {
             _dialogosActivos = false;
-            ResumeWeba();
+            ResumeCinema();
         }
     }
     #endregion

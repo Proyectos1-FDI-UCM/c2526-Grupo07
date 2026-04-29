@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class Recolect : MonoBehaviour
+public class LogicaFuegoMiniBoss : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,8 +22,14 @@ public class Recolect : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private TipoObjeto Objeto;
-    [SerializeField] private TipoArma Arma;
+    [SerializeField] 
+    private float Velocidad;
+    [SerializeField] 
+    private int Daño;
+    [SerializeField] 
+    private float TiempoEnDestruirse;
+    [SerializeField] 
+    private GameObject MarcasFuego;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -34,19 +40,10 @@ public class Recolect : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private enum TipoObjeto
-    {
-        None,
-        Granada,
-        Botiquin
-    }
-    private enum TipoArma
-    {
-        None,
-        AK47,
-        Lanzallamas
-    }
-
+    private float TiempoConVida;
+    private Vector3 posicionJugador;
+    private Vector2 dir2D;
+    Rigidbody2D rb;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -55,53 +52,21 @@ public class Recolect : MonoBehaviour
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
-    /// </summary>
-    void Start()
-    {
-        
-    }
-
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
+    void Start()
+    {
+        dir2D = new Vector2(posicionJugador.x, posicionJugador.y).normalized;
+        TiempoConVida = Time.time;
+    }
     void Update()
     {
-        
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if (player != null && other != null)
+        if (Time.time - TiempoConVida > TiempoEnDestruirse)
         {
-            if (Objeto != TipoObjeto.None)
-            {
-                if (Objeto == TipoObjeto.Granada && GameManager.Instance.GranadasFull() == false)
-                {
-                    player.PlayPop();
-                    GameManager.Instance.GuardarGranadas();
-                    Destroy(gameObject);
-                }
-                else if (Objeto == TipoObjeto.Botiquin && GameManager.Instance.BotiquinesFull() == false)
-                {
-                    player.PlayPop();
-                    GameManager.Instance.GuardarBotiquines();
-                    Destroy(gameObject);
-                }
-            }
-            else if (Arma != TipoArma.None)
-            {
-                if (Arma == TipoArma.AK47 && !GameManager.Instance.TieneAK47())
-                {
-                    player.PlayPop();
-                    GameManager.Instance.RecogerAK47();
-                    Destroy(gameObject);
-                }
-            }
+            Destroy(gameObject);
         }
+
     }
     #endregion
 
@@ -112,7 +77,17 @@ public class Recolect : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    public void Dir(Vector2 dir)
+    {
+        rb = GetComponent<Rigidbody2D>();
+        transform.right = dir;
+        rb.linearVelocity = dir.normalized * Velocidad;
+    }
 
+    public void ModifyDestroyTime(float newTime)
+    {
+        TiempoEnDestruirse = newTime;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -121,8 +96,25 @@ public class Recolect : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            //Llama al GameManager para bajar vida
+            GameManager.Instance.RestarVida(Daño);
+            player.RedFlash();
+        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Suelo"))
+        {
+            if (MarcasFuego != null)
+            {
+                Instantiate(MarcasFuego, transform.position, Quaternion.identity);
+            }
+            Destroy(gameObject);
+        }
+    }
     #endregion
 
-} // class Recolect 
+} // class LogicaFuegoMiniBoss 
 // namespace
