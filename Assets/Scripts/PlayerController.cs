@@ -308,6 +308,7 @@ public class PlayerController : MonoBehaviour
             {
                 SpriteJugador.flipX = horizontalInput < 0;
                 _lookingRight = horizontalInput > 0;
+
             }
             if (_isDashing == false)
             {
@@ -323,7 +324,7 @@ public class PlayerController : MonoBehaviour
                     _anim.SetBool("isDashing", _isDashing);
                 }
             }
-            if (horizontalInput != 0 )
+            if (SpriteJugador != null && horizontalInput != 0 && _isDashing == false)
             {
                 soundMove.Play();
             }
