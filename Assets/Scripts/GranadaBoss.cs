@@ -30,11 +30,11 @@ public class GranadaBoss : MonoBehaviour
 
     [SerializeField] private FollowCamera Camara;
 
-    [SerializeField] private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
+    [SerializeField] private float TiempoAnimacionExplosion = 10f; //Tiempo de la animación de la explosión
 
     [SerializeField] private GameObject Particulas;
 
-
+    [SerializeField] private AudioSource AudioGranada;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -90,12 +90,16 @@ public class GranadaBoss : MonoBehaviour
         {
             return;
         }
-        //Reduce el tiempo de explosión
-        _tiempo -= Time.deltaTime;
-        //Cuando llega a cero explota
-        if (_tiempo <= 0)
-        {
-            Explotar();
+        else
+        {   
+            //Reduce el tiempo de explosión
+            _tiempo -= Time.deltaTime;
+            //Cuando llega a cero explota
+            if (_tiempo <= 0)
+            {
+                AudioGranada.Play();
+                Explotar();
+            }
         }
     }
     #endregion
@@ -170,7 +174,6 @@ public class GranadaBoss : MonoBehaviour
                 }
             }
         }
-
         _rb.linearVelocity = Vector2.zero; //Quita la velocidad de la granada para que la animación de explosión no se mueva
         _rb.simulated = false; //Quita las físicas de la granada
         if (Particulas != null)
@@ -184,7 +187,6 @@ public class GranadaBoss : MonoBehaviour
             _animator.SetTrigger("Explosion");
 
         }
-
         Destroy(gameObject, TiempoAnimacionExplosion); //Se destruye la granada
 
     }

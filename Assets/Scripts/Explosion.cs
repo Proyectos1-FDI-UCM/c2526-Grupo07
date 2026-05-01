@@ -39,6 +39,8 @@ public class Explosion : MonoBehaviour
 
     [SerializeField] private GameObject Particulas;
 
+    [SerializeField] private AudioSource AudioGranada;
+
 
     #endregion
 
@@ -102,6 +104,7 @@ public class Explosion : MonoBehaviour
         //Cuando llega a cero explota
         if(_tiempo <= 0)
         {
+            AudioGranada.Play();
             Explotar();
         }
     }
