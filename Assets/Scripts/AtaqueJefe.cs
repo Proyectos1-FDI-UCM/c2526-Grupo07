@@ -35,6 +35,8 @@ public class AtaqueJefe : MonoBehaviour
 
     [SerializeField] private GameObject Fuego; // Prefab de la bala del lanzallamas (Fuego)
     [SerializeField] private float Cadencia; //Cada cuanto tiempo puede disparar el lanzallamas
+
+    [SerializeField] private AudioSource FuegoSFX; //Sonido lanzallamas
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -109,6 +111,7 @@ public class AtaqueJefe : MonoBehaviour
                 Lanzallamas();
                 time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
+            return;
         }
     }
     #endregion
@@ -161,6 +164,7 @@ public class AtaqueJefe : MonoBehaviour
         {
             offset = player.position - transform.position;
             GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);
+            FuegoSFX.Play();
             LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
             DireccionFuego.Dir(offset);
             TiempoEntreBalas = 0f;

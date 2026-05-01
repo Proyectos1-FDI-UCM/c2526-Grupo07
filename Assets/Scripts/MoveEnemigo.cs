@@ -30,6 +30,8 @@ public class MoveEnemigo : MonoBehaviour
 
     [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player; //jugador para realizar las acciones
+
+    [SerializeField] private AudioSource soundMove;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -75,11 +77,12 @@ public class MoveEnemigo : MonoBehaviour
         Vector2 offset = player.transform.position - transform.position;
         if (_isShooting)
         {
+            soundMove.Pause();
             //cuando dispara se deja de mover
             _isChasing = false;
-            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+
              if (offset.x > 0 && _direction != 1)
-              {
+             {
                  _direction *= -1;
                  CambioDireccion();
              }
@@ -90,30 +93,45 @@ public class MoveEnemigo : MonoBehaviour
              }
              return;
         }
-        if (_isChasing)
+        else if (_isChasing)
         {
-             Perseguir();
-             if (offset.x > 0 && _direction != 1)
-             {
-                 _direction *= -1;
+            if (soundMove != null)
+            {
+                soundMove.Play();
+            }
+            else
+            {
+                Debug.Log("No hay sonido (soundMove) en MoveEnemigo");
+            }
+            if (offset.x > 0 && _direction != 1)
+            {
+                _direction *= -1;
                 CambioDireccion();
-             }
-            if (offset.x < 0 && _direction != -1)
+            }
+            else if (offset.x < 0 && _direction != -1)
             {
                 _direction *= -1;
                 CambioDireccion();
             }
             _tiempoInicio = 0;
         }
-        else MovAuto();
     }
     void FixedUpdate()
     {
-         if (_anim != null)
-         {
-             float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
-             _anim.SetFloat("enemySpeed", speed); //Para la transicion
-         }
+        if (_anim != null)
+        {
+           float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
+           _anim.SetFloat("enemySpeed", speed); //Para la transicion
+        }
+        if (_isShooting)
+        {
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+        }
+        else if (_isChasing)
+        {
+            Perseguir();
+        }
+        else MovAuto();
     }
      void OnCollisionEnter2D(Collision2D collision)
      {
@@ -165,21 +183,29 @@ public class MoveEnemigo : MonoBehaviour
     }
     private void MovAuto()
     {
-            _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-            _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-            if (_tiempoInicio > duracion)
+        _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+        if (_tiempoInicio > duracion)
+        {
+            _tiempoQuieto += Time.deltaTime;
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+            if (_tiempoQuieto > duracionQuieto)
             {
-                _tiempoQuieto += Time.deltaTime;
-                _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
-                if (_tiempoQuieto > duracionQuieto)
+                _direction *= -1;    //cambio de direccion, invertir
+                CambioDireccion();
+                _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+                _tiempoQuieto = 0;
+                _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                if (soundMove != null)
                 {
-                    _direction *= -1;    //cambio de direccion, invertir
-                    CambioDireccion();
-                    _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-                    _tiempoQuieto = 0;
-                    _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
+                    soundMove.Play();
+                }
+                else
+                {
+                    Debug.Log("No hay sonido (soundMove) en MoveEnemigo");
                 }
             }
+         }
     }
 
     private void CambioDireccion()

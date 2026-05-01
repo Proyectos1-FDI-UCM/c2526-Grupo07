@@ -28,6 +28,7 @@ public class MaquinaExp : MonoBehaviour
     private float FuerzaEmpuje; //Que tan lejos o cerca empuja al jugador
     [SerializeField]
     private Transform Player; //Posición del jugador para calcular el vector
+    [SerializeField] private AudioSource soundElec;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -54,7 +55,7 @@ public class MaquinaExp : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        soundElec.Play();
     }
 
     /// <summary>

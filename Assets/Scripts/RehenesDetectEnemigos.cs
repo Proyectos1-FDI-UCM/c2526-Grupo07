@@ -87,9 +87,8 @@ public class RehenesDetectEnemigos : MonoBehaviour
             if (Enemigos[i] != null)
             {
                 QuedanEnemigos = true;
-                break;
             }
-            i++;
+            else i++;
         }
         //Si no quedan enemigos, el rehén está libre, y en el primer if, se saldrá del Update
         if (!QuedanEnemigos)

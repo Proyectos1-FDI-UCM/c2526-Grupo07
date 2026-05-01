@@ -54,6 +54,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI TimerText; //Texto para ver el tiempo
 
     [SerializeField] private GameObject[] SpriteEstrellas; //Sprite para las estrellas logradas
+    [SerializeField] private GameObject[] Rehenes;         //Determinar el número de rehenes
 
     [SerializeField] private bool IsFinalLevel; //True si es el nivel final
     #endregion
@@ -124,7 +125,7 @@ public class LevelManager : MonoBehaviour
     {
         _isRunning = true;
         _vidaMax = GameManager.Instance.GetVidaMaxima();
-        numRehenes = GameObject.FindGameObjectsWithTag("Rehen").Length;
+        numRehenes = Rehenes.Length;
         IniciarBarraVida(_vidaMax, _vidaActual);
 
         UpdateGUI();
@@ -134,7 +135,10 @@ public class LevelManager : MonoBehaviour
     {
         if (InputManager.Instance.PauseWasPressedThisFrame())
         {
-            Pause();
+            if (!_juegoTerminado)
+            {
+                Pause();
+            }
         }
         if (GameManager.Instance.UsandoBotiquines())
         {

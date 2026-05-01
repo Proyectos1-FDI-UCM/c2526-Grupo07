@@ -37,11 +37,16 @@ public class PlayerController : MonoBehaviour
     //Cuchillo
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
-    [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
+    [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
     
     //Sonido
     [SerializeField] private AudioSource soundDash;
+    [SerializeField] private AudioSource soundJump;
+    [SerializeField] private AudioSource soundMove;
+    [SerializeField] private AudioSource soundDead;
     [SerializeField] private AudioSource soundPop;
+    [SerializeField] private AudioSource soundCuchillo;
+    [SerializeField] private AudioSource soundDamage;
 
     #endregion
 
@@ -60,8 +65,9 @@ public class PlayerController : MonoBehaviour
     //RigidBody y movimiento
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
-    
+
     //Dash
+    private bool _lookingRight = true;  //Ver a qué dirección Dashear
     private bool _canDash = true;       //Ver si se puede Dashear o no
     private bool _isDashing = false;    //Ver si está el dash activo
     private float _dashStartTime;       //Tiempo cuando empieza el Dash
@@ -163,8 +169,8 @@ public class PlayerController : MonoBehaviour
         {
             if (_lastTimeDashed >= CooldownDash)
             {
-                Dash();
                 soundDash.Play();
+                Dash();
             }
             else Debug.Log("Refrescando");
         }
@@ -224,7 +230,6 @@ public class PlayerController : MonoBehaviour
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
-        _canMove = false;
         _rb.linearVelocity = Vector2.zero;
         if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.2f;
         else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.2f;
@@ -242,6 +247,7 @@ public class PlayerController : MonoBehaviour
         SpriteJugador.color = Color.red;
         _redFlash = true;
         _parpadeando = true;
+        soundDamage.Play();
     }
 
     //Reproducir sonido al recoger objeto
@@ -270,10 +276,14 @@ public class PlayerController : MonoBehaviour
         {
             //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
         if (hit.collider != null && InputManager.Instance.JumpIsPressed())
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
     }
     //Método para moverse horizontalmente y dash
@@ -298,6 +308,7 @@ public class PlayerController : MonoBehaviour
             if (SpriteJugador != null && horizontalInput != 0)
             {
                 SpriteJugador.flipX = horizontalInput < 0;
+                _lookingRight = horizontalInput > 0;
             }
             if (_isDashing == false)
             {
@@ -313,6 +324,10 @@ public class PlayerController : MonoBehaviour
                     _anim.SetBool("isDashing", _isDashing);
                 }
             }
+            if (horizontalInput != 0 )
+            {
+                soundMove.Play();
+            }
         }
     }
 
@@ -326,7 +341,7 @@ public class PlayerController : MonoBehaviour
             {
                 HitboxCuchillo.SetActive(true);
             }
-
+            soundCuchillo.Play();
             //Activar animación
             _anim.SetBool("isAttacking", true);
             _coolDownCuchillo = 0f;
@@ -360,7 +375,8 @@ public class PlayerController : MonoBehaviour
         float dir;
         if (_canDash)
         {
-            if (transform.localScale.x > 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
+            soundDash.Play();
+            if (_lookingRight) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
             _dashStartTime = Time.time; //Momento en el que inicia el Dash
