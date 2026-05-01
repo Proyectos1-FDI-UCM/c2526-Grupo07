@@ -124,101 +124,102 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //Guardar tiempos
-        _lastTimeDashed += Time.deltaTime;
-        _now += Time.deltaTime;
-
-        //Activar animación de cuchillo
-        if (_anim != null)
+        if (!LevelManager.Instance.IsPaused())
         {
-            if (!_anim.GetBool("isAttacking"))
+            //Guardar tiempos
+            _lastTimeDashed += Time.deltaTime;
+            _now += Time.deltaTime;
+
+            //Activar animación de cuchillo
+            if (_anim != null)
             {
-                if (_cuchillo < CooldownChuchillo)
+                if (!_anim.GetBool("isAttacking"))
                 {
-                    _cuchillo += Time.deltaTime;
+                    if (_cuchillo < CooldownChuchillo)
+                    {
+                        _cuchillo += Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    _cuchillo = 0f;
                 }
             }
-            else
+
+            Cuchillo();
+            DesCuchillo();
+
+            //Si el jugador es empujado, tarda un rato antes de poder moverse
+            if (_onKnockback != false)
             {
-                _cuchillo = 0f;
-            }
-        }
 
-        Cuchillo();
-        DesCuchillo();
-
-        //Si el jugador es empujado, tarda un rato antes de poder moverse
-        if (_onKnockback != false)
-        {
-            if (_now - _knockbackFinish > _knockbackDuration)
-            {
-                _canMove = true;
-                _knockbackFinish = Time.time;
-            }
-        }
-
-        //Si el jugador está en el aire no puede dashear
-        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
-        if (hit.collider != null)
-        {
-            if (!_canDash) _canDash = true;
-            _onFloor = true;
-        }
-        else
-        {
-            _canDash = false;
-            _onFloor = false;
-        }
-
-        //Ejecuta el dash si ha pasado del cooldown
-        if (InputManager.Instance.DashWasPressedThisFrame())
-        {
-            if (_lastTimeDashed >= CooldownDash)
-            {
-                soundDash.Play();
-                Dash();
-            }
-            else Debug.Log("Refrescando");
-        }
-
-        //Si ha recibido daño, ejecuta un efecto visual de flash rojo
-        if (_redFlash || _parpadeando)
-        {
-            _recibeDaño += Time.deltaTime;
-            if (_recibeDaño > _flashDuration && _redFlash)
-            {
-                SpriteJugador.color = _originalColor;
-                _recibeDaño = 0;
-                _redFlash = false;
-            }
-            if (_recibeDaño < _parpadeoDuracion && _parpadeando)
-            {
-                _tiempoInicioParpadeo += Time.deltaTime;
-
-                if (_tiempoInicioParpadeo > _intervaloParpadeo)
+                if (_now - _knockbackFinish > _knockbackDuration)
                 {
-                    CambioParpadeo();
-                    _tiempoInicioParpadeo = 0;
+                    _canMove = true;
+                    _knockbackFinish = Time.time;
                 }
             }
-            else
+
+            //Si el jugador está en el aire no puede dashear
+            RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
+            if (hit.collider != null)
             {
-                SpriteJugador.color = _originalColor;
-                _recibeDaño = 0;
-                _parpadeando = false;
+                if (!_canDash) _canDash = true;
+            }
+            else _canDash = false;
+
+            //Ejecuta el dash si ha pasado del cooldown
+            if (InputManager.Instance.DashWasPressedThisFrame())
+            {
+                if (_lastTimeDashed >= CooldownDash)
+                {
+                    soundDash.Play();
+                    Dash();
+                }
+                else Debug.Log("Refrescando");
+            }
+
+            //Si ha recibido daño, ejecuta un efecto visual de flash rojo
+            if (_redFlash || _parpadeando)
+            {
+                _recibeDaño += Time.deltaTime;
+                if (_recibeDaño > _flashDuration && _redFlash)
+                {
+                    SpriteJugador.color = _originalColor;
+                    _recibeDaño = 0;
+                    _redFlash = false;
+                }
+                if (_recibeDaño < _parpadeoDuracion && _parpadeando)
+                {
+                    _tiempoInicioParpadeo += Time.deltaTime;
+
+                    if (_tiempoInicioParpadeo > _intervaloParpadeo)
+                    {
+                        CambioParpadeo();
+                        _tiempoInicioParpadeo = 0;
+                    }
+                }
+                else
+                {
+                    SpriteJugador.color = _originalColor;
+                    _recibeDaño = 0;
+                    _parpadeando = false;
+                }
             }
         }
-
     }
     void FixedUpdate()
     {
-        //Movimiento del jugador 
-        if (InputManager.Instance)
+        if (!LevelManager.Instance.IsPaused())
         {
-            if (SpriteJugador != null && _canMove != false)
+            //Movimiento del jugador 
+            if (InputManager.Instance)
             {
-                Salto();
-                Moverse();
+                if (SpriteJugador != null && _canMove != false)
+                {
+                    Salto();
+                    Moverse();
+                }
             }
         }
     }
@@ -315,6 +316,7 @@ public class PlayerController : MonoBehaviour
             {
                 SpriteJugador.flipX = horizontalInput < 0;
                 _lookingRight = horizontalInput > 0;
+
             }
             if (_isDashing == false)
             {
@@ -330,7 +332,7 @@ public class PlayerController : MonoBehaviour
                     _anim.SetBool("isDashing", _isDashing);
                 }
             }
-            if (horizontalInput == 0)
+            if (SpriteJugador != null && horizontalInput != 0 && _isDashing == false)
             {
                 soundMove.Play();
             }

@@ -90,6 +90,7 @@ public class LevelManager : MonoBehaviour
     private int numRehenes; //Número de rehenes en el mapa
 
     private bool _juegoTerminado = false; //True si el juego termina
+    private bool _juegoPausado = false;   //True si está en pausa
 
     //BORRAR
     private Color _transparency1;
@@ -135,9 +136,13 @@ public class LevelManager : MonoBehaviour
     {
         if (InputManager.Instance.PauseWasPressedThisFrame())
         {
-            if (!_juegoTerminado)
+            if (!_juegoTerminado && !_juegoPausado)
             {
                 Pause();
+            }
+            else if (!_juegoTerminado && _juegoPausado)
+            {
+                Continue();
             }
         }
         if (GameManager.Instance.UsandoBotiquines())
@@ -251,6 +256,7 @@ public class LevelManager : MonoBehaviour
     // usarlo cuando demos al esc, cuando aparece el panel de victoria o de derrota
     public void Pause() 
     {
+        _juegoPausado = true;
         PanelPausa.SetActive(true);
         time = Time.timeScale;
         Time.timeScale = 0f;
@@ -259,8 +265,14 @@ public class LevelManager : MonoBehaviour
     // usarlo para el boton de continue
     public void Continue()
     {
+        _juegoPausado = false;
         PanelPausa.SetActive(false);
         Time.timeScale = time;
+    }
+
+    public bool IsPaused()
+    {
+        return _juegoPausado || _juegoTerminado;
     }
     #endregion
 

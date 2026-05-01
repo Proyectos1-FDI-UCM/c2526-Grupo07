@@ -120,107 +120,110 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //Si el juego esta pausado no puede disparar
-        _mousePosition = InputManager.Instance.GetAimMouseValue();
-        if (InputManager.Instance.AimControllerIsPressed())
+        if (!LevelManager.Instance.IsPaused())
         {
-            Vector3 rStickdir = InputManager.Instance.GetAimControllerValue();
-            _direction = rStickdir;
-
-            float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-            //booleano que determina si el raton esta mirando hacia la derecha o la izquierda
-            bool mouseRight;
-            if (angle > -90 && angle <= 90) { mouseRight = true; }
-            else { mouseRight = false; }
-            // dependiendo de la posicion del raton cambia de un sentido a otro
-            if (mouseRight && !facingRight)
+            //Si el juego esta pausado no puede disparar
+            _mousePosition = InputManager.Instance.GetAimMouseValue();
+            if (InputManager.Instance.AimControllerIsPressed())
             {
-                transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
-                facingRight = true;
-            }
-            else if (!mouseRight && facingRight)
-            {
-                transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
-                facingRight = false;
-            }
-        }
-        else if (_mousePosition != _lastMousePos)
-        {
-            Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(_mousePosition);
+                Vector3 rStickdir = InputManager.Instance.GetAimControllerValue();
+                _direction = rStickdir;
 
-            _direction = cursorWorldPosition - transform.position;
-            _lastMousePos = _mousePosition;
-
-            float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-            bool mouseRight;
-            if (angle>-90 && angle <= 90) { mouseRight = true; }
-            else { mouseRight = false; }
-
-            if (mouseRight)
-            {
-                if (transform.localScale.y < 0)
-                { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
-            }
-            else if (!mouseRight)
-            {
-                if (transform.localScale.y>0)
-                { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
-            }
-        }
-        //Comprueba si está recargando, si es así, reduce el tiempo de recarga
-        if (_recargando)
-        {
-            _recibirTiempoRecarga -= Time.deltaTime;
-
-            // Cuando el tiempo de recarga termina, se llena el cargador 
-            if (_recibirTiempoRecarga <= 0f)
-            {
-                TerminarRecarga(); //Llena el cargador y "recargando" se vuelve falso
-            }
-            //Salimos del Update mientras se recarga, para que el jugador no dispare, y como "recargando" se vuelve falso al terminar, la proxima vez podrá disparar
-            return;
-        }
-        //Si no se recarga:
-
-        //1 El tiempo para poder volver a disparar se reduce con el delta time
-        if (_tiempoDisparo > 0)
-        {
-            _tiempoDisparo -= Time.deltaTime;
-        }
-
-        bool cargadorLleno = (_balasActuales == Cargador); //El cargador está lleno(true) si las balas actuales son las mismas que las del cargador
-
-        //2 Si el cargador no está lleno e intentamos recargar, empieza la recarga
-        if (InputManager.Instance.ReloadWasPressedThisFrame() && !cargadorLleno)
-        {
-            EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
-            return; //Sale del Update para que no dispare
-        }
-        //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
-        if (InputManager.Instance.FireIsPressed() && _tiempoDisparo <= 0f && _balasActuales > 0)
-        {
-            Disparar();
-        }
-
-        if (InputManager.Instance.UseObjectWasPressedThisFrame())
-        {
-            if (InputManager.Instance.UseObjectWasPressedThisFrame())
-            {
-                if (GameManager.Instance.CantidadGranadas() > 0 && GameManager.Instance.UsandoGranadas())
+                float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+                //booleano que determina si el raton esta mirando hacia la derecha o la izquierda
+                bool mouseRight;
+                if (angle > -90 && angle <= 90) { mouseRight = true; }
+                else { mouseRight = false; }
+                // dependiendo de la posicion del raton cambia de un sentido a otro
+                if (mouseRight && !facingRight)
                 {
-                    GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
-                    Explosion bomba = newGranada.GetComponent<Explosion>();
-                    bomba.SetDireccion(_direction);
-                    AudioGranada.Play();
-                    GameManager.Instance.UsarGranadas();
+                    transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+                    facingRight = true;
+                }
+                else if (!mouseRight && facingRight)
+                {
+                    transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
+                    facingRight = false;
                 }
             }
-        }
-        if (InputManager.Instance.ChangeWeaponWasPressedThisFrame())
-        {
-            CambioDeArma();
+            else if (_mousePosition != _lastMousePos)
+            {
+                Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(_mousePosition);
+
+                _direction = cursorWorldPosition - transform.position;
+                _lastMousePos = _mousePosition;
+
+                float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+                bool mouseRight;
+                if (angle > -90 && angle <= 90) { mouseRight = true; }
+                else { mouseRight = false; }
+
+                if (mouseRight)
+                {
+                    if (transform.localScale.y < 0)
+                    { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
+                }
+                else if (!mouseRight)
+                {
+                    if (transform.localScale.y > 0)
+                    { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
+                }
+            }
+            //Comprueba si está recargando, si es así, reduce el tiempo de recarga
+            if (_recargando)
+            {
+                _recibirTiempoRecarga -= Time.deltaTime;
+
+                // Cuando el tiempo de recarga termina, se llena el cargador 
+                if (_recibirTiempoRecarga <= 0f)
+                {
+                    TerminarRecarga(); //Llena el cargador y "recargando" se vuelve falso
+                }
+                //Salimos del Update mientras se recarga, para que el jugador no dispare, y como "recargando" se vuelve falso al terminar, la proxima vez podrá disparar
+                return;
+            }
+            //Si no se recarga:
+
+            //1 El tiempo para poder volver a disparar se reduce con el delta time
+            if (_tiempoDisparo > 0)
+            {
+                _tiempoDisparo -= Time.deltaTime;
+            }
+
+            bool cargadorLleno = (_balasActuales == Cargador); //El cargador está lleno(true) si las balas actuales son las mismas que las del cargador
+
+            //2 Si el cargador no está lleno e intentamos recargar, empieza la recarga
+            if (InputManager.Instance.ReloadWasPressedThisFrame() && !cargadorLleno)
+            {
+                EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+                return; //Sale del Update para que no dispare
+            }
+            //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
+            if (InputManager.Instance.FireIsPressed() && _tiempoDisparo <= 0f && _balasActuales > 0)
+            {
+                Disparar();
+            }
+
+            if (InputManager.Instance.UseObjectWasPressedThisFrame())
+            {
+                if (InputManager.Instance.UseObjectWasPressedThisFrame())
+                {
+                    if (GameManager.Instance.CantidadGranadas() > 0 && GameManager.Instance.UsandoGranadas())
+                    {
+                        GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
+                        Explosion bomba = newGranada.GetComponent<Explosion>();
+                        bomba.SetDireccion(_direction);
+                        AudioGranada.Play();
+                        GameManager.Instance.UsarGranadas();
+                    }
+                }
+            }
+            if (InputManager.Instance.ChangeWeaponWasPressedThisFrame())
+            {
+                CambioDeArma();
+            }
         }
     }
     #endregion
