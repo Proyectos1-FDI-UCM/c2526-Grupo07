@@ -27,6 +27,7 @@ public class AimShoot : MonoBehaviour
     //Granadas
     [SerializeField] private GameObject Granada; //Objeto Granada que se crea al usar objeto
     [SerializeField] private int NumGranadas;    //Numero de granadas que se tiene
+    [SerializeField] private AudioSource AudioGranada; // audio de explosion de granada
 
     //Balas
     [SerializeField] private GameObject BalaPistola; //Objeto Bala de pistola que se crea al Dispara
@@ -209,6 +210,7 @@ public class AimShoot : MonoBehaviour
                     GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
                     Explosion bomba = newGranada.GetComponent<Explosion>();
                     bomba.SetDireccion(_direction);
+                    AudioGranada.Play();
                     GameManager.Instance.UsarGranadas();
                 }
             }
