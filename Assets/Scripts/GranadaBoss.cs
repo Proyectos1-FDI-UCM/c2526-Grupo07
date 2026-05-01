@@ -34,9 +34,7 @@ public class GranadaBoss : MonoBehaviour
 
     [SerializeField] private GameObject Particulas;
 
-    [SerializeField] private AudioSource AudioGranada; // audio de granada
-
-
+    [SerializeField] private AudioSource AudioGranada;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -93,12 +91,13 @@ public class GranadaBoss : MonoBehaviour
             return;
         }
         else
-        {   //Reduce el tiempo de explosión
+        {   
+            //Reduce el tiempo de explosión
             _tiempo -= Time.deltaTime;
-            AudioGranada.Play();
             //Cuando llega a cero explota
             if (_tiempo <= 0)
             {
+                AudioGranada.Play();
                 Explotar();
             }
         }

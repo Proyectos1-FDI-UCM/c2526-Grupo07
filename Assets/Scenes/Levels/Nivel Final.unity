@@ -1456,6 +1456,7 @@ MonoBehaviour:
   cooldown: 3
   Fuego: {fileID: 1193850918367580504, guid: f859ebb93dde9ff499fdb627c5ba0326, type: 3}
   Cadencia: 2
+  FuegoSFX: {fileID: 0}
 --- !u!114 &960067418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,6 +1474,7 @@ MonoBehaviour:
   DashColdDown: 5
   DashDamage: 10
   player: {fileID: 1230260055}
+  sonidoDash: {fileID: 30547576}
 --- !u!212 &960067419
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2247,6 +2249,9 @@ MonoBehaviour:
   SalidaBala: {fileID: 1628735563}
   Cadencia: 2
   PistolaSFX: {fileID: 1713587588}
+  RecargaPistolaSFX: {fileID: 0}
+  RifleSFX: {fileID: 0}
+  RecargaRifleSFX: {fileID: 0}
   SpritePistola: {fileID: 1396294326}
   SpriteRifle: {fileID: 1007537163}
   Cargador: 10
