@@ -146,7 +146,7 @@ public class Dialogos : MonoBehaviour
 
     private void ProcesaArchivo()
     {
-        TextAsset archivo = Resources.Load<TextAsset>("Dialogos/Dialogo1");
+        TextAsset archivo = Resources.Load<TextAsset>("Dialogos/Dialogo" + GameManager.Instance.CinematicaActual());
 
         string texto = archivo.text;
         string[] lineas = texto.Split("\n");
@@ -158,6 +158,7 @@ public class Dialogos : MonoBehaviour
             _frases[i / 2] = lineas[i + 1];
         }
         _primerEmisor = _emisor[0];
+        GameManager.Instance.CinematicaVista();
     }
 
     private void CalculaFrase()

@@ -770,7 +770,7 @@ Transform:
   m_GameObject: {fileID: 425211926}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.08, y: 7.68, z: 0}
+  m_LocalPosition: {x: 3.08, y: 7.68, z: 0}
   m_LocalScale: {x: 1, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -830,7 +830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.27
+      value: 4.27
       objectReference: {fileID: 0}
     - target: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1325,7 +1325,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 4, z: 2}
-  m_LocalScale: {x: 6, y: 6, z: 1}
+  m_LocalScale: {x: -6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1676,7 +1676,7 @@ Transform:
   m_GameObject: {fileID: 1540386653}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.96, y: 8.83, z: -3.9104414}
+  m_LocalPosition: {x: 2.96, y: 8.83, z: -3.9104414}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1777,7 +1777,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1579107144}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 40e661b106ac4da44bc3ec19d74cef2c, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: b97f8d39475472c4f9c7807137c0c185, type: 2}
   m_InitialState: 0
   m_WrapMode: 0
   m_DirectorUpdateMode: 1
@@ -1795,12 +1795,6 @@ PlayableDirector:
     value: {fileID: 1335905801}
   - key: {fileID: -563043211951277469, guid: b97f8d39475472c4f9c7807137c0c185, type: 2}
     value: {fileID: 1684609182}
-  - key: {fileID: -3981392576010075006, guid: 40e661b106ac4da44bc3ec19d74cef2c, type: 2}
-    value: {fileID: 1335905801}
-  - key: {fileID: -563043211951277469, guid: 40e661b106ac4da44bc3ec19d74cef2c, type: 2}
-    value: {fileID: 1684609182}
-  - key: {fileID: -6621732728794918279, guid: 40e661b106ac4da44bc3ec19d74cef2c, type: 2}
-    value: {fileID: 1335905801}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1579107146
@@ -2205,7 +2199,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.35, z: 2}
-  m_LocalScale: {x: 6, y: 6, z: 1}
+  m_LocalScale: {x: -6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
