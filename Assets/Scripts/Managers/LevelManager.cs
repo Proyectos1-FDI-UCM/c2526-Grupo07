@@ -269,6 +269,11 @@ public class LevelManager : MonoBehaviour
         PanelPausa.SetActive(false);
         Time.timeScale = time;
     }
+
+    public bool IsPaused()
+    {
+        return _juegoPausado || _juegoTerminado;
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
