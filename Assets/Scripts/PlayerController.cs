@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     //RigidBody y movimiento
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
+    private bool _onFloor = true;       //Ver si está en el suelo
 
     //Dash
     private bool _lookingRight = true;  //Ver a qué dirección Dashear
@@ -161,8 +162,13 @@ public class PlayerController : MonoBehaviour
         if (hit.collider != null)
         {
             if (!_canDash) _canDash = true;
+            _onFloor = true;
         }
-        else _canDash = false;
+        else
+        {
+            _canDash = false;
+            _onFloor = false;
+        }
 
         //Ejecuta el dash si ha pasado del cooldown
         if (InputManager.Instance.DashWasPressedThisFrame())
@@ -324,7 +330,7 @@ public class PlayerController : MonoBehaviour
                     _anim.SetBool("isDashing", _isDashing);
                 }
             }
-            if (horizontalInput != 0 )
+            if (horizontalInput == 0)
             {
                 soundMove.Play();
             }
