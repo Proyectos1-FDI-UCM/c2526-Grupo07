@@ -752,6 +752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vida: 100
+  ParticulasMuerte: {fileID: 5784732964114748814, guid: 31fc52e8b0de2f64f94c70b34fe43bec, type: 3}
   BarraVida: {fileID: 1098224419}
   ObjetoDrop: {fileID: 3372975816169420437, guid: f8dd5c3c1d0511a4590ca6461af22efa, type: 3}
   IsBoss: 0
@@ -1452,6 +1453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vida: 100
+  ParticulasMuerte: {fileID: 5784732964114748814, guid: 31fc52e8b0de2f64f94c70b34fe43bec, type: 3}
   BarraVida: {fileID: 210553609}
   ObjetoDrop: {fileID: 0}
   IsBoss: 0
@@ -3400,6 +3402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vida: 100
+  ParticulasMuerte: {fileID: 5784732964114748814, guid: 31fc52e8b0de2f64f94c70b34fe43bec, type: 3}
   BarraVida: {fileID: 280116618}
   ObjetoDrop: {fileID: 3372975816169420437, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
   IsBoss: 0
@@ -7212,6 +7215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vida: 100
+  ParticulasMuerte: {fileID: 5784732964114748814, guid: 31fc52e8b0de2f64f94c70b34fe43bec, type: 3}
   BarraVida: {fileID: 407235749}
   ObjetoDrop: {fileID: 3372975816169420437, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
   IsBoss: 0
@@ -8094,6 +8098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Granada: {fileID: 6464184301813551628, guid: fcbf803d1d52a954eaf8f641d6677aad, type: 3}
   NumGranadas: 0
+  AudioGranada: {fileID: 0}
   BalaPistola: {fileID: 6310354547481927676, guid: 6cafe30bbc9c933468d27b2159400767, type: 3}
   BalaRifle: {fileID: 3495812759742759153, guid: d545d72907636394b9fff23273025c95, type: 3}
   SalidaBala: {fileID: 1558020512}
