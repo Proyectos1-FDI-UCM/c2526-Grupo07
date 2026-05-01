@@ -59,11 +59,14 @@ public class CurrentHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if(!LevelManager.Instance.IsPaused())
         {
-            UsePotion();
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                UsePotion();
+            }
+            PotionCount = GameManager.Instance.CantidadBotiquines();
         }
-        PotionCount = GameManager.Instance.CantidadBotiquines();
     }
     #endregion
 
