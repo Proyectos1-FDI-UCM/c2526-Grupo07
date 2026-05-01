@@ -5,8 +5,6 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using System.IO;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.Rendering;
 // Añadir aquí el resto de directivas using

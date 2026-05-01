@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     //Cuchillo
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
-    [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
+    [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
     
     //Sonido
     [SerializeField] private AudioSource soundDash;
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource soundMove;
     [SerializeField] private AudioSource soundDead;
     [SerializeField] private AudioSource soundPop;
+    [SerializeField] private AudioSource soundCuchillo;
     [SerializeField] private AudioSource soundDamage;
 
     #endregion
@@ -168,6 +169,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_lastTimeDashed >= CooldownDash)
             {
+                soundDash.Play();
                 Dash();
             }
             else Debug.Log("Refrescando");
@@ -228,7 +230,6 @@ public class PlayerController : MonoBehaviour
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
-        _canMove = false;
         _rb.linearVelocity = Vector2.zero;
         if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.2f;
         else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.2f;
@@ -341,7 +342,7 @@ public class PlayerController : MonoBehaviour
             {
                 HitboxCuchillo.SetActive(true);
             }
-
+            soundCuchillo.Play();
             //Activar animación
             _anim.SetBool("isAttacking", true);
             _coolDownCuchillo = 0f;
