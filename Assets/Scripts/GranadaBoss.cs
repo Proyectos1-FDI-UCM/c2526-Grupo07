@@ -30,11 +30,10 @@ public class GranadaBoss : MonoBehaviour
 
     [SerializeField] private FollowCamera Camara;
 
-    [SerializeField] private float TiempoAnimacionExplosion = 10f; //Tiempo de la animación de la explosión
+    [SerializeField] private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
 
     [SerializeField] private GameObject Particulas;
 
-    [SerializeField] private AudioSource AudioGranada;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -52,6 +51,7 @@ public class GranadaBoss : MonoBehaviour
     private Animator _animator; //Será el componente Animator
     private bool _destruida = false; //Comprueba si explotó
     private int _damageReduction;
+    private AudioSource _audioGranada;
 
     #endregion
 
@@ -97,7 +97,6 @@ public class GranadaBoss : MonoBehaviour
             //Cuando llega a cero explota
             if (_tiempo <= 0)
             {
-                AudioGranada.Play();
                 Explotar();
             }
         }
@@ -111,8 +110,10 @@ public class GranadaBoss : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void SetDireccion(Vector3 dir)
+    public void SetDireccion(Vector3 dir, AudioSource Sonido)
     {
+        //Sonido pertenece a la escena, entonces cuando el AtaqueJefe llama a este metodo lleva con él el audio
+        _audioGranada = Sonido;
         if (dir.x < 0) _direction = -1f;
         else _direction = 1f;
     }
@@ -187,6 +188,7 @@ public class GranadaBoss : MonoBehaviour
             _animator.SetTrigger("Explosion");
 
         }
+        _audioGranada.Play(); // sonido de explosion antes de que se destruya
         Destroy(gameObject, TiempoAnimacionExplosion); //Se destruye la granada
 
     }

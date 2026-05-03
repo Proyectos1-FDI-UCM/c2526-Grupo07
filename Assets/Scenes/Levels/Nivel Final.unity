@@ -766,6 +766,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3367642759684298907, guid: c07b8063493edee44a7f3a65a92cac33, type: 3}
   m_PrefabInstance: {fileID: 7903063066947467546}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &485719193 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5893022016695237246, guid: c07b8063493edee44a7f3a65a92cac33, type: 3}
+  m_PrefabInstance: {fileID: 7903063066947467546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &511502794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1454,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1230260055}
   puntoAtaque: {fileID: 274958166}
-  granadaPrefab: {fileID: 5380060452964914001, guid: c07b8063493edee44a7f3a65a92cac33, type: 3}
+  granadaPrefab: {fileID: 1638915236273304310, guid: 5231168aae1d5234ca60742cb2b4a09c, type: 3}
+  AudioGranada: {fileID: 485719193}
   fuerzaVertical: 7
   vel: 6
   rangoAtaque: 8

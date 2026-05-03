@@ -25,7 +25,7 @@ public class AtaqueJefe : MonoBehaviour
     [SerializeField] private Transform player;      //lanzar objeto al jugador
     [SerializeField] private Transform puntoAtaque;     //punto donde lanza el objeto
     [SerializeField] private GameObject granadaPrefab;  //objeto que lanza
-    //[SerializeField] private AudioSource AudioGranada; // audio de explosion de granada
+    [SerializeField] private AudioSource AudioGranada; // audio de explosion de granada
 
     [SerializeField] private float fuerzaVertical;  //altura max que llega el objeto
     [SerializeField] private float vel;     //velocidad de lanzamiento
@@ -93,13 +93,6 @@ public class AtaqueJefe : MonoBehaviour
                 anim.SetBool("attackLan", false); 
 
                 LanzarGranada();
-                ////sonido
-                //TimeGranada -= Time.deltaTime;
-                //if (TimeGranada <= 0)
-                //{
-                //    AudioGranada.Play();
-                //    TimeGranada = TimeGranadaInitial;
-                //}
 
                 time = Time.time + cooldown;
             }
@@ -153,7 +146,7 @@ public class AtaqueJefe : MonoBehaviour
             //arco de movimiento
             rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
                 GranadaBoss explosion = granada.GetComponent<GranadaBoss>();    //aplicar direccion de granada tirada
-                explosion.SetDireccion(direccion);
+                explosion.SetDireccion(direccion, AudioGranada);
         }
     }
 
