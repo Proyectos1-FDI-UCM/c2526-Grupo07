@@ -88,6 +88,10 @@ public class AimShoot : MonoBehaviour
     #endregion
     //angulo
     private bool facingRight = false;
+
+    //Granada
+    private int _cantidadGranada;
+    private bool _usandoGranada;
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -206,17 +210,21 @@ public class AimShoot : MonoBehaviour
                 Disparar();
             }
 
+            // usando granada
+            _cantidadGranada = GameManager.Instance.CantidadGranadas();
+            _usandoGranada = GameManager.Instance.UsandoGranadas();
+
             if (InputManager.Instance.UseObjectWasPressedThisFrame())
             {
                 if (InputManager.Instance.UseObjectWasPressedThisFrame())
                 {
-                    if (GameManager.Instance.CantidadGranadas() > 0 && GameManager.Instance.UsandoGranadas())
+                    if (_cantidadGranada > 0 && _usandoGranada)
                     {
+                        GameManager.Instance.UsarGranadas();
                         GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
                         Explosion bomba = newGranada.GetComponent<Explosion>();
                         bomba.SetDireccion(_direction, AudioGranada);
                         AudioGranada.Play();
-                        GameManager.Instance.UsarGranadas();
                     }
                 }
             }
