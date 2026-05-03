@@ -78,6 +78,9 @@ public class GameManager : MonoBehaviour
     private int _balasMaxAux = 0;
     private int _granadasAux = 0;
     private int _botiquinesAux = 0;
+
+    //Contador de diálogos vistos durante la partida
+    private int _cinematicaSiguiente = 1;
     
     #endregion
 
@@ -383,6 +386,7 @@ public class GameManager : MonoBehaviour
     {
         if (escena == 1)
         {
+            _cinematicaSiguiente = 1;
             _vidaActual = MaxVidaInicial;
             _cargador = _balasMax;
             _granadas = 0;
@@ -393,6 +397,16 @@ public class GameManager : MonoBehaviour
         _granadasAux = _granadas;
         _botiquinesAux = _botiquines;
         _vidaActualAux = _vidaActual;
+    }
+
+    public int CinematicaActual()
+    {
+        return _cinematicaSiguiente;
+    }
+
+    public void CinematicaVista()
+    {
+        _cinematicaSiguiente++;
     }
     #endregion
 
