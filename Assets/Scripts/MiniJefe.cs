@@ -90,7 +90,10 @@ public class MiniJefe : MonoBehaviour
             if (_startTimeAtack < 1f) transform.position = Vector3.Lerp(transform.position, _medioArena, _runSpeed);
             if (_startTimeAtack >= 1f && _startTimeAtack < _durationAtack)
             {
-                _animator.SetBool("Ataque", true); //El parámetro "Ataque" se vuelve true
+                if (!_animator.GetBool("Ataque"))
+                {
+                    _animator.SetBool("Ataque", true); //El parámetro "Ataque" se vuelve true
+                }
                 _shootingTime += Time.deltaTime;
                 if (_shootingTime < _intervaloDisparos - _restShootingTime)
                 {
@@ -125,7 +128,7 @@ public class MiniJefe : MonoBehaviour
             }
         }
 
-
+        Animaciones(); //Actualiza las animaciones
 
     }
     #endregion
@@ -172,6 +175,36 @@ public class MiniJefe : MonoBehaviour
         _rbFuego.gravityScale = 1;
         _fuegoLogic.Dir(dir);
         _fuegoLogic.ModifyDestroyTime(3f);
+    }
+    //Método para actualizar las animaciones del Mini Jefe
+    private void Animaciones()
+    {
+        bool miraDerecha = (_player.position.x - transform.position.x) > 0; //El jefe mira hacia el jugador
+        _animator.SetBool("MiraDerecha", miraDerecha);
+
+        bool enMovimiento = false; //Si el mini jefe se está moviendo
+
+        bool mueveDerecha = false; //Si se mueve hacia la derecha
+
+        //Comprobar si se mueve al alejarse
+        if (Mathf.Abs(_rb.linearVelocity.x) > 0.1f)
+        {
+            enMovimiento = true;
+            mueveDerecha = _rb.linearVelocity.x > 0;
+        }
+        //Comprueba si se mueve al atacar
+        else if (_isAtacking && _startTimeAtack < 1f)
+        {
+            //Comprueba que no llegó al centro
+            if (Mathf.Abs(transform.position.x - _medioArena.x) > 0.1f)
+            {
+                enMovimiento = true;
+                mueveDerecha = (_medioArena.x - transform.position.x) > 0;
+            }
+        }
+        //Animaciones para moverse y hacia donde se mueve
+        _animator.SetBool("EnMovimiento", enMovimiento);
+        _animator.SetBool("MueveDerecha", mueveDerecha);
     }
     #endregion
 }

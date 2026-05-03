@@ -1,0 +1,429 @@
+fileFormatVersion: 2
+guid: 2817e882c5392fa4e9a046bc9a75b0b2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6040347888444094983
+    second: MiniBossCorrerDer_0
+  - first:
+      213: 8153308634473421330
+    second: MiniBossCorrerDer_1
+  - first:
+      213: -714009450924765035
+    second: MiniBossCorrerDer_2
+  - first:
+      213: -8127506365309406118
+    second: MiniBossCorrerDer_3
+  - first:
+      213: 3372384346806161022
+    second: MiniBossCorrerDer_4
+  - first:
+      213: -210606386539577930
+    second: MiniBossCorrerDer_5
+  - first:
+      213: 623665212468025300
+    second: MiniBossCorrerDer_6
+  - first:
+      213: 2552675424219375663
+    second: MiniBossCorrerDer_7
+  - first:
+      213: -4529811912467309076
+    second: MiniBossCorrerDer_8
+  - first:
+      213: -4371105533561830482
+    second: MiniBossCorrerDer_9
+  - first:
+      213: -8648438875030371637
+    second: MiniBossCorrerDer_10
+  - first:
+      213: 307304555997608536
+    second: MiniBossCorrerDer_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 09MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 236
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f5428d399f5c2ca0800000000000000
+      internalID: -6040347888444094983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 10MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 236
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21ad9e5410f562170800000000000000
+      internalID: 8153308634473421330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 11MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 236
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5909b57ff245716f0800000000000000
+      internalID: -714009450924765035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 06MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 236
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a54b10aa50c453f80800000000000000
+      internalID: -8127506365309406118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 12MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 118
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7e087d12bd1dce20800000000000000
+      internalID: 3372384346806161022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 01MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 118
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd31e67b96c31df0800000000000000
+      internalID: -210606386539577930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 02MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 118
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d7dce7d434b7a800800000000000000
+      internalID: 623665212468025300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 07MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 118
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f28277f06ccec6320800000000000000
+      internalID: 2552675424219375663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 03MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ced9d0ac010e221c0800000000000000
+      internalID: -4529811912467309076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 04MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 0
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea38d442da6b653c0800000000000000
+      internalID: -4371105533561830482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 05MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc2c2202aa29af780800000000000000
+      internalID: -8648438875030371637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 08MiniBossCorrerDer
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 0
+        width: 108
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85ab8129dd3c34400800000000000000
+      internalID: 307304555997608536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 2e70fcf670bd3144baa37ffe7186302c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      01MiniBossCorrerDer: -210606386539577930
+      02MiniBossCorrerDer: 623665212468025300
+      03MiniBossCorrerDer: -4529811912467309076
+      04MiniBossCorrerDer: -4371105533561830482
+      05MiniBossCorrerDer: -8648438875030371637
+      06MiniBossCorrerDer: -8127506365309406118
+      07MiniBossCorrerDer: 2552675424219375663
+      08MiniBossCorrerDer: 307304555997608536
+      09MiniBossCorrerDer: -6040347888444094983
+      10MiniBossCorrerDer: 8153308634473421330
+      11MiniBossCorrerDer: -714009450924765035
+      12MiniBossCorrerDer: 3372384346806161022
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
