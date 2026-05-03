@@ -1449,7 +1449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1230260055}
   puntoAtaque: {fileID: 274958166}
-  granadaPrefab: {fileID: 1638915236273304310, guid: 5231168aae1d5234ca60742cb2b4a09c, type: 3}
+  granadaPrefab: {fileID: 5380060452964914001, guid: c07b8063493edee44a7f3a65a92cac33, type: 3}
   fuerzaVertical: 7
   vel: 6
   rangoAtaque: 8
@@ -1819,7 +1819,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: b18b15a70652b3544a396a79209ae513, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3158,6 +3158,10 @@ PrefabInstance:
     - target: {fileID: 202431876834990940, guid: 63b106dd2aea6704da42864eba5e610f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1905579285016740931, guid: 63b106dd2aea6704da42864eba5e610f, type: 3}
+      propertyPath: m_Volume
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7249235691811267834, guid: 63b106dd2aea6704da42864eba5e610f, type: 3}
       propertyPath: m_Name
