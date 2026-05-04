@@ -38,11 +38,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
     [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
-    
+
     //Sonido
+    [SerializeField] private AudioSource[] soundMove;
     [SerializeField] private AudioSource soundDash;
     [SerializeField] private AudioSource soundJump;
-    [SerializeField] private AudioSource soundMove;
     [SerializeField] private AudioSource soundDead;
     [SerializeField] private AudioSource soundPop;
     [SerializeField] private AudioSource soundCuchillo;
@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
     private bool _onFloor = true;       //Ver si está en el suelo
+    private int _sonidoActual = 0;      //Sonido de correr pendiente
+    private int _sonidoAnterior = 2;
 
     //Dash
     private bool _lookingRight = true;  //Ver a qué dirección Dashear
@@ -334,7 +336,13 @@ public class PlayerController : MonoBehaviour
             }
             if (SpriteJugador != null && horizontalInput != 0 && _isDashing == false)
             {
-                soundMove.Play();
+                if (!soundMove[(_sonidoAnterior)].isPlaying)
+                {
+                    soundMove[_sonidoActual].Play();
+                    _sonidoAnterior = _sonidoActual;
+                    if (_sonidoActual < 2) _sonidoActual++;
+                    else _sonidoActual = 0;
+                }
             }
         }
     }
