@@ -297,11 +297,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Granada: {fileID: 6464184301813551628, guid: fcbf803d1d52a954eaf8f641d6677aad, type: 3}
   NumGranadas: 0
+  AudioGranada: {fileID: 0}
   BalaPistola: {fileID: 6310354547481927676, guid: 6cafe30bbc9c933468d27b2159400767, type: 3}
   BalaRifle: {fileID: 3495812759742759153, guid: d545d72907636394b9fff23273025c95, type: 3}
   SalidaBala: {fileID: 1865591922}
   Cadencia: 2
   PistolaSFX: {fileID: 62084524}
+  RecargaPistolaSFX: {fileID: 0}
+  RifleSFX: {fileID: 0}
+  RecargaRifleSFX: {fileID: 0}
   SpritePistola: {fileID: 63319374}
   SpriteRifle: {fileID: 2143407320}
   Cargador: 10
@@ -1529,6 +1533,9 @@ MonoBehaviour:
   ShootDis: 3
   alturaMax: 1.3
   excl: {fileID: 1639833877}
+  Interferencias:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &470874985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1560,6 +1567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vida: 100
+  ParticulasMuerte: {fileID: 0}
   BarraVida: {fileID: 150348533}
   ObjetoDrop: {fileID: 3372975816169420437, guid: 4caefd7be3177c04aaeb819fcfbe2ad8, type: 3}
   IsBoss: 0
@@ -1579,6 +1587,7 @@ MonoBehaviour:
   duracionQuieto: 2
   vel: 5
   player: {fileID: 0}
+  soundMove: {fileID: 0}
 --- !u!50 &470874988
 Rigidbody2D:
   serializedVersion: 5
@@ -4805,6 +4814,10 @@ PrefabInstance:
       propertyPath: PuntoLanzamiento
       value: 
       objectReference: {fileID: 1865591922}
+    - target: {fileID: 3885473457683388830, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_Name
       value: Player

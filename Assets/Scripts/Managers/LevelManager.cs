@@ -47,8 +47,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject SpriteCorazonDañado; //Sprite del corazon dañado
 
     [SerializeField] private GameObject GameOverPanel; //Menú game over
+    [SerializeField] private GameObject BotonGameOver; //El botón a seleccionar
     [SerializeField] private GameObject PanelVictoria; //Menú victoria
+    [SerializeField] private GameObject BotonVictoria; //El botón a seleccionar
     [SerializeField] private GameObject PanelPausa; //Menú victoria
+    [SerializeField] private GameObject BotonPausa; //El botón a seleccionar
 
     [SerializeField] private int TiempoLimite;         //Tiempo limite para una de las estrellas
     [SerializeField] private TextMeshProUGUI TimerText; //Texto para ver el tiempo
@@ -218,6 +221,10 @@ public class LevelManager : MonoBehaviour
         _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
         GameOverPanel.SetActive(true);
+        if (BotonGameOver != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(BotonGameOver);
+        }
     }
     public void Victoria()
     {
@@ -241,6 +248,10 @@ public class LevelManager : MonoBehaviour
         }
         //Time.timeScale = 0;     //detener el tiempo
         PanelVictoria.SetActive(true);
+        if(BotonVictoria != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(BotonVictoria);
+        }
     }
     public void Reiniciar()
     {
@@ -258,6 +269,10 @@ public class LevelManager : MonoBehaviour
     {
         _juegoPausado = true;
         PanelPausa.SetActive(true);
+        if (BotonPausa != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(BotonPausa);
+        }
         time = Time.timeScale;
         Time.timeScale = 0f;
     }
