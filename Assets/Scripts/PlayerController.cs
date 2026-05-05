@@ -85,6 +85,10 @@ public class PlayerController : MonoBehaviour
     private float _flashInitialTime;    //Tiempo inicio del color rojo
     #endregion
 
+    //Consumibles
+    [SerializeField] private GameObject _iconGranada;
+    [SerializeField] private GameObject _iconBotiquin;
+    private int _consumibleActual = 0; //En que consumible se esta
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -170,6 +174,16 @@ public class PlayerController : MonoBehaviour
                 _flashInitialTime = 0;
                 _redFlash = false;
             }
+        }
+        if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
+        {
+            CambiarConsumible();
+        }
+
+        // Usar consumible con la acción 'UseObject' del InputManager
+        if (InputManager.Instance.UseObjectWasPressedThisFrame())
+        {
+            UsarConsumible();
         }
     }
     void FixedUpdate()
@@ -331,6 +345,46 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Dashed");
         }
         else Debug.Log("No pudo dashear");
+    }
+
+    private void CambiarConsumible()
+    {
+        _consumibleActual = (_consumibleActual + 1) % 2;
+
+        // Si no hay del nuevo, volver al anterior (usando GameManager)
+        if (_consumibleActual == 0 && GameManager.Instance.CantidadGranadas() <= 0)
+            _consumibleActual = 1;
+        else if (_consumibleActual == 1 && GameManager.Instance.CantidadBotiquines() <= 0)
+            _consumibleActual = 0;
+
+        // Actualizar iconos HUD
+        if (_iconGranada != null) _iconGranada.SetActive(_consumibleActual == 0);
+        if (_iconBotiquin != null) _iconBotiquin.SetActive(_consumibleActual == 1);
+
+        Debug.Log($"Equipado: {(_consumibleActual == 0 ? "Granada" : "Botiquín")}");
+    }
+
+    // Usa el consumible equipado usando GameManager
+    private void UsarConsumible()
+    {
+        if (_consumibleActual == 0) // Granada
+        {
+            if (GameManager.Instance.CantidadGranadas() > 0)
+            {
+                GameManager.Instance.UsarGranadas();
+                // Aquí va tu código de lanzar la granada (ya lo tienes hecho)
+                Debug.Log("Granada lanzada");
+            }
+        }
+        else // Botiquín
+        {
+            if (GameManager.Instance.CantidadBotiquines() > 0)
+            {
+                GameManager.Instance.UsarBotiquin();
+                GameManager.Instance.CurarVida(GameManager.Instance.GetVidaMaxima());
+                Debug.Log("Botiquín usado - Vida restaurada");
+            }
+        }
     }
 }
     #endregion
