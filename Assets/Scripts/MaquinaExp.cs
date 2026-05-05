@@ -28,6 +28,7 @@ public class MaquinaExp : MonoBehaviour
     private float FuerzaEmpuje; //Que tan lejos o cerca empuja al jugador
     [SerializeField]
     private Transform Player; //Posición del jugador para calcular el vector
+    [SerializeField] private AudioSource soundElec;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -54,7 +55,7 @@ public class MaquinaExp : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        soundElec.Play();
     }
 
     /// <summary>
@@ -67,10 +68,11 @@ public class MaquinaExp : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-        if (player != null)
+        if (player != null && !GameManager.Instance.Invulnerabilidad())
         {
             //Cuando colisiona con jugador, le aplica un empuje en dirección offset
             player.Empuje(FuerzaEmpuje, offset);
+            player.RedFlash();
             GameManager.Instance.RestarVida(Damage);
         }
     }

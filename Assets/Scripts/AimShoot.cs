@@ -27,21 +27,27 @@ public class AimShoot : MonoBehaviour
     //Granadas
     [SerializeField] private GameObject Granada; //Objeto Granada que se crea al usar objeto
     [SerializeField] private int NumGranadas;    //Numero de granadas que se tiene
+    [SerializeField] private AudioSource AudioGranada; // audio de explosion de granada
 
     //Balas
     [SerializeField] private GameObject BalaPistola; //Objeto Bala de pistola que se crea al Dispara
     [SerializeField] private GameObject BalaRifle;   //Objeto Bala de pistola que se crea al Dispara
     [SerializeField] private Transform SalidaBala;   //Posición donde saldrá la bala
     [SerializeField] private float Cadencia = 1f;    //Balas por segundo
+    [SerializeField] private AudioSource PistolaSFX; //Sonido del disparo pistola
+    [SerializeField] private AudioSource RecargaPistolaSFX; //Sonido recarga pistola
+    [SerializeField] private AudioSource RifleSFX; //Sonido del disparo rifle
+    [SerializeField] private AudioSource RecargaRifleSFX; //Sonido recarga pistola
 
     //Sprites armas
     [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
     [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
 
     //Recarga
-    [SerializeField] private int Cargador = 10;        //Número de balas que se pueden disparar
-    [SerializeField] private float TiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar>
-    [SerializeField] private GameObject SpriteRecarga; //Sprite del símbolo de recarga
+    [SerializeField] private int Cargador = 10;                 //Número de balas que se pueden disparar
+    [SerializeField] private float TiempoRecargaPistola = 0.5f; //Tiempo que tarda la pistola en recargar
+    [SerializeField] private float TiempoRecargaRifle = 1.5f;   //Tiempo que tarda el rifle en recargar
+    [SerializeField] private GameObject SpriteRecarga;          //Sprite del símbolo de recarga
 
     #endregion
 
@@ -61,28 +67,31 @@ public class AimShoot : MonoBehaviour
     //Disparo
     private float _tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
     private int _balasActuales;        //Balas actuales
+    private float _tiempoRecarga = 0f;  //Tiempo que el jugador tarda en recargar
 
     //Pistola
     private int _balasActualesPistola;   //Balas disponibles en el cargador pistola
     private const float _cadenciaPistola = 2f;   //Intervalo de disparo de la pistola
     private const int _cargadorPistola = 10;     //Cargador de la pistola
-    private const int _tiempoRecargaPistola = 2; //Tiempo que tarda la pistola en recargar
 
     //Rifle
     private int _balasActualesRifle;     //Balas disponibles en el cargador rifle
     private const float _cadenciaRifle = 10f;    //Intervalo de disparo de el rifle
     private const int _cargadorRifle = 30;       //Cargador del rifle
-    private const int _tiempoRecargaRifle = 3;   //Tiempo que tarda el rifle en recargar
 
     //Cambio de arma
     private string _armaActual; //Arma actual que se usa
 
     //Recarga
     private bool _recargando = false;  //No está recargando, por ahora
-    private float _tiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
+    private float _recibirTiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
     #endregion
-    //pausa
-    private bool canShoot = true; // determina si el jugador puede disparar (variable creado para la pausa)
+    //angulo
+    private bool facingRight = false;
+
+    //Granada
+    private int _cantidadGranada;
+    private bool _usandoGranada;
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -103,6 +112,7 @@ public class AimShoot : MonoBehaviour
         _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
         _balasActualesPistola = 10;
         _balasActualesRifle = 30;
+        _tiempoRecarga = TiempoRecargaPistola;
         Bala = BalaPistola;
         _armaActual = "Pistola";
         Debug.Log("Balas: " + _balasActuales);
@@ -114,77 +124,114 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //Si el juego esta pausado no puede disparar
-        _mousePosition = InputManager.Instance.GetAimMouseValue();
-        if (InputManager.Instance.AimControllerIsPressed())
+        if (!LevelManager.Instance.IsPaused())
         {
-            Vector3 rStickdir = InputManager.Instance.GetAimControllerValue();
-            _direction = rStickdir;
-
-            float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-        }
-        else if (_mousePosition != _lastMousePos)
-        {
-            Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(_mousePosition);
-
-            _direction = cursorWorldPosition - transform.position;
-            _lastMousePos = _mousePosition;
-
-            float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-        }
-        //Comprueba si está recargando, si es así, reduce el tiempo de recarga
-        if (_recargando)
-        {
-            _tiempoRecarga -= Time.deltaTime;
-
-            // Cuando el tiempo de recarga termina, se llena el cargador 
-            if (_tiempoRecarga <= 0f)
+            //Si el juego esta pausado no puede disparar
+            _mousePosition = InputManager.Instance.GetAimMouseValue();
+            if (InputManager.Instance.AimControllerIsPressed())
             {
-                TerminarRecarga(); //Llena el cargador y "recargando" se vuelve falso
-            }
-            //Salimos del Update mientras se recarga, para que el jugador no dispare, y como "recargando" se vuelve falso al terminar, la proxima vez podrá disparar
-            return;
-        }
-        //Si no se recarga:
+                Vector3 rStickdir = InputManager.Instance.GetAimControllerValue();
+                _direction = rStickdir;
 
-        //1 El tiempo para poder volver a disparar se reduce con el delta time
-        if (_tiempoDisparo > 0)
-        {
-            _tiempoDisparo -= Time.deltaTime;
-        }
-
-        bool cargadorLleno = (_balasActuales == Cargador); //El cargador está lleno(true) si las balas actuales son las mismas que las del cargador
-
-        //2 Si el cargador no está lleno e intentamos recargar, empieza la recarga
-        if (InputManager.Instance.ReloadWasPressedThisFrame() && !cargadorLleno)
-        {
-            EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
-            return; //Sale del Update para que no dispare
-        }
-        //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
-        if (InputManager.Instance.FireIsPressed() && _tiempoDisparo <= 0f && _balasActuales > 0)
-        {
-            Disparar();
-        }
-
-        if (InputManager.Instance.UseObjectWasPressedThisFrame())
-        {
-            if (InputManager.Instance.UseObjectWasPressedThisFrame())
-            {
-                if (GameManager.Instance.CantidadGranadas() > 0)
+                float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+                //booleano que determina si el raton esta mirando hacia la derecha o la izquierda
+                bool mouseRight;
+                if (angle > -90 && angle <= 90) { mouseRight = true; }
+                else { mouseRight = false; }
+                // dependiendo de la posicion del raton cambia de un sentido a otro
+                if (mouseRight && !facingRight)
                 {
-                    GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
-                    Explosion bomba = newGranada.GetComponent<Explosion>();
-                    bomba.SetDireccion(_direction);
-                    GameManager.Instance.UsarGranadas();
+                    transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+                    facingRight = true;
+                }
+                else if (!mouseRight && facingRight)
+                {
+                    transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
+                    facingRight = false;
                 }
             }
-        }
-        if (InputManager.Instance.ChangeWeaponWasPressedThisFrame())
-        {
-            CambioDeArma();
+            else if (_mousePosition != _lastMousePos)
+            {
+                Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(_mousePosition);
+
+                _direction = cursorWorldPosition - transform.position;
+                _lastMousePos = _mousePosition;
+
+                float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+                bool mouseRight;
+                if (angle > -90 && angle <= 90) { mouseRight = true; }
+                else { mouseRight = false; }
+
+                if (mouseRight)
+                {
+                    if (transform.localScale.y < 0)
+                    { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
+                }
+                else if (!mouseRight)
+                {
+                    if (transform.localScale.y > 0)
+                    { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
+                }
+            }
+            //Comprueba si está recargando, si es así, reduce el tiempo de recarga
+            if (_recargando)
+            {
+                _recibirTiempoRecarga -= Time.deltaTime;
+
+                // Cuando el tiempo de recarga termina, se llena el cargador 
+                if (_recibirTiempoRecarga <= 0f)
+                {
+                    TerminarRecarga(); //Llena el cargador y "recargando" se vuelve falso
+                }
+                //Salimos del Update mientras se recarga, para que el jugador no dispare, y como "recargando" se vuelve falso al terminar, la proxima vez podrá disparar
+                return;
+            }
+            //Si no se recarga:
+
+            //1 El tiempo para poder volver a disparar se reduce con el delta time
+            if (_tiempoDisparo > 0)
+            {
+                _tiempoDisparo -= Time.deltaTime;
+            }
+
+            bool cargadorLleno = (_balasActuales == Cargador); //El cargador está lleno(true) si las balas actuales son las mismas que las del cargador
+
+            //2 Si el cargador no está lleno e intentamos recargar, empieza la recarga
+            if (InputManager.Instance.ReloadWasPressedThisFrame() && !cargadorLleno)
+            {
+                EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+                return; //Sale del Update para que no dispare
+            }
+            //3 Comprueba si se dispara y si se puede disparar por el tiempo y por las balas disponibles
+            if (InputManager.Instance.FireIsPressed() && _tiempoDisparo <= 0f && _balasActuales > 0)
+            {
+                Disparar();
+            }
+
+            // usando granada
+            _cantidadGranada = GameManager.Instance.CantidadGranadas();
+            _usandoGranada = GameManager.Instance.UsandoGranadas();
+
+            if (InputManager.Instance.UseObjectWasPressedThisFrame())
+            {
+                if (InputManager.Instance.UseObjectWasPressedThisFrame())
+                {
+                    if (_cantidadGranada > 0 && _usandoGranada)
+                    {
+                        GameManager.Instance.UsarGranadas();
+                        GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
+                        Explosion bomba = newGranada.GetComponent<Explosion>();
+                        bomba.SetDireccion(_direction, AudioGranada);
+                        AudioGranada.Play();
+                    }
+                }
+            }
+            if (InputManager.Instance.ChangeWeaponWasPressedThisFrame())
+            {
+                CambioDeArma();
+            }
         }
     }
     #endregion
@@ -231,26 +278,44 @@ public class AimShoot : MonoBehaviour
     //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
     private void Disparar()
     {
-            //Crea la bala en su posición de salida
-            //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
-            GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
-            BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
-            balaDir.Dir(_direction);
-            // Restamos una bala al cargador
-            _balasActuales--;
-            GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-            Debug.Log("Balas: " + _balasActuales);
+        //Crea la bala en su posición de salida
+        //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        if (_armaActual == "Pistola")
+        {
+            PistolaSFX.Play();
+        }
+        else if(_armaActual == "Rifle")
+        {
+            RifleSFX.Play();
+        }
+        GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
+        balaDir.Dir(_direction);
 
-            // Reiniciamos el tiempo de disparo según la cadencia
-            _tiempoDisparo = 1f / Cadencia;
+        // Restamos una bala al cargador
+        _balasActuales--;
+        GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+        Debug.Log("Balas: " + _balasActuales);
+
+        // Reiniciamos el tiempo de disparo según la cadencia
+        _tiempoDisparo = 1f / Cadencia;
     }
     //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
     private void EmpezarRecarga()
     {
-            _recargando = true;
-            _tiempoRecarga = TiempoRecarga;
-            Debug.Log("Recargando");
-            SpriteRecarga.SetActive(true);
+        _recargando = true;
+        _recibirTiempoRecarga = _tiempoRecarga;
+        Debug.Log("Recargando");
+        if (_armaActual == "Pistola")
+        {
+            RecargaPistolaSFX.Play();
+        }
+        else if (_armaActual == "Rifle")
+        {
+            RecargaRifleSFX.Play();
+        }
+
+        SpriteRecarga.SetActive(true);
     }
     //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
     private void TerminarRecarga()
@@ -267,7 +332,7 @@ public class AimShoot : MonoBehaviour
         _balasActuales = _balasActualesPistola;
         Cargador = _cargadorPistola;
         Cadencia = _cadenciaPistola;
-        TiempoRecarga = _tiempoRecargaPistola;
+        _tiempoRecarga = TiempoRecargaPistola;
         Bala = BalaPistola;
         _armaActual = "Pistola";
         Debug.Log("Cambiado a pistola");
@@ -283,7 +348,7 @@ public class AimShoot : MonoBehaviour
             _balasActuales = _balasActualesRifle;
             Cargador = _cargadorRifle;
             Cadencia = _cadenciaRifle;
-            TiempoRecarga = _tiempoRecargaRifle;
+            _tiempoRecarga = TiempoRecargaRifle;
             Bala = BalaRifle;
             _armaActual = "Rifle";
             Debug.Log("Cambiado a rifle");

@@ -47,6 +47,7 @@ public class MiniJefe : MonoBehaviour
     private bool _canAtack = false;
     private bool _isAtacking = false;
     private Rigidbody2D _rb;
+    private Animator _animator; //Será el componente Animator
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -63,6 +64,7 @@ public class MiniJefe : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>(); //Asigna el componente Animator a _animator
     }
 
     /// <summary>
@@ -88,6 +90,10 @@ public class MiniJefe : MonoBehaviour
             if (_startTimeAtack < 1f) transform.position = Vector3.Lerp(transform.position, _medioArena, _runSpeed);
             if (_startTimeAtack >= 1f && _startTimeAtack < _durationAtack)
             {
+                if (!_animator.GetBool("Ataque"))
+                {
+                    _animator.SetBool("Ataque", true); //El parámetro "Ataque" se vuelve true
+                }
                 _shootingTime += Time.deltaTime;
                 if (_shootingTime < _intervaloDisparos - _restShootingTime)
                 {
@@ -108,10 +114,12 @@ public class MiniJefe : MonoBehaviour
                 else if (_shootingTime >= 4f *_intervaloDisparos && _shootingTime < 5f * _intervaloDisparos - _restShootingTime)
                 {
                     Lanzallamas(new Vector2(2, 1));
+
                 }
             }
             if (_startTimeAtack >= _durationAtack)
             {
+                _animator.SetBool("Ataque", false); //El parámetro "Ataque" se vuelve false
                 Alejarse();
                 _shootingTime = 0;
                 _isAtacking = false;
@@ -120,7 +128,7 @@ public class MiniJefe : MonoBehaviour
             }
         }
 
-
+        Animaciones(); //Actualiza las animaciones
 
     }
     #endregion
@@ -144,7 +152,11 @@ public class MiniJefe : MonoBehaviour
     private bool CondicionAtaque()
     {
         bool _ataca = false;
-        if (Mathf.Abs(transform.position.x - _player.transform.position.x) >= 8f) _ataca = true;
+        if (Mathf.Abs(transform.position.x - _player.transform.position.x) >= 8f)
+        {
+            _ataca = true;
+
+        }
         return _ataca;
     }
 
@@ -158,11 +170,41 @@ public class MiniJefe : MonoBehaviour
     private void Lanzallamas(Vector2 dir)
     {
         GameObject _proyectil = Instantiate(_fuego, transform.position, transform.localRotation);
-        LogicaFuego _fuegoLogic = _proyectil.GetComponent<LogicaFuego>();
+        LogicaFuegoMiniBoss _fuegoLogic = _proyectil.GetComponent<LogicaFuegoMiniBoss>();
         Rigidbody2D _rbFuego = _proyectil.GetComponent<Rigidbody2D>();
         _rbFuego.gravityScale = 1;
         _fuegoLogic.Dir(dir);
         _fuegoLogic.ModifyDestroyTime(3f);
+    }
+    //Método para actualizar las animaciones del Mini Jefe
+    private void Animaciones()
+    {
+        bool miraDerecha = (_player.position.x - transform.position.x) > 0; //El jefe mira hacia el jugador
+        _animator.SetBool("MiraDerecha", miraDerecha);
+
+        bool enMovimiento = false; //Si el mini jefe se está moviendo
+
+        bool mueveDerecha = false; //Si se mueve hacia la derecha
+
+        //Comprobar si se mueve al alejarse
+        if (Mathf.Abs(_rb.linearVelocity.x) > 0.1f)
+        {
+            enMovimiento = true;
+            mueveDerecha = _rb.linearVelocity.x > 0;
+        }
+        //Comprueba si se mueve al atacar
+        else if (_isAtacking && _startTimeAtack < 1f)
+        {
+            //Comprueba que no llegó al centro
+            if (Mathf.Abs(transform.position.x - _medioArena.x) > 0.1f)
+            {
+                enMovimiento = true;
+                mueveDerecha = (_medioArena.x - transform.position.x) > 0;
+            }
+        }
+        //Animaciones para moverse y hacia donde se mueve
+        _animator.SetBool("EnMovimiento", enMovimiento);
+        _animator.SetBool("MueveDerecha", mueveDerecha);
     }
     #endregion
 }

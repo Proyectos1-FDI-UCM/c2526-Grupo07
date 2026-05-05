@@ -25,6 +25,7 @@ public class AtaqueJefe : MonoBehaviour
     [SerializeField] private Transform player;      //lanzar objeto al jugador
     [SerializeField] private Transform puntoAtaque;     //punto donde lanza el objeto
     [SerializeField] private GameObject granadaPrefab;  //objeto que lanza
+    [SerializeField] private AudioSource AudioGranada; // audio de explosion de granada
 
     [SerializeField] private float fuerzaVertical;  //altura max que llega el objeto
     [SerializeField] private float vel;     //velocidad de lanzamiento
@@ -34,6 +35,8 @@ public class AtaqueJefe : MonoBehaviour
 
     [SerializeField] private GameObject Fuego; // Prefab de la bala del lanzallamas (Fuego)
     [SerializeField] private float Cadencia; //Cada cuanto tiempo puede disparar el lanzallamas
+
+    [SerializeField] private AudioSource FuegoSFX; //Sonido lanzallamas
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -45,7 +48,6 @@ public class AtaqueJefe : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float time=0; //tiempo para el siguiente ataque
-
     private Animator anim;
 
     Vector2 offset; //Vector a donde apunta el lanzallams
@@ -67,7 +69,6 @@ public class AtaqueJefe : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-
         TiempoEntreBalas = 0f; //Para la cadencia del lanzallamas
 
     }
@@ -92,15 +93,18 @@ public class AtaqueJefe : MonoBehaviour
                 anim.SetBool("attackLan", false); 
 
                 LanzarGranada();
-                Lanzallamas();
-                time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
+
+                time = Time.time + cooldown;
             }
             else
             {
                 anim.SetBool("attackLan", true);
                 anim.SetBool("attackGran", false);
 
+                Lanzallamas();
+                time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
+            return;
         }
     }
     #endregion
@@ -138,12 +142,12 @@ public class AtaqueJefe : MonoBehaviour
                 Vector2 direccion = (player.position - puntoAtaque.position).normalized;    //vector horizontal hacia el jugador
                 float fuerzaX = direccion.x * vel;    //aplicar fuerza x
                 float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
-                //arco de movimiento
-                
-                    rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
-                    Explosion explosion = granada.GetComponent<Explosion>();    //aplicar direccion de granada tirada
-                    explosion.SetDireccion(direccion);
-            }
+
+            //arco de movimiento
+            rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
+                GranadaBoss explosion = granada.GetComponent<GranadaBoss>();    //aplicar direccion de granada tirada
+                explosion.SetDireccion(direccion, AudioGranada);
+        }
     }
 
     private void Lanzallamas()
@@ -153,6 +157,7 @@ public class AtaqueJefe : MonoBehaviour
         {
             offset = player.position - transform.position;
             GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);
+            FuegoSFX.Play();
             LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
             DireccionFuego.Dir(offset);
             TiempoEntreBalas = 0f;

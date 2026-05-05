@@ -167,5 +167,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyTime: 3
-  Speed: 15
-  Damage: 15
+  speed: 15
+  Damage: 20

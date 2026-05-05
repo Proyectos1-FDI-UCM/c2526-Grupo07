@@ -734,11 +734,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f59f329bc0b4a36bc8d02c6710a226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealthPoints: 20
   MaxGranadas: 1
-  PanelVictory: {fileID: 1706871937}
   MaxBotiquin: 1
-  MaxHealthInitial: 20
+  MaxVidaInicial: 0
 --- !u!4 &392633554
 Transform:
   m_ObjectHideFlags: 0
@@ -1277,23 +1275,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398120f647e7e40da805fa99971f1f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: {fileID: 739441544}
-  Ammo: {fileID: 1884460304}
-  spriteGranada: {fileID: 1585583412}
+  TextAmmo: {fileID: 0}
+  SpriteGranada: {fileID: 0}
   TextGranadas: {fileID: 1884460304}
-  Botiquin: {fileID: 1457008034}
+  SpriteBotiquin: {fileID: 0}
   TextBotiquines: {fileID: 1884460304}
-  Menu: {fileID: 1706871937}
-  Puerta: {fileID: 1457008034}
-  "CorazonDa\xF1ado": {fileID: 1457008034}
-  PanelVictory: {fileID: 1706871937}
-  CorazonDaado: {fileID: 1867047240}
-  gameOverPanel: {fileID: 1706871937}
-  PanelVictoria: {fileID: 1706871937}
   BarraDeVida: {fileID: 755072485}
-  spriteEstrellas: []
+  "SpriteCorazonDa\xF1ado": {fileID: 0}
+  GameOverPanel: {fileID: 0}
+  PanelVictoria: {fileID: 1706871937}
+  PanelPausa: {fileID: 0}
   TiempoLimite: 0
-  timerText: {fileID: 1884460304}
+  TimerText: {fileID: 0}
+  SpriteEstrellas: []
   IsFinalLevel: 0
 --- !u!4 &724428059
 Transform:
@@ -1718,19 +1712,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f87b33f98a78f4fb3cca782b641cba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 2117866123}
+  Velocidad: 7
   SaltoMax: 12
-  Velocity: 8
-  Pies: {fileID: 247383476}
-  cooldownDash: 3
-  dashDistance: 5
-  HitboxCuchillo: {fileID: 1457008034}
-  Apuntado: {fileID: 2117866124}
-  cuchillo: {fileID: 1457008035}
-  groundLayer:
+  Saltable:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
+  Pies: {fileID: 247383476}
+  CooldownDash: 3
+  DistanciaDash: 5
   CooldownChuchillo: 3
+  HitboxCuchillo: {fileID: 1457008034}
+  SpriteJugador: {fileID: 0}
+  soundDash: {fileID: 0}
 --- !u!50 &1282809474
 Rigidbody2D:
   serializedVersion: 5
@@ -1803,7 +1796,7 @@ Transform:
   m_GameObject: {fileID: 1282809472}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.85, y: 1.87, z: 0}
+  m_LocalPosition: {x: -6.1, y: 1.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1952,11 +1945,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f388ee61025ef144b61e15bfbe2f40d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velIn: {x: 0, y: 0}
+  VelIn: {x: 0, y: 0}
   TiempoGranada: 2
-  RadioGranada: 11.27
-  Damage: 20
-  camara: {fileID: 0}
+  RadioGranada: 5
+  Damage: 75
+  Camara: {fileID: 0}
   TiempoAnimacionExplosion: 0.15
   Particulas: {fileID: 9059282515790659327, guid: 603f67f64c967874fac5151b8d3db8ab, type: 3}
 --- !u!212 &1585583414
@@ -2023,7 +2016,7 @@ Transform:
   m_GameObject: {fileID: 1585583412}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.942, y: 0.193, z: 0}
+  m_LocalPosition: {x: 4.76, y: 1.07, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2867,13 +2860,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Granada: {fileID: 1585583412}
-  Bala: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
+  NumGranadas: 0
+  BalaPistola: {fileID: 0}
+  BalaRifle: {fileID: 0}
   SalidaBala: {fileID: 1457008035}
-  numGranadas: 0
   Cadencia: 3
+  PistolaSFX: {fileID: 0}
+  SpritePistola: {fileID: 0}
+  SpriteRifle: {fileID: 0}
   Cargador: 15
-  TiempoRecarga: 2
-  recarga: {fileID: 1457008034}
+  TiempoRecargaPistola: 0.5
+  TiempoRecargaRifle: 1.5
+  SpriteRecarga: {fileID: 0}
 --- !u!4 &2117866125
 Transform:
   m_ObjectHideFlags: 0

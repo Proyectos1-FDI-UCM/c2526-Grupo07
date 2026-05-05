@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEngine.Categorization;
 using UnityEngine.Playables;
+using UnityEngine.Rendering;
 // Añadir aquí el resto de directivas using
 
 
@@ -24,8 +25,9 @@ public class Cinematic : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private int nextScene;
+    [SerializeField] private int _nextScene;
+    [SerializeField] private Animator _playerAnimator;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -60,7 +62,7 @@ public class Cinematic : MonoBehaviour
     {
         if (cinematic.time >= cinematic.duration)
         {
-            GameManager.Instance.ChangeScene(nextScene);
+            GameManager.Instance.ChangeScene(_nextScene);
         }
     }
     #endregion
@@ -73,6 +75,15 @@ public class Cinematic : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
+    public void CinematicPause()
+    {
+        cinematic.Pause();
+    }
+
+    public void CinematicResume()
+    {
+        cinematic.Resume();
+    }
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----

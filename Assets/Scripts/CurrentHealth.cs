@@ -24,6 +24,7 @@ public class CurrentHealth : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField] private int health;    //cantidad de vida que cura
     [SerializeField] private GameObject ParticulasCura;
+    [SerializeField] private GameObject botiquin; 
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -58,11 +59,14 @@ public class CurrentHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if(!LevelManager.Instance.IsPaused())
         {
-            UsePotion();
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                UsePotion();
+            }
+            PotionCount = GameManager.Instance.CantidadBotiquines();
         }
-        PotionCount = GameManager.Instance.CantidadBotiquines();
     }
     #endregion
 
@@ -86,7 +90,7 @@ public class CurrentHealth : MonoBehaviour
         //jugador utiliza el botiquín
         //cura una cantidad de vida determinada
         //desaparece el botiquin utilizado
-        if (PotionCount > 0)
+        if (PotionCount > 0 && GameManager.Instance.UsandoBotiquines())
         {
             PotionCount--;
             GameManager.Instance.CurarVida(health);
@@ -100,13 +104,6 @@ public class CurrentHealth : MonoBehaviour
     }
     private void OnTriggerEnter2D (Collider2D collision)
     {
-        //si el jugador se colisiona con el botiquín
-        //se guarda en el inventario
-        //desaparece de la pantalla
-        if (collision.CompareTag("Potion"))
-        {
-            Destroy(collision.gameObject);
-        }
     }
     #endregion   
 

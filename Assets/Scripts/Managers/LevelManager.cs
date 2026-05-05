@@ -37,10 +37,10 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI TextAmmo; //Cantidad de balas
 
-    [SerializeField] private GameObject SpriteGranada;     //Sprite de la granada
+    [SerializeField] private SpriteRenderer SpriteGranada;     //Sprite de la granada
     [SerializeField] private TextMeshProUGUI TextGranadas; //Número de granadas
 
-    [SerializeField] private GameObject SpriteBotiquin;      //Sprite del botiquín
+    [SerializeField] private SpriteRenderer SpriteBotiquin;      //Sprite del botiquín
     [SerializeField] private TextMeshProUGUI TextBotiquines; //Número de botiquines
 
     [SerializeField] private Slider BarraDeVida;             //Sprite de barra de vida
@@ -51,9 +51,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject PanelPausa; //Menú victoria
 
     [SerializeField] private int TiempoLimite;         //Tiempo limite para una de las estrellas
-    [SerializeField] public TextMeshProUGUI TimerText; //Texto para ver el tiempo
+    [SerializeField] private TextMeshProUGUI TimerText; //Texto para ver el tiempo
 
     [SerializeField] private GameObject[] SpriteEstrellas; //Sprite para las estrellas logradas
+    [SerializeField] private GameObject[] Rehenes;         //Determinar el número de rehenes
 
     [SerializeField] private bool IsFinalLevel; //True si es el nivel final
     #endregion
@@ -89,6 +90,12 @@ public class LevelManager : MonoBehaviour
     private int numRehenes; //Número de rehenes en el mapa
 
     private bool _juegoTerminado = false; //True si el juego termina
+    private bool _juegoPausado = false;   //True si está en pausa
+
+    //BORRAR
+    private Color _transparency1;
+    private Color _originalSpriteGranada;
+    private Color _originalSpriteBotiquin;
 
     // pause
     private float time; 
@@ -109,6 +116,9 @@ public class LevelManager : MonoBehaviour
             GameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
             PanelPausa.SetActive(false);
+            _transparency1.a = 0.5f;
+            _originalSpriteBotiquin = SpriteBotiquin.color;
+            _originalSpriteGranada = SpriteGranada.color;
         }
     }
 
@@ -116,7 +126,7 @@ public class LevelManager : MonoBehaviour
     {
         _isRunning = true;
         _vidaMax = GameManager.Instance.GetVidaMaxima();
-        numRehenes = GameObject.FindGameObjectsWithTag("Rehen").Length;
+        numRehenes = Rehenes.Length;
         IniciarBarraVida(_vidaMax, _vidaActual);
 
         UpdateGUI();
@@ -126,7 +136,24 @@ public class LevelManager : MonoBehaviour
     {
         if (InputManager.Instance.PauseWasPressedThisFrame())
         {
-            Pause();
+            if (!_juegoTerminado && !_juegoPausado)
+            {
+                Pause();
+            }
+            else if (!_juegoTerminado && _juegoPausado)
+            {
+                Continue();
+            }
+        }
+        if (GameManager.Instance.UsandoBotiquines())
+        {
+            SpriteGranada.color = _transparency1;
+            SpriteBotiquin.color = _originalSpriteBotiquin;
+        }
+        if (GameManager.Instance.UsandoGranadas())
+        {
+            SpriteBotiquin.color = _transparency1;
+            SpriteGranada.color = _originalSpriteGranada;
         }
         timeSec += Time.deltaTime;
         timeTotal += Time.deltaTime;
@@ -187,14 +214,14 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        Pause();
+        Time.timeScale = 0f;
         _juegoTerminado = true; 
         //Time.timeScale = 0;     //detener el tiempo
         GameOverPanel.SetActive(true);
     }
     public void Victoria()
     {
-        Pause();
+        Time.timeScale = 0f;
         _juegoTerminado = true;
         if (IsFinalLevel)
         {
@@ -229,6 +256,7 @@ public class LevelManager : MonoBehaviour
     // usarlo cuando demos al esc, cuando aparece el panel de victoria o de derrota
     public void Pause() 
     {
+        _juegoPausado = true;
         PanelPausa.SetActive(true);
         time = Time.timeScale;
         Time.timeScale = 0f;
@@ -237,8 +265,14 @@ public class LevelManager : MonoBehaviour
     // usarlo para el boton de continue
     public void Continue()
     {
+        _juegoPausado = false;
         PanelPausa.SetActive(false);
         Time.timeScale = time;
+    }
+
+    public bool IsPaused()
+    {
+        return _juegoPausado || _juegoTerminado;
     }
     #endregion
 

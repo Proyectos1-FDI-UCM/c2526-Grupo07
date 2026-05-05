@@ -26,6 +26,8 @@ public class EnemyHealth : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField]
     private int Vida;
+    [SerializeField] 
+    private GameObject ParticulasMuerte;
     [SerializeField]
     private Transform BarraVida;
     [SerializeField]
@@ -103,6 +105,7 @@ public class EnemyHealth : MonoBehaviour
         BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
         if (Vida < 1) 
         {
+            if (ParticulasMuerte != null) Instantiate(ParticulasMuerte, transform.position, Quaternion.identity);
             //Si tiene un objeto lo suelta en la posición del enemigo
             if (ObjetoDrop != null)
             {

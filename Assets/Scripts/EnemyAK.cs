@@ -29,6 +29,9 @@ public class EnemyAK : MonoBehaviour
     [SerializeField] private Transform player; //jugador para realizar las acciones
     [SerializeField] private Collider2D plataforma;     //plataforma donde mueve el enemigo
 
+    [SerializeField] private AudioSource soundMove;
+
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -74,8 +77,12 @@ public class EnemyAK : MonoBehaviour
     void Update()
     {
         Vector2 offset = player.transform.position - transform.position;
+
+        _anim.SetBool("Attack", false);
         if (_isShooting)
         {
+            soundMove.Pause();
+            _anim.SetBool("Attack", true);
             _isChasing = false;
             //cuando dispara se deja de mover
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
@@ -93,8 +100,10 @@ public class EnemyAK : MonoBehaviour
         }
         if (_isChasing)
         {
+            _anim.SetBool("Attack", false);
             _isShooting = false;
             Perseguir();
+            soundMove.Play();
             if (offset.x > 0 && _direction != 1)
             {
                 _direction *= -1;
@@ -106,9 +115,14 @@ public class EnemyAK : MonoBehaviour
                 CambioDireccion();
             }
         }
-        else MovAuto();
+        else
+        {
+            MovAuto();
+            soundMove.Play();
+        }
         LimitarMov();
     }
+
     void FixedUpdate()
     {
         if (_anim != null)
@@ -117,6 +131,7 @@ public class EnemyAK : MonoBehaviour
             _anim.SetFloat("enemySpeed", speed); //Para la transicion
         }
     }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         //si se colisiona con un objeto(pared)
@@ -162,6 +177,7 @@ public class EnemyAK : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
+        soundMove.Play();
         _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
     }
     private void MovAuto()

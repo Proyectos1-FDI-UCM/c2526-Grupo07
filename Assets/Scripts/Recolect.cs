@@ -84,11 +84,13 @@ public class Recolect : MonoBehaviour
             {
                 if (Objeto == TipoObjeto.Granada && GameManager.Instance.GranadasFull() == false)
                 {
+                    player.PlayPop();
                     GameManager.Instance.GuardarGranadas();
                     Destroy(gameObject);
                 }
                 else if (Objeto == TipoObjeto.Botiquin && GameManager.Instance.BotiquinesFull() == false)
                 {
+                    player.PlayPop();
                     GameManager.Instance.GuardarBotiquines();
                     Destroy(gameObject);
                 }
@@ -97,6 +99,7 @@ public class Recolect : MonoBehaviour
             {
                 if (Arma == TipoArma.AK47 && !GameManager.Instance.TieneAK47())
                 {
+                    player.PlayPop();
                     GameManager.Instance.RecogerAK47();
                     Destroy(gameObject);
                 }

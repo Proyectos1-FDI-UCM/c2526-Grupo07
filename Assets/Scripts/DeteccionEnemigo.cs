@@ -31,6 +31,7 @@ public class DeteccionEnemigo : MonoBehaviour
     [SerializeField] private float ShootDis;  //distancia para disparo
     [SerializeField] private float alturaMax; //altura max para detectar al jugador
     [SerializeField] private GameObject excl;
+    [SerializeField] private LayerMask Interferencias;
 
     #endregion
 
@@ -76,7 +77,7 @@ public class DeteccionEnemigo : MonoBehaviour
 
         float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
         float distanciaY= Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
-
+        Vector2 offset = player.position - transform.position;
         // Solo actúa si el jugador está en la dirección que mira
         //devolver la direccion correcta del jugador
         bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||     
@@ -87,7 +88,7 @@ public class DeteccionEnemigo : MonoBehaviour
         move.SetChasing(false);
         move.SetShooting(false);
         shoot.SetCanShoot(false);
-        if (distanceX < ShootDis && canSeePlayer)   //jugador dentro de la "caja" pequeña
+        if (distanceX < ShootDis && !HayPared())   //jugador dentro de la "caja" pequeña
         {
             move.SetShooting(true);
             shoot.SetCanShoot(true);
@@ -139,6 +140,20 @@ public class DeteccionEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+
+    private bool HayPared()
+    {
+        Vector2 direccion = (player.position - transform.position);
+        float distancia = Vector2.Distance(transform.position, player.position);
+        bool hayInterferencia = false;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direccion, distancia, Interferencias);
+        if (hit.collider != null)
+        {
+            hayInterferencia = true;
+        }
+
+        return hayInterferencia;
+    }
     #endregion
 }// class DeteccionEnemigo 
 // namespace

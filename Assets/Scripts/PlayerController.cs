@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
     //Movimiento
     [SerializeField] private float Velocidad = 7f; //Velocidad para correr
     [SerializeField] private float SaltoMax = 12f; //Ajustar la altura máxima a la que puede salta
@@ -38,10 +37,16 @@ public class PlayerController : MonoBehaviour
     //Cuchillo
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
+    [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
 
-    //Sprites y animación
-    [SerializeField] private FlashRedAux AnimationSprite;   //(BORRAR/ARREGLAR) Para hacer el flash rojo del jugador
-    [SerializeField] private SpriteRenderer SpriteJugador; //Lo que se necesita de verdad (sustituye el de arriba)
+    //Sonido
+    [SerializeField] private AudioSource[] soundMove;
+    [SerializeField] private AudioSource soundDash;
+    [SerializeField] private AudioSource soundJump;
+    [SerializeField] private AudioSource soundDead;
+    [SerializeField] private AudioSource soundPop;
+    [SerializeField] private AudioSource soundCuchillo;
+    [SerializeField] private AudioSource soundDamage;
 
     #endregion
 
@@ -60,8 +65,12 @@ public class PlayerController : MonoBehaviour
     //RigidBody y movimiento
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
-    
+    private bool _onFloor = true;       //Ver si está en el suelo
+    private int _sonidoActual = 0;      //Sonido de correr pendiente
+    private int _sonidoAnterior = 2;
+
     //Dash
+    private bool _lookingRight = true;  //Ver a qué dirección Dashear
     private bool _canDash = true;       //Ver si se puede Dashear o no
     private bool _isDashing = false;    //Ver si está el dash activo
     private float _dashStartTime;       //Tiempo cuando empieza el Dash
@@ -82,7 +91,14 @@ public class PlayerController : MonoBehaviour
     private Color _originalColor;       //Color original del personaje
     private bool _redFlash = false;     //Poner al personaje en rojo si es true
     private float _flashDuration = 0.1f;//Duración del color rojo en el personaje
-    private float _flashInitialTime;    //Tiempo inicio del color rojo
+
+    private float _recibeDaño;          //Tiempo inicial cuando ha recibido daño
+
+    private Color _transparency;            //Transparencia del jugador
+    private float _parpadeoDuracion = 1.5f; //Parpadeo cuando es invulnerable
+    private float _intervaloParpadeo = 0.2f;//El intervalo entre un parpadeo y otro
+    private bool _parpadeando = false;      //Estado que indica si está parpadeando o no
+    private float _tiempoInicioParpadeo;    //Tiempo para parpadear
     #endregion
 
     //Consumibles
@@ -105,6 +121,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         SpriteJugador = GetComponent<SpriteRenderer>();
+        _transparency.a = 0.1f;
         _originalColor = SpriteJugador.color; //Guardar color original
     }
 
@@ -113,66 +130,87 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //Guardar tiempos
-        _lastTimeDashed += Time.deltaTime;
-        _now += Time.deltaTime;
-
-        //Activar animación de cuchillo
-        if (_anim != null)
+        if (!LevelManager.Instance.IsPaused())
         {
-            if (!_anim.GetBool("isAttacking"))
+            //Guardar tiempos
+            _lastTimeDashed += Time.deltaTime;
+            _now += Time.deltaTime;
+
+            //Activar animación de cuchillo
+            if (_anim != null)
             {
-                if (_cuchillo < CooldownChuchillo)
+                if (!_anim.GetBool("isAttacking"))
                 {
-                    _cuchillo += Time.deltaTime;
+                    if (_cuchillo < CooldownChuchillo)
+                    {
+                        _cuchillo += Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    _cuchillo = 0f;
                 }
             }
-            else
+
+            Cuchillo();
+            DesCuchillo();
+
+            //Si el jugador es empujado, tarda un rato antes de poder moverse
+            if (_onKnockback != false)
             {
-                _cuchillo = 0f;
+
+                if (_now - _knockbackFinish > _knockbackDuration)
+                {
+                    _canMove = true;
+                    _knockbackFinish = Time.time;
+                }
             }
-        }
 
-        Cuchillo();
-        DesCuchillo();
-
-        //Si el jugador es empujado, tarda un rato antes de poder moverse
-        if (_onKnockback != false)
-        {
-            if (_now - _knockbackFinish > _knockbackDuration)
+            //Si el jugador está en el aire no puede dashear
+            RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
+            if (hit.collider != null)
             {
-                _canMove = true;
-                _knockbackFinish = Time.time;
+                if (!_canDash) _canDash = true;
             }
-        }
+            else _canDash = false;
 
-        //Si el jugador está en el aire no puede dashear
-        RaycastHit2D hit = Physics2D.Raycast(Pies.position, Vector2.down, 0.1f, Saltable);
-        if (hit.collider != null)
-        {
-            if (!_canDash) _canDash = true;
-        }
-        else _canDash = false;
-
-        //Ejecuta el dash si ha pasado del cooldown
-        if (InputManager.Instance.DashWasPressedThisFrame())
-        {
-            if (_lastTimeDashed >= CooldownDash)
+            //Ejecuta el dash si ha pasado del cooldown
+            if (InputManager.Instance.DashWasPressedThisFrame())
             {
-                Dash();
+                if (_lastTimeDashed >= CooldownDash)
+                {
+                    soundDash.Play();
+                    Dash();
+                }
+                else Debug.Log("Refrescando");
             }
-            else Debug.Log("Refrescando");
-        }
 
-        //Si a recibido daño, ejecuta un efecto visual de flash rojo
-        if (_redFlash)
-        {
-            _flashInitialTime += Time.deltaTime;
-            if (_flashInitialTime > _flashDuration)
+            //Si ha recibido daño, ejecuta un efecto visual de flash rojo
+            if (_redFlash || _parpadeando)
             {
-                SpriteJugador.color = _originalColor;
-                _flashInitialTime = 0;
-                _redFlash = false;
+                _recibeDaño += Time.deltaTime;
+                if (_recibeDaño > _flashDuration && _redFlash)
+                {
+                    SpriteJugador.color = _originalColor;
+                    _recibeDaño = 0;
+                    _redFlash = false;
+                }
+                if (_recibeDaño < _parpadeoDuracion && _parpadeando)
+                {
+                    _tiempoInicioParpadeo += Time.deltaTime;
+
+                    if (_tiempoInicioParpadeo > _intervaloParpadeo)
+                    {
+                        CambioParpadeo();
+                        _tiempoInicioParpadeo = 0;
+                    }
+                }
+                else
+                {
+                    SpriteJugador.color = _originalColor;
+                    _recibeDaño = 0;
+                    _parpadeando = false;
+                }
             }
         }
         if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
@@ -188,13 +226,16 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        //Movimiento del jugador 
-        if (InputManager.Instance)
+        if (!LevelManager.Instance.IsPaused())
         {
-            if (SpriteJugador != null && _canMove != false)
+            //Movimiento del jugador 
+            if (InputManager.Instance)
             {
-                Salto();
-                Moverse();
+                if (SpriteJugador != null && _canMove != false)
+                {
+                    Salto();
+                    Moverse();
+                }
             }
         }
     }
@@ -212,7 +253,6 @@ public class PlayerController : MonoBehaviour
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
-        _canMove = false;
         _rb.linearVelocity = Vector2.zero;
         if (dir.x < 0.2 && dir.x > 0) dir1.x = 1.2f;
         else if (dir.x > -0.2 && dir.x < 0) dir1.x = -1.2f;
@@ -227,7 +267,16 @@ public class PlayerController : MonoBehaviour
     //Activar efecto visual de flash rojo al recibir daño
     public void RedFlash()
     {
-        AnimationSprite.RedFlash();
+        SpriteJugador.color = Color.red;
+        _redFlash = true;
+        _parpadeando = true;
+        soundDamage.Play();
+    }
+
+    //Reproducir sonido al recoger objeto
+    public void PlayPop()
+    {
+        soundPop.Play();
     }
    
     #endregion
@@ -250,10 +299,14 @@ public class PlayerController : MonoBehaviour
         {
             //Manipulo la velocidad lineal del gameObject en el eje Y según SaltoMax
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
         if (hit.collider != null && InputManager.Instance.JumpIsPressed())
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, SaltoMax);
+            soundJump.Play();
+
         }
     }
     //Método para moverse horizontalmente y dash
@@ -265,12 +318,21 @@ public class PlayerController : MonoBehaviour
 
             // Actualizamos animación de caminar
             _anim.SetFloat("speed", Mathf.Abs(horizontalInput));
-            // Girar sprite según dirección
-            if (horizontalInput != 0)
+            // Girar el gameObject entero según dirección
+            
+            //VERSION ANTIGUA
+            //if (horizontalInput != 0)
+            //{
+            //    Vector2 scale = transform.localScale;
+            //    scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
+            //    transform.localScale = scale;
+            //}
+            //NUEVA VERSION GIRANDO SOLO EL SPRITE
+            if (SpriteJugador != null && horizontalInput != 0)
             {
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Sign(horizontalInput) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
+                SpriteJugador.flipX = horizontalInput < 0;
+                _lookingRight = horizontalInput > 0;
+
             }
             if (_isDashing == false)
             {
@@ -286,6 +348,16 @@ public class PlayerController : MonoBehaviour
                     _anim.SetBool("isDashing", _isDashing);
                 }
             }
+            if (SpriteJugador != null && horizontalInput != 0 && _isDashing == false)
+            {
+                if (!soundMove[(_sonidoAnterior)].isPlaying)
+                {
+                    soundMove[_sonidoActual].Play();
+                    _sonidoAnterior = _sonidoActual;
+                    if (_sonidoActual < 2) _sonidoActual++;
+                    else _sonidoActual = 0;
+                }
+            }
         }
     }
 
@@ -299,7 +371,7 @@ public class PlayerController : MonoBehaviour
             {
                 HitboxCuchillo.SetActive(true);
             }
-
+            soundCuchillo.Play();
             //Activar animación
             _anim.SetBool("isAttacking", true);
             _coolDownCuchillo = 0f;
@@ -333,7 +405,8 @@ public class PlayerController : MonoBehaviour
         float dir;
         if (_canDash)
         {
-            if (transform.localScale.x > 0) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
+            soundDash.Play();
+            if (_lookingRight) dir = 1f; //Dara +-1 si el jugador está mirando a la izquierda o derecha
             else dir = -1f;
             gameObject.layer = LayerMask.NameToLayer("JugadorDuringDash"); //Cambia la capa de colision
             _dashStartTime = Time.time; //Momento en el que inicia el Dash
@@ -346,6 +419,7 @@ public class PlayerController : MonoBehaviour
         }
         else Debug.Log("No pudo dashear");
     }
+
 
     private void CambiarConsumible()
     {
@@ -384,6 +458,17 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.CurarVida(GameManager.Instance.GetVidaMaxima());
                 Debug.Log("Botiquín usado - Vida restaurada");
             }
+        }
+    }
+    private void CambioParpadeo()
+    {
+        if (SpriteJugador.color == _transparency)
+        {
+            SpriteJugador.color = _originalColor;
+        }
+        else
+        {
+            SpriteJugador.color = _transparency;
         }
     }
 }

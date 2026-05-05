@@ -103,13 +103,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f388ee61025ef144b61e15bfbe2f40d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velIn: {x: 10, y: 7}
+  VelIn: {x: 0, y: 0}
   TiempoGranada: 2
   RadioGranada: 5
   Damage: 20
-  camara: {fileID: 0}
+  Camara: {fileID: 0}
   TiempoAnimacionExplosion: 0.2
   Particulas: {fileID: 9059282515790659327, guid: 603f67f64c967874fac5151b8d3db8ab, type: 3}
+  AudioGranada: {fileID: 5893022016695237246, guid: c07b8063493edee44a7f3a65a92cac33, type: 3}
 --- !u!58 &5643995590725073595
 CircleCollider2D:
   m_ObjectHideFlags: 0

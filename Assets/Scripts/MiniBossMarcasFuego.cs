@@ -119,7 +119,6 @@ public class MiniBossMarcasFuego : MonoBehaviour
     //El jugador entra en el fuego, lo que le causa daño e inicia un contador que cada cierto tiempo le causará daño
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       
         PlayerController Player = collision.gameObject.GetComponent<PlayerController>(); //Busca al jugador cuando entra en el fuego
         //Si existe el jugador, le causa daño
         if(Player != null)
