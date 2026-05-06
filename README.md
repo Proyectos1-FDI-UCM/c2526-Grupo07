@@ -1,1 +1,34 @@
-# Template-P1
+![Portada](https://drive.google.com/file/d/159J3ghmL1MDoaa4mBhgrVcmv4du3Z_eC/view?usp=sharing)
+## ÍNDICE
+1. Descripción
+2. Como jugar
+3. Créditos
+## DESCRIPCIÓN
+CLEAR THE BUILDING es un juego de tipo run and gun donde un policía, llamado John Salchichón, realiza una misión de rescate de rehenes en un edificio de oficinas. Mientras cumple con la misión se entera del secuestro de su esposa. En cada planta (nivel), John se enfrenta a numerosos terroristas, su objetivo principal es rescatar a los rehenes y a su esposa. Además de terroristas, tendrá que hacer frente a numerosos escombros y obstáculos debido al ataque.
+## COMO JUGAR
+### Controles
+![Controles de teclado](https://drive.google.com/file/d/1LjGKvPM_mX-P5KNVE_lEVa6mDSxgtMaa/view?usp=drive_link)
+![Controles de mando](https://drive.google.com/file/d/1IFzQMN2zh8KLuctxgL2lXOG6IK3CdhzZ/view?usp=drive_link)
+### Uso de armas
+Al principio del juego el jugador puede usar armas como la pistola, que tiene límite de bala y se disparará en el sentido que mire el ratón. Cuando el jugador no tiene balas tendrá que recargar manualmente (Teclado:R, mando: X). Además también dispone de un cuchillo que tiene cooldown. Además de estas armas básicas el jugador puede obtener un AK47 durante el juego, donde este tiene más balas y se puede disparar continuamente.
+### Uso de objetos
+El jugador podrá obtener objetos durante el juego y usarlos, como puede ser la granada, que al pulsar la tecla “f” se podrá lanzar parabolicamente una granada o el botiquín que recupera la vida del jugador mediante el teclado de cambiar la selección de objetos.
+Estos objetos son limitados, con lo cual el jugador solo podrá tener como máximo 3 de cada uno de los objetos, si el jugador carece de los objetos no los podrá usar.
+## CRÉDITOS
+### Miembros del grupo
+- Zimin Chen
+- Carlos Alberto Ovando Barrios
+- Xixi Shi
+- Marcos Sonlano
+- Izan Vázquez Sánches
+- Cristopher Jeremy Villacis
+- Xinying Xu
+### Arte
+- Carpeta Recursos
+### Sonidos
+- freesound_community
+- Anthousai
+- felix.blume
+- Jarryd28
+- stintxs
+- Pixabay
