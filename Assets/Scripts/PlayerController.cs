@@ -38,11 +38,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
     [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
-    
+
     //Sonido
+    [SerializeField] private AudioSource[] soundMove;
     [SerializeField] private AudioSource soundDash;
     [SerializeField] private AudioSource soundJump;
-    [SerializeField] private AudioSource soundMove;
     [SerializeField] private AudioSource soundDead;
     [SerializeField] private AudioSource soundPop;
     [SerializeField] private AudioSource soundCuchillo;
@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;            //Declaro rb del gameObject para manipular su velocidad al saltar
     private bool _canMove = true;       //Ver si se puede mover o no
     private bool _onFloor = true;       //Ver si está en el suelo
+    private int _sonidoActual = 0;      //Sonido de correr pendiente
+    private int _sonidoAnterior = 2;
 
     //Dash
     private bool _lookingRight = true;  //Ver a qué dirección Dashear
@@ -99,6 +101,10 @@ public class PlayerController : MonoBehaviour
     private float _tiempoInicioParpadeo;    //Tiempo para parpadear
     #endregion
 
+    //Consumibles
+    [SerializeField] private GameObject _iconGranada;
+    [SerializeField] private GameObject _iconBotiquin;
+    private int _consumibleActual = 0; //En que consumible se esta
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -206,6 +212,16 @@ public class PlayerController : MonoBehaviour
                     _parpadeando = false;
                 }
             }
+        }
+        if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
+        {
+            CambiarConsumible();
+        }
+
+        // Usar consumible con la acción 'UseObject' del InputManager
+        if (InputManager.Instance.UseObjectWasPressedThisFrame())
+        {
+            UsarConsumible();
         }
     }
     void FixedUpdate()
@@ -334,7 +350,13 @@ public class PlayerController : MonoBehaviour
             }
             if (SpriteJugador != null && horizontalInput != 0 && _isDashing == false)
             {
-                soundMove.Play();
+                if (!soundMove[(_sonidoAnterior)].isPlaying)
+                {
+                    soundMove[_sonidoActual].Play();
+                    _sonidoAnterior = _sonidoActual;
+                    if (_sonidoActual < 2) _sonidoActual++;
+                    else _sonidoActual = 0;
+                }
             }
         }
     }
@@ -397,6 +419,47 @@ public class PlayerController : MonoBehaviour
         }
         else Debug.Log("No pudo dashear");
     }
+
+
+    private void CambiarConsumible()
+    {
+        _consumibleActual = (_consumibleActual + 1) % 2;
+
+        // Si no hay del nuevo, volver al anterior (usando GameManager)
+        if (_consumibleActual == 0 && GameManager.Instance.CantidadGranadas() <= 0)
+            _consumibleActual = 1;
+        else if (_consumibleActual == 1 && GameManager.Instance.CantidadBotiquines() <= 0)
+            _consumibleActual = 0;
+
+        // Actualizar iconos HUD
+        if (_iconGranada != null) _iconGranada.SetActive(_consumibleActual == 0);
+        if (_iconBotiquin != null) _iconBotiquin.SetActive(_consumibleActual == 1);
+
+        Debug.Log($"Equipado: {(_consumibleActual == 0 ? "Granada" : "Botiquín")}");
+    }
+
+    // Usa el consumible equipado usando GameManager
+    private void UsarConsumible()
+    {
+        if (_consumibleActual == 0) // Granada
+        {
+            if (GameManager.Instance.CantidadGranadas() > 0)
+            {
+                GameManager.Instance.UsarGranadas();
+                // Aquí va tu código de lanzar la granada (ya lo tienes hecho)
+                Debug.Log("Granada lanzada");
+            }
+        }
+        else // Botiquín
+        {
+            if (GameManager.Instance.CantidadBotiquines() > 0)
+            {
+                GameManager.Instance.UsarBotiquin();
+                GameManager.Instance.CurarVida(GameManager.Instance.GetVidaMaxima());
+                Debug.Log("Botiquín usado - Vida restaurada");
+            }
+        }
+    }
     private void CambioParpadeo()
     {
         if (SpriteJugador.color == _transparency)
@@ -408,8 +471,6 @@ public class PlayerController : MonoBehaviour
             SpriteJugador.color = _transparency;
         }
     }
-
-
 }
     #endregion
 // class PlayerController 

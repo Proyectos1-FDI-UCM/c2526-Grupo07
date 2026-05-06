@@ -26,6 +26,7 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] AimShoot Apuntado;
     [SerializeField] float TamañoCamara = 7f;
     [SerializeField] float Suavidad = 0.0025f;
+    [SerializeField] float DistanciaMaxima = 3f;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -39,14 +40,14 @@ public class FollowCamera : MonoBehaviour
     private float PosZ;
     private float PosY;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
@@ -64,9 +65,11 @@ public class FollowCamera : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 Apunt = Apuntado.MousePos();
+        Vector3 direccionRaton = Apunt - target.position;
         Vector3 late = (Apunt - transform.position) / 2;
-        Vector3 Objetivo = new Vector3 (target.position.x + late.x, PosY + 3.6f, PosZ); 
-        transform.position = Vector3.Lerp (transform.position, Objetivo, Suavidad);
+        Vector3 offset = Vector3.ClampMagnitude(direccionRaton / 2f, DistanciaMaxima); //Clampea la camara a una distancia del jugador
+        Vector3 Objetivo = new Vector3(target.position.x + offset.x, PosY + 3.6f, PosZ);
+        transform.position = Vector3.Lerp(transform.position, Objetivo, Suavidad);
     }
     #endregion
 
@@ -83,7 +86,7 @@ public class FollowCamera : MonoBehaviour
         transform.position += Vector3.Lerp(transform.position, new Vector3(-1, 0, 0), Suavidad);
     }
     #endregion
-    
+
     // ---- MÉTODOS PRIVADOS ----
     #region Métodos Privados
     // Documentar cada método que aparece aquí
@@ -91,7 +94,9 @@ public class FollowCamera : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    #endregion   
+    #endregion
 
 } // class FollowCamera 
 // namespace
+
+
