@@ -78,7 +78,6 @@ public class EnemyShoot : MonoBehaviour
         if (_canShoot)
         {
             _now += Time.deltaTime;
-            Debug.Log(_now);
             if (_now > minInterval)
             {
                 //Guardo en offset la direccion entre el objeto y el target

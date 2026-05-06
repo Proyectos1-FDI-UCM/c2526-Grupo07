@@ -13,7 +13,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class FollowCamera : MonoBehaviour
+public class TriggerCameraBlock : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,11 +22,11 @@ public class FollowCamera : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private Transform target;
-    [SerializeField] AimShoot Apuntado;
-    [SerializeField] float TamañoCamara = 7f;
-    [SerializeField] float Suavidad = 0.0025f;
-    [SerializeField] float DistanciaMaxima = 3f;
+    [SerializeField] private FollowCamera Camara;
+    [SerializeField] private Transform ZonaBoss;
+    [SerializeField] private Transform Pared;
+    [SerializeField] private GameObject Boss;
+
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -37,10 +37,7 @@ public class FollowCamera : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float PosZ;
-    private float PosY;
-    private bool SalaDeBoss = false;
-    private Transform LugarBoss;
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -56,31 +53,27 @@ public class FollowCamera : MonoBehaviour
     /// </summary>
     void Start()
     {
-        PosZ = -10;
-        PosY = target.position.y;
-        Camera.main.orthographicSize = TamañoCamara;
+        Pared.gameObject.SetActive(false);
     }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
-    private void LateUpdate()
+    void Update()
     {
-        if (!SalaDeBoss)
+        if (Boss == null)
         {
-            Vector3 Apunt = Apuntado.MousePos();
-            Vector3 direccionRaton = Apunt - target.position;
-            Vector3 late = (Apunt - transform.position) / 2;
-            Vector3 offset = Vector3.ClampMagnitude(direccionRaton / 2f, DistanciaMaxima); //Clampea la camara a una distancia del jugador
-            Vector3 Objetivo = new Vector3(target.position.x + offset.x, PosY + 3.6f, PosZ);
-            transform.position = Vector3.Lerp(transform.position, Objetivo, Suavidad);
+            Pared.gameObject.SetActive(false);
+            Camara.UnableSalaBoss();
         }
-        else
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController player = collision.GetComponent<PlayerController>();
+        if (player != null)
         {
-            Vector3 ObjetivoBoss = LugarBoss.position;
-            Vector3 Pos = transform.position;
-            Pos.x = LugarBoss.position.x;
-            transform.position = Vector3.Lerp(transform.position, Pos, 0.05f);
+            Camara.SalaBoss(ZonaBoss);
+            Pared.gameObject.SetActive(true);
         }
     }
     #endregion
@@ -92,20 +85,6 @@ public class FollowCamera : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void ShakeCamera()
-    {
-        transform.position += Vector3.Lerp(transform.position, new Vector3(1, 0, 0), Suavidad);
-        transform.position += Vector3.Lerp(transform.position, new Vector3(-1, 0, 0), Suavidad);
-    }
-    public void SalaBoss(Transform ZonaDeBoss)
-    {
-        SalaDeBoss = true;
-        LugarBoss = ZonaDeBoss;
-    }
-    public void UnableSalaBoss()
-    {
-        SalaDeBoss = false;
-    }
 
     #endregion
 
@@ -118,7 +97,5 @@ public class FollowCamera : MonoBehaviour
 
     #endregion
 
-} // class FollowCamera 
+} // class TriggerCameraBlock 
 // namespace
-
-

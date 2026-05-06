@@ -2472,6 +2472,8 @@ MonoBehaviour:
   RecargaPistolaSFX: {fileID: 843141154}
   RifleSFX: {fileID: 1289241275}
   RecargaRifleSFX: {fileID: 1379118228}
+  SpritePistola: {fileID: 695294057}
+  SpriteRifle: {fileID: 1007537163}
   Cargador: 10
   TiempoRecargaPistola: 0.5
   TiempoRecargaRifle: 1.5
@@ -2740,9 +2742,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1674411764}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: _iconGranada
+      value: 
+      objectReference: {fileID: 842415511}
+    - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: SpriteJugador
       value: 
       objectReference: {fileID: 1485226563}
+    - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: _iconBotiquin
+      value: 
+      objectReference: {fileID: 1448930991}
     - target: {fileID: 8470541403790486971, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: soundCuchillo
       value: 
@@ -2763,7 +2773,8 @@ PrefabInstance:
       propertyPath: groundLayer.m_Bits
       value: 8256
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2891559705947123877, guid: 08889b12369dc2d49942f35569508076, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7758915492945043005, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 3296633764568319356, guid: 08889b12369dc2d49942f35569508076, type: 3}
@@ -2780,9 +2791,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1485226570}
-    - targetCorrespondingSourceObject: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1485226571}
   m_SourcePrefab: {fileID: 100100000, guid: 08889b12369dc2d49942f35569508076, type: 3}
 --- !u!1 &1485226559 stripped
@@ -2795,24 +2803,6 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
   m_PrefabInstance: {fileID: 1485226556}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1485226570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485226559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bbda22d34462344ebe3bc49f9909b9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PuntoLanzamiento: {fileID: 1396294328}
-  PrefabGranada: {fileID: 7698826228684791750, guid: bb61e2375383f504fb88786ede660522, type: 3}
-  FuerzaLanzamiento: 12
-  AnguloLanzamiento: 40
-  IconoGranada: {fileID: 842415511}
-  IconoBotiquin: {fileID: 1448930991}
 --- !u!81 &1485226571
 AudioListener:
   m_ObjectHideFlags: 0
