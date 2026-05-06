@@ -82,7 +82,8 @@ public class Dialogos : MonoBehaviour
             {
                 Destroy(GetComponent<Collider2D>());
                 _player.enabled = false;
-                Cinema.CinematicPause();
+                if (Cinema != null) Cinema.CinematicPause();
+                else LevelManager.Instance.PauseTimeOnly();
                 DialogoCanvas.SetActive(true);
                 _dialogosActivos = true;
                 _nameInitialPos = PanelNames.transform.position;
@@ -118,6 +119,7 @@ public class Dialogos : MonoBehaviour
     {
         _player = collision.gameObject.GetComponent<Animator>();
         _playerTouched = true;
+        Debug.Log("Fui brutalmente tocado");
     }
     #endregion
 
@@ -140,7 +142,8 @@ public class Dialogos : MonoBehaviour
     private void ResumeCinema()
     {
         _player.enabled = true;
-        Cinema.CinematicResume();
+        if (Cinema != null) Cinema.CinematicResume();
+        else LevelManager.Instance.Continue();
         DialogoCanvas.SetActive(false);
         _dialogosActivos = false;
     }
@@ -148,6 +151,8 @@ public class Dialogos : MonoBehaviour
     private void ProcesaArchivo()
     {
         int _indiceDialogo = GameManager.Instance.CinematicaActual();
+
+        if (_indiceDialogo > 3) Destroy(this.gameObject);
         TextAsset archivo = Resources.Load<TextAsset>($"Dialogos/Dialogo{_indiceDialogo}");
 
         string texto = archivo.text;
