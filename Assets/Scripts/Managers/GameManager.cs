@@ -7,6 +7,7 @@
 //---------------------------------------------------------
 
 using System;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int MaxGranadas;    //Cantidad máx de granadas
     [SerializeField] private int MaxBotiquin;    //Cantidad máx de botiquines
     [SerializeField] private int MaxVidaInicial; //Vida máxima del jugador
+    [SerializeField] private TextMeshProUGUI textCheat; // texto para decir si esta activado el cheat 
 
     #endregion
 
@@ -139,7 +141,7 @@ public class GameManager : MonoBehaviour
     {
         TransferManagerSetup();
     }
-   
+
     /// <summary>
     /// Método llamado cuando se destruye el componente.
     /// </summary>
@@ -179,6 +181,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        updateGUI();
     }
     #endregion
 
@@ -282,9 +285,9 @@ public class GameManager : MonoBehaviour
     //Método llamado cuando se usan granadas
     public void UsarGranadas()
     {
-        if (_usandoGranadas)
+        if (_usandoGranadas && !cheatMode)
         {
-            if (!cheatMode){ _granadas--; }
+             _granadas--;
             TransferManagerSetup();
         }
     }
@@ -336,6 +339,7 @@ public class GameManager : MonoBehaviour
     //Método que devuelve la cantidad de granadas actuales
     public int CantidadGranadas()
     {
+        if (cheatMode) { _granadas = MaxGranadas;}
         return _granadas;
     }
     //Método que devuelve la cantidad de botiquines actuales
@@ -439,6 +443,14 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         // De momento no hay nada que inicializar
+    }
+    private void updateGUI()
+    {
+        if (cheatMode)
+        {
+            textCheat.text = "Cheat on";
+        }
+        else { textCheat.text = "Cheat off"; }
     }
     #endregion
 } // class GameManager 

@@ -2721,6 +2721,10 @@ PrefabInstance:
       propertyPath: PuntoLanzamiento
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4874786082102683435, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_Name
       value: Player 1

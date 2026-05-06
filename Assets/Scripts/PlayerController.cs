@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
     private float _intervaloParpadeo = 0.2f;//El intervalo entre un parpadeo y otro
     private bool _parpadeando = false;      //Estado que indica si está parpadeando o no
     private float _tiempoInicioParpadeo;    //Tiempo para parpadear
+
     #endregion
 
     //Consumibles
