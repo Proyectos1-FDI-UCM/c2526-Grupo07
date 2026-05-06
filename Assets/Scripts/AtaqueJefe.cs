@@ -152,16 +152,11 @@ public class AtaqueJefe : MonoBehaviour
 
     private void Lanzallamas()
     {
-        TiempoEntreBalas += Time.deltaTime;
-        if (TiempoEntreBalas >= Cadencia)
-        {
-            offset = player.position - transform.position;
-            GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);
-            FuegoSFX.Play();
-            LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
-            DireccionFuego.Dir(offset);
-            TiempoEntreBalas = 0f;
-        }
+        offset = player.position - transform.position;
+        GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);
+        FuegoSFX.Play();
+        LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
+        DireccionFuego.Dir(offset);
     }
     
 
