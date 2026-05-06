@@ -39,10 +39,6 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private AudioSource RifleSFX; //Sonido del disparo rifle
     [SerializeField] private AudioSource RecargaRifleSFX; //Sonido recarga pistola
 
-    //Sprites armas
-    [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
-    [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
-
     //Recarga
     [SerializeField] private int Cargador = 10;                 //Número de balas que se pueden disparar
     [SerializeField] private float TiempoRecargaPistola = 0.1f; //Tiempo que tarda la pistola en recargar
@@ -111,7 +107,6 @@ public class AimShoot : MonoBehaviour
     {
         _anim = GetComponent<Animator>();
         SpriteRecarga.SetActive(false);
-        SpriteRifle.SetActive(false);
         _direction = transform.position;
         _mousePosition = InputManager.Instance.GetAimMouseValue();
         _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
@@ -338,7 +333,7 @@ public class AimShoot : MonoBehaviour
     //Método llamado si se cambia a la pistola
     private void SetPistola()
     {
-        _anim.SetBool("Rifle", false);
+        _anim.SetBool("Rifle", false); 
         _balasActuales = _balasActualesPistola;
         Cargador = _cargadorPistola;
         Cadencia = _cadenciaPistola;
@@ -347,8 +342,6 @@ public class AimShoot : MonoBehaviour
         _armaActual = "Pistola";
         Debug.Log("Cambiado a pistola");
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-        SpritePistola.SetActive(true);
-        SpriteRifle.SetActive(false);
     }
     //Método llamado si se cambia al AK47
     private void SetRifle()
@@ -364,8 +357,6 @@ public class AimShoot : MonoBehaviour
             _armaActual = "Rifle";
             Debug.Log("Cambiado a rifle");
             GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-            SpritePistola.SetActive(false);
-            SpriteRifle.SetActive(true);
         }
     }
     #endregion
