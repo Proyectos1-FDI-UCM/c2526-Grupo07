@@ -228,7 +228,8 @@ public class LevelManager : MonoBehaviour
     }
     public void Victoria()
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 0;     //detener el tiempo
+        PanelVictoria.SetActive(true);
         _juegoTerminado = true;
         if (IsFinalLevel)
         {
@@ -246,8 +247,8 @@ public class LevelManager : MonoBehaviour
         {
             SpriteEstrellas[0].SetActive(true);
         }
+
         //Time.timeScale = 0;     //detener el tiempo
-        PanelVictoria.SetActive(true);
         if(BotonVictoria != null)
         {
             UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(BotonVictoria);
