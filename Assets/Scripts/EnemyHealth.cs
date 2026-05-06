@@ -103,7 +103,7 @@ public class EnemyHealth : MonoBehaviour
         Vida -= Damage; // restar vida
         BarraVida.localScale = new Vector2((BarraVida.localScale.x - (Scale * Damage / VidaInitial)), BarraVida.localScale.y); // cambiar la escala de la barra de vida
         BarraVida.position = new Vector2(BarraVida.position.x - ((Scale * Damage / VidaInitial) / 2f), BarraVida.position.y); // moverlo hacia la izquierda
-        if (Vida < 1) 
+        if (Vida < 1)
         {
             if (ParticulasMuerte != null) Instantiate(ParticulasMuerte, transform.position, Quaternion.identity);
             //Si tiene un objeto lo suelta en la posición del enemigo
@@ -115,7 +115,7 @@ public class EnemyHealth : MonoBehaviour
             {
                 LevelManager.Instance.Victoria();
             }
-            Destroy(gameObject); 
+            Destroy(gameObject);
         } // destruye el enemigo a la que esta asignado la barra de vida
     }
     public void RedFlash()

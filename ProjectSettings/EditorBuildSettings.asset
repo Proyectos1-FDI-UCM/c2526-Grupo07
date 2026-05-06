@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: b13e49dfc910045ba80034544cb5011b
   - enabled: 1
     path: Assets/Scenes/Levels/Nivel 1.unity
-    guid: 49913be3df96af7478781dc4865eb6e1
+    guid: 3ba296e0eef44bd4eb594bf62cf51091
   - enabled: 1
     path: Assets/Scenes/Creditos.unity
     guid: c698f311c2359fc4d85d1cdd37321915
@@ -35,9 +35,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Escenas Pruebas/Selector de Pruebas.unity
     guid: 98b0fefeaf4909f4ca4514cd6824e5ac
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels/Nivel Test.unity
     guid: 664e229101b90b64ca05ca04bd22d4c4
+  - enabled: 1
+    path: Assets/Scenes/Levels/Nivel 2.unity
+    guid: 6bf00b0a91d36b647a3a48178e5ce8a8
   - enabled: 1
     path: Assets/Scenes/Test/EscalerasCinematica2.unity
     guid: b3300876af52f554fa3d189911f551a4

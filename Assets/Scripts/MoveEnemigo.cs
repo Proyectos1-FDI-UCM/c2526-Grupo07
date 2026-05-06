@@ -93,8 +93,8 @@ public class MoveEnemigo : MonoBehaviour
              {
                  _direction *= -1;
                  CambioDireccion();
-             }
-             return;
+            }
+            return;
         }
         else if (_isChasing)
         {
@@ -213,7 +213,9 @@ public class MoveEnemigo : MonoBehaviour
 
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        if(_direction==1) _spriteRenderer.flipX = false;
+        else _spriteRenderer.flipX=true;
     }
     #endregion
 }
