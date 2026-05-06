@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Rendering;
 // Añadir aquí el resto de directivas using
@@ -146,7 +147,8 @@ public class Dialogos : MonoBehaviour
 
     private void ProcesaArchivo()
     {
-        TextAsset archivo = Resources.Load<TextAsset>("Dialogos/Dialogo" + GameManager.Instance.CinematicaActual());
+        int _indiceDialogo = GameManager.Instance.CinematicaActual();
+        TextAsset archivo = Resources.Load<TextAsset>($"Dialogos/Dialogo{_indiceDialogo}");
 
         string texto = archivo.text;
         string[] lineas = texto.Split("\n");
