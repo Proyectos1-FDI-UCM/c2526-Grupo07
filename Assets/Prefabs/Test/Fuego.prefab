@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -6794780624229922764}
   - component: {fileID: -2745208767220738323}
   - component: {fileID: 1902417321603179948}
+  - component: {fileID: 98565826111054831}
   m_Layer: 0
   m_Name: Fuego
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7394439848223957972, guid: 24af034dcd067784991b61afd85243f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -201,3 +202,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &98565826111054831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193850918367580504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761ea6e79cdc22846affa447b4967964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Velocidad: 10
+  "Da\xF1o": 10
+  TiempoEnDestruirse: 20
+  MarcasFuego: {fileID: 458698212217909353, guid: 0726bc7ae0f29f24e84c52aadd6f2b3f, type: 3}
