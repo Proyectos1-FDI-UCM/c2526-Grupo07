@@ -39,13 +39,9 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private AudioSource RifleSFX; //Sonido del disparo rifle
     [SerializeField] private AudioSource RecargaRifleSFX; //Sonido recarga pistola
 
-    //Sprites armas
-    [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
-    [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
-
     //Recarga
     [SerializeField] private int Cargador = 10;                 //Número de balas que se pueden disparar
-    [SerializeField] private float TiempoRecargaPistola = 0.5f; //Tiempo que tarda la pistola en recargar
+    [SerializeField] private float TiempoRecargaPistola = 0.1f; //Tiempo que tarda la pistola en recargar
     [SerializeField] private float TiempoRecargaRifle = 1.5f;   //Tiempo que tarda el rifle en recargar
     [SerializeField] private GameObject SpriteRecarga;          //Sprite del símbolo de recarga
 
@@ -63,6 +59,7 @@ public class AimShoot : MonoBehaviour
     //Direcciones de apuntado
     Vector3 _direction, _lastMousePos, _mousePosition; //Direcciones para disparar
     private GameObject Bala; //Bala actual que sale
+    private SpriteRenderer _spriteRenderer; // sprite del la pistola
 
     //Disparo
     private float _tiempoDisparo = 0f; //Tiempo que falta para poder disparar, controla la cadencia
@@ -92,6 +89,9 @@ public class AimShoot : MonoBehaviour
     //Granada
     private int _cantidadGranada;
     private bool _usandoGranada;
+
+    // Animacion
+    private Animator _anim;
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -105,8 +105,8 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Start()
     {
+        _anim = GetComponent<Animator>();
         SpriteRecarga.SetActive(false);
-        SpriteRifle.SetActive(false);
         _direction = transform.position;
         _mousePosition = InputManager.Instance.GetAimMouseValue();
         _balasActuales = Cargador; //Iniciamos con el cargador lleno, las balas disponibles son todas las del cargador
@@ -124,6 +124,8 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Update()
     {
+        _anim.SetBool("RifleShoot", false);
+        _anim.SetBool("GunShoot", false);
         if (!LevelManager.Instance.IsPaused())
         {
             //Si el juego esta pausado no puede disparar
@@ -283,15 +285,16 @@ public class AimShoot : MonoBehaviour
         if (_armaActual == "Pistola")
         {
             PistolaSFX.Play();
+            _anim.SetBool("GunShoot", true);
         }
         else if(_armaActual == "Rifle")
         {
             RifleSFX.Play();
+            _anim.SetBool("RifleShoot", true);
         }
         GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
         BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
         balaDir.Dir(_direction);
-
         // Restamos una bala al cargador
         _balasActuales--;
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
@@ -299,6 +302,7 @@ public class AimShoot : MonoBehaviour
 
         // Reiniciamos el tiempo de disparo según la cadencia
         _tiempoDisparo = 1f / Cadencia;
+
     }
     //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
     private void EmpezarRecarga()
@@ -329,6 +333,7 @@ public class AimShoot : MonoBehaviour
     //Método llamado si se cambia a la pistola
     private void SetPistola()
     {
+        _anim.SetBool("Rifle", false); 
         _balasActuales = _balasActualesPistola;
         Cargador = _cargadorPistola;
         Cadencia = _cadenciaPistola;
@@ -337,14 +342,13 @@ public class AimShoot : MonoBehaviour
         _armaActual = "Pistola";
         Debug.Log("Cambiado a pistola");
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-        SpritePistola.SetActive(true);
-        SpriteRifle.SetActive(false);
     }
     //Método llamado si se cambia al AK47
     private void SetRifle()
     {
         if (GameManager.Instance.TieneAK47())
         {
+            _anim.SetBool("Rifle", true);
             _balasActuales = _balasActualesRifle;
             Cargador = _cargadorRifle;
             Cadencia = _cadenciaRifle;
@@ -353,8 +357,6 @@ public class AimShoot : MonoBehaviour
             _armaActual = "Rifle";
             Debug.Log("Cambiado a rifle");
             GameManager.Instance.SetMunicion(Cargador, _balasActuales);
-            SpritePistola.SetActive(false);
-            SpriteRifle.SetActive(true);
         }
     }
     #endregion

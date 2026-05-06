@@ -48,6 +48,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: MarcoBarraVida
+    uniqueID: 1779108387
+    locked: 0
   - name: "Corazon Da\xF1ado"
     uniqueID: 3024526823
     locked: 0
