@@ -76,11 +76,11 @@ public class DeteccionEnemigo : MonoBehaviour
         float DirToPlayer = player.position.x - transform.position.x;   //dirección hacia el jugador
 
         float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
-        float distanciaY= Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
+        float distanciaY = Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
         Vector2 offset = player.position - transform.position;
         // Solo actúa si el jugador está en la dirección que mira
         //devolver la direccion correcta del jugador
-        bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||     
+        bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||
                            (move.GetDirection() == -1 && DirToPlayer < 0);
         bool canSeePlayer = dirCambiada && distanciaY <= alturaMax;     //cuándo detecta el jugador
 
@@ -115,13 +115,13 @@ public class DeteccionEnemigo : MonoBehaviour
                 excl.SetActive(false);
             }
         }
-    } 
+    }
     void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis*2, ShootDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis * 2, ShootDis, 0));
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis*2,ChaseDis,0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis * 2, ChaseDis, 0));
     }
 
     // ---- MÉTODOS PÚBLICOS ----
