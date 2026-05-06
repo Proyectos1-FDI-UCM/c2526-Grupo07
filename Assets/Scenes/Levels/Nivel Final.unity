@@ -2472,8 +2472,6 @@ MonoBehaviour:
   RecargaPistolaSFX: {fileID: 843141154}
   RifleSFX: {fileID: 1289241275}
   RecargaRifleSFX: {fileID: 1379118228}
-  SpritePistola: {fileID: 695294057}
-  SpriteRifle: {fileID: 1007537163}
   Cargador: 10
   TiempoRecargaPistola: 0.5
   TiempoRecargaRifle: 1.5
@@ -2538,7 +2536,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2381755804059827177, guid: 5f27a55a4533c804fa0f1c7dca5cefd8, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2546,7 +2544,7 @@ SpriteRenderer:
   m_Size: {x: 0.14, y: 0.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &1396294330
@@ -2771,6 +2769,7 @@ PrefabInstance:
     - {fileID: 3296633764568319356, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 8913274079982296147, guid: 08889b12369dc2d49942f35569508076, type: 3}
     - {fileID: 2611155761652790197, guid: 08889b12369dc2d49942f35569508076, type: 3}
+    - {fileID: 3885473457683388830, guid: 08889b12369dc2d49942f35569508076, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
