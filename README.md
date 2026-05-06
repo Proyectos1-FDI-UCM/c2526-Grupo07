@@ -1,4 +1,4 @@
-![Portada](c2526-Grupo07/Assets/Images/image3.jpg at main · Proyectos1-FDI-UCM/c2526-Grupo07)
+![Portada](https://github.com/Proyectos1-FDI-UCM/c2526-Grupo07/blob/main/Assets/Images/image3.jpg)
 ## ÍNDICE
 1. Descripción
 2. Como jugar
@@ -7,8 +7,8 @@
 CLEAR THE BUILDING es un juego de tipo run and gun donde un policía, llamado John Salchichón, realiza una misión de rescate de rehenes en un edificio de oficinas. Mientras cumple con la misión se entera del secuestro de su esposa. En cada planta (nivel), John se enfrenta a numerosos terroristas, su objetivo principal es rescatar a los rehenes y a su esposa. Además de terroristas, tendrá que hacer frente a numerosos escombros y obstáculos debido al ataque.
 ## COMO JUGAR
 ### Controles
-![Controles de teclado](c2526-Grupo07/Assets/Images/image4.png at main · Proyectos1-FDI-UCM/c2526-Grupo07)
-![Controles de mando](c2526-Grupo07/Assets/Images/image11.png at main · Proyectos1-FDI-UCM/c2526-Grupo07)
+![Controles de teclado](https://github.com/Proyectos1-FDI-UCM/c2526-Grupo07/blob/main/Assets/Images/image4.png)
+![Controles de mando](https://github.com/Proyectos1-FDI-UCM/c2526-Grupo07/blob/main/Assets/Images/image11.png)
 ### Uso de armas
 Al principio del juego el jugador puede usar armas como la pistola, que tiene límite de bala y se disparará en el sentido que mire el ratón. Cuando el jugador no tiene balas tendrá que recargar manualmente (Teclado:R, mando: X). Además también dispone de un cuchillo que tiene cooldown. Además de estas armas básicas el jugador puede obtener un AK47 durante el juego, donde este tiene más balas y se puede disparar continuamente.
 ### Uso de objetos
