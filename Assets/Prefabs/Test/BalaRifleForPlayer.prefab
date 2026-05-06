@@ -103,8 +103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyTime: 3
-  speed: 10
-  Damage: 10
+  speed: 15
+  Damage: 15
 --- !u!50 &-6279652754209634581
 Rigidbody2D:
   serializedVersion: 5
