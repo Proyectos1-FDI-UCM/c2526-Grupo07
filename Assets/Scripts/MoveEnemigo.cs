@@ -77,7 +77,10 @@ public class MoveEnemigo : MonoBehaviour
         Vector2 offset = player.transform.position - transform.position;
         if (_isShooting)
         {
-            soundMove.Pause();
+            if (soundMove != null)
+            {
+                soundMove.Pause();
+            }
             //cuando dispara se deja de mover
             _isChasing = false;
 

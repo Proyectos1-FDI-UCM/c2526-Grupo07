@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8d9de5e82e0ee2349954ea16e6dc62a3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - MusicaMenu: {instanceID: 0}
+  - MusicaNiveles: {instanceID: 0}
+  - MusicaMiniJefe: {instanceID: 0}
+  - MusicaJefe: {instanceID: 0}
+  - MusicaDerrota: {instanceID: 0}
+  - MusicaVictoria: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

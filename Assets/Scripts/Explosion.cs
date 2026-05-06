@@ -39,8 +39,6 @@ public class Explosion : MonoBehaviour
 
     [SerializeField] private GameObject Particulas;
 
-    [SerializeField] private AudioSource AudioGranada;
-
 
     #endregion
 
@@ -58,7 +56,8 @@ public class Explosion : MonoBehaviour
     private float _direction;
     private Animator _animator; //Será el componente Animator
     private bool _destruida = false; //Comprueba si explotó
-    private int _damageReduction; 
+    private int _damageReduction;
+    private AudioSource _audioGranada;
 
     #endregion
 
@@ -104,7 +103,6 @@ public class Explosion : MonoBehaviour
         //Cuando llega a cero explota
         if(_tiempo <= 0)
         {
-            AudioGranada.Play();
             Explotar();
         }
     }
@@ -117,8 +115,9 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void SetDireccion(Vector3 dir)
+    public void SetDireccion(Vector3 dir, AudioSource sonido)
     {
+        _audioGranada = sonido;
         if (dir.x < 0) _direction = -1f;
         else _direction = 1f;
     }
@@ -194,7 +193,7 @@ public class Explosion : MonoBehaviour
             _animator.SetTrigger("Explosion");
 
         }
-
+        _audioGranada.Play();
         Destroy(gameObject, TiempoAnimacionExplosion); //Se destruye la granada
 
     }
