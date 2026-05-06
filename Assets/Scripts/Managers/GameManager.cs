@@ -81,7 +81,11 @@ public class GameManager : MonoBehaviour
 
     //Contador de diálogos vistos durante la partida
     private int _cinematicaSiguiente = 1;
-    
+
+    //cheat
+    private bool cheatMode = false;
+    private bool cheatModeAux;
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -202,6 +206,16 @@ public class GameManager : MonoBehaviour
     /// destruído antes de tiempo.
     /// </summary>
     /// <returns>Cierto si hay instancia creada.</returns>
+  
+    // activa el modo cheat donde el jugador tendrá vida infinita, munición infinita y granadas infinita
+    public void ActivateCheatMode()
+    {
+        cheatMode = !cheatMode;
+    }
+    public bool GetCheatMode()
+    {
+        return cheatMode;
+    }
     public static bool HasInstance()
     {
         return _instance != null;
@@ -236,15 +250,18 @@ public class GameManager : MonoBehaviour
     //Método para restar la vida del personaje
     public void RestarVida(int Damage)
     {
-        if (!_invulnerable)    //Solo recibe daño si no es invulnerable
+        if (!cheatMode)
         {
-            _vidaActual -= Damage; // Restar la vida del jugador
-            _invulnerable = true;
-        }
-        if (_vidaActual <1)    // Si vida actual llega a 0, se llama a GameOver
-        {
-            _vidaActual = 0;   //Para que la vida no salga en negativo
-            LevelManager.Instance.GameOver();
+            if (!_invulnerable)    //Solo recibe daño si no es invulnerable
+            {
+                _vidaActual -= Damage; // Restar la vida del jugador
+                _invulnerable = true;
+            }
+            if (_vidaActual < 1)    // Si vida actual llega a 0, se llama a GameOver
+            {
+                _vidaActual = 0;   //Para que la vida no salga en negativo
+                LevelManager.Instance.GameOver();
+            }
         }
         TransferManagerSetup();
     }
@@ -267,7 +284,7 @@ public class GameManager : MonoBehaviour
     {
         if (_usandoGranadas)
         {
-            _granadas--;
+            if (!cheatMode){ _granadas--; }
             TransferManagerSetup();
         }
     }
@@ -380,6 +397,7 @@ public class GameManager : MonoBehaviour
         _granadas = _granadasAux;
         _botiquines = _botiquinesAux;
         _vidaActual = _vidaActualAux;
+        cheatMode = cheatModeAux;
     }
     //Metodo para guardar los datos del inicio del nivel
     public void GuardarDatos(int escena)
@@ -397,6 +415,7 @@ public class GameManager : MonoBehaviour
         _granadasAux = _granadas;
         _botiquinesAux = _botiquines;
         _vidaActualAux = _vidaActual;
+        cheatModeAux = cheatMode;
     }
 
     public int CinematicaActual()

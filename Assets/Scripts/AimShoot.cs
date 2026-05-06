@@ -96,6 +96,9 @@ public class AimShoot : MonoBehaviour
 
     // Animacion
     private Animator _anim;
+
+    //Cheat
+    private bool cheatMode = false;
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -109,6 +112,7 @@ public class AimShoot : MonoBehaviour
     /// </summary>
     void Start()
     {
+        cheatMode = GameManager.Instance.GetCheatMode();
         _anim = GetComponent<Animator>();
         SpriteRifle.SetActive(false);
         SpriteRecarga.SetActive(false);
@@ -250,6 +254,7 @@ public class AimShoot : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
     public Vector3 AimDir()
     {
         return _direction;
@@ -301,7 +306,8 @@ public class AimShoot : MonoBehaviour
         BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
         balaDir.Dir(_direction);
         // Restamos una bala al cargador
-        _balasActuales--;
+        if (!cheatMode)
+        { _balasActuales--; }
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
         Debug.Log("Balas: " + _balasActuales);
 
