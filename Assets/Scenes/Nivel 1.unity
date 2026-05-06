@@ -316,6 +316,10 @@ PrefabInstance:
       value: BotiquinDrop
       objectReference: {fileID: 0}
     - target: {fileID: 3372975816169420437, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3372975816169420437, guid: 05cd1c52786474b44849d61ca2bb45ca, type: 3}
       propertyPath: m_TagString
       value: Potion
       objectReference: {fileID: 0}
@@ -844,6 +848,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8002702552915593950, guid: 08492a9dfea170f4787dfab8e61cfc39, type: 3}
   m_PrefabInstance: {fileID: 930247058}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &182855546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3885473457683388830, guid: 08889b12369dc2d49942f35569508076, type: 3}
+  m_PrefabInstance: {fileID: 1338739949}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &182855550
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182855546}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a19ca3823a6e624a9933a8799d8e39a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &210553608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,6 +1655,7 @@ MonoBehaviour:
   Apuntado: {fileID: 1893516684}
   "Tama\xF1oCamara": 5
   Suavidad: 0.1
+  DistanciaMaxima: 3
 --- !u!1 &369354221
 GameObject:
   m_ObjectHideFlags: 0
@@ -4670,6 +4702,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7610240024358841394, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: SpriteRifle
+      value: 
+      objectReference: {fileID: 1210613721}
+    - target: {fileID: 7610240024358841394, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: AudioGranada
+      value: 
+      objectReference: {fileID: 5893022016695237246, guid: c07b8063493edee44a7f3a65a92cac33, type: 3}
+    - target: {fileID: 7610240024358841394, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: SpritePistola
+      value: 
+      objectReference: {fileID: 1047633227}
+    - target: {fileID: 7610240024358841394, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: SpriteRecarga
+      value: 
+      objectReference: {fileID: 982731142}
     - target: {fileID: 8194916256295523749, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_Size.x
       value: 2.88
@@ -4764,6 +4812,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1919211256}
+    - targetCorrespondingSourceObject: {fileID: 3885473457683388830, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 182855550}
   m_SourcePrefab: {fileID: 100100000, guid: 08889b12369dc2d49942f35569508076, type: 3}
 --- !u!1 &1338739950 stripped
 GameObject:
@@ -6908,7 +6959,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2381755804059827177, guid: 5f27a55a4533c804fa0f1c7dca5cefd8, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6916,7 +6967,7 @@ SpriteRenderer:
   m_Size: {x: 0.14, y: 0.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &1893944351
