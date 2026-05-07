@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Permite al jugador ejecutar todas sus acciones, como moverse, saltar, atacar con el cuchillo o dashear
+// Izan Vázquez Sánchez
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -45,13 +45,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer CuchilloSprite;//Sprite del cuchillo
 
     //Sonido
-    [SerializeField] private AudioSource[] soundMove;
-    [SerializeField] private AudioSource soundDash;
-    [SerializeField] private AudioSource soundJump;
-    [SerializeField] private AudioSource soundDead;
-    [SerializeField] private AudioSource soundPop;
-    [SerializeField] private AudioSource soundCuchillo;
-    [SerializeField] private AudioSource soundDamage;
+    [SerializeField] private AudioSource[] soundMove; //Sonido Movimiento
+    [SerializeField] private AudioSource soundDash; //Sonido Dash
+    [SerializeField] private AudioSource soundJump; //Sonido Salto
+    [SerializeField] private AudioSource soundDead; //Sonido Muerte
+    [SerializeField] private AudioSource soundPop; //Sonido Pop
+    [SerializeField] private AudioSource soundCuchillo; //Sonido Cuchillo
+    [SerializeField] private AudioSource soundDamage; //Sonido Daño
 
     #endregion
 
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
     // - Hay que borrar los que no se usen 
 
     /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
+    /// Inicializa todas las variables
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Controla cuando se pueden hacer todas cosas como el dash o el cuchillo, permite hacerlas llamando a los metodos cuando se pueda y sea necesario y activa las animaciones
     /// </summary>
     void Update()
     {
@@ -245,7 +245,10 @@ public class PlayerController : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
-    //Cuando el jugador choca con objetos que lo empujan
+    /// <summary>
+    /// Cuando el jugador choca con objetos que lo empujan
+    /// </summary>
+
     public void Empuje(float fuerzaEmpuje, Vector2 dir)
     {
         Vector2 dir1 = new Vector2(dir.x, dir.y);
@@ -260,7 +263,9 @@ public class PlayerController : MonoBehaviour
         _knockbackDuration = 1.5f;
     }
 
-    //Activar efecto visual de flash rojo al recibir daño
+    /// <summary>
+    /// Activar efecto visual de flash rojo al recibir daño
+    /// </summary>
     public void RedFlash()
     {
         SpriteJugador.color = Color.red;
@@ -269,12 +274,14 @@ public class PlayerController : MonoBehaviour
         soundDamage.Play();
     }
 
-    //Reproducir sonido al recoger objeto
+    /// <summary>
+    /// Reproducir sonido al recoger objeto
+    /// </summary>
     public void PlayPop()
     {
         soundPop.Play();
     }
-   
+
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -284,7 +291,9 @@ public class PlayerController : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    //Método para saltar
+    /// <summary>
+    /// Saltar cuando se detecta suelo y el boton de saltar esta pulsado o mantenido
+    /// </summary>
     private void Salto()
     {
         //El raycast guarda la info en "hit"
@@ -305,7 +314,9 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-    //Método para moverse horizontalmente y dash
+    /// <summary>
+    /// Método para moverse horizontalmente y dash
+    /// </summary>
     private void Moverse()
     {
         if (_anim == null || !CuchilloAnimation.GetBool("isAttacking"))
@@ -357,7 +368,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
+    /// <summary>
+    /// Si el boton se presiona y se puede se activa la hitbox del cuchillo 
+    /// </summary>
     private void Cuchillo() 
     {
         if (_cuchillo >= CooldownChuchillo && SpriteCuchillo.color != _originalKnifeColor)
@@ -380,7 +393,9 @@ public class PlayerController : MonoBehaviour
             _coolDownCuchillo = 0f;
         }
     }
-    //Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
+    /// <summary>
+    /// Cuando el cuchillo esta activo lo desactiva cuando pase el tiempo establecido
+    /// </summary>
     private void DesCuchillo() 
     {
         if (_anim != null && CuchilloAnimation.GetBool("isAttacking"))
@@ -402,7 +417,9 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    //Método para ejecutar el dash
+    /// <summary>
+    /// Método para ejecutar el dash
+    /// </summary>
     private void Dash()
     {
         float dir;
@@ -423,7 +440,9 @@ public class PlayerController : MonoBehaviour
         else Debug.Log("No pudo dashear");
     }
 
-    // Usa el consumible equipado usando GameManager
+    /// <summary>
+    /// Usa el consumible equipado usando GameManager
+    /// </summary>
     private void CambioParpadeo()
     {
         if (SpriteJugador.color == _transparency)
