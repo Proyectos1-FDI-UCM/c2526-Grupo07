@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Permite al jefe disparar el prefab fuego
+// Izan Vázquez Sánchez
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -11,6 +11,7 @@ using static UnityEngine.GraphicsBuffer;
 
 
 /// <summary>
+/// Permite a un enemigo(Jefe) disparar con el lanzallamas
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
@@ -24,10 +25,10 @@ public class LanzallamasJefe : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
 
-    [SerializeField] private Transform SalidaFuego;
-    [SerializeField] private GameObject Fuego;
-    [SerializeField] private Transform PosJugador;
-    [SerializeField] private float Cadencia;
+    [SerializeField] private Transform SalidaFuego; // Un objeto por el que se spawnea y se lanza el fuego
+    [SerializeField] private GameObject Fuego; //El prefab que generara cada vez que dispare
+    [SerializeField] private Transform PosJugador; //El Jugador al que se le dispararan los fuegos
+    [SerializeField] private float Cadencia; //La velocidad a la que podra disparar el jefe
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,8 +39,8 @@ public class LanzallamasJefe : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    Vector2 offset;
-    private float TiempoEntreBalas;
+    Vector2 offset; //Un offset para 
+    private float TiempoEntreBalas; //El tiempo que tardara en volver a disparar(Variable)
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -50,8 +51,7 @@ public class LanzallamasJefe : MonoBehaviour
     // - Hay que borrar los que no se usen 
 
     /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
+    /// Cuando se inicializa el tiempo entre balas se inicializa a 0
     /// </summary>
     void Start()
     {
@@ -59,7 +59,7 @@ public class LanzallamasJefe : MonoBehaviour
     }
 
     /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Se actualiza el tiempo entre balas y se comprueba si se puede llamar al metodo UsarLanzallams
     /// </summary>
     void Update()
     {
@@ -88,6 +88,9 @@ public class LanzallamasJefe : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    /// <summary>
+    /// Crea y le da la direccion al prefab fuego
+    /// </summary>
     public void UsarLanzallamas()
     {
             offset = PosJugador.position - transform.position;
