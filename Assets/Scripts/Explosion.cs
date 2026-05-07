@@ -14,6 +14,7 @@ using UnityEngine;
 /// Permite a un objeto explotar después de un tiempo asignable
 /// Al explotar, se destruye y causa un daño asignable dento de un radio asignable
 /// Realiza el daño a todos los objetos con "EnemyHealth", siempre y cuando no estén detrás e algún objeto con el tag "Pared"
+/// Tambié determina hacia que dirección saldrá
 /// </summary>
 public class Explosion : MonoBehaviour
 {
@@ -25,19 +26,17 @@ public class Explosion : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
 
-    [SerializeField] private Vector2 VelIn;
+    [SerializeField] private Vector2 VelIn; // Velocidad inicial de la granada
 
     [SerializeField] private float TiempoGranada = 2f; //El tiempo en segundos que tarda en explotar la granada
 
     [SerializeField] private float RadioGranada = 2f; //El radio de explosión de la granada
 
-    [SerializeField] private int Damage; //El daño que causa
-
-    [SerializeField] private FollowCamera Camara;
+    [SerializeField] private int Damage; //El daño que causa la granada
 
     [SerializeField] private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
 
-    [SerializeField] private GameObject Particulas;
+    [SerializeField] private GameObject Particulas; //Particulas de la explosión de la granada
 
 
     #endregion
@@ -52,12 +51,12 @@ public class Explosion : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     private float _tiempo; //El tiempo que se reducirá para que explote la granada
-    private Rigidbody2D _rb;
-    private float _direction;
+    private Rigidbody2D _rb; //Rigidbody de la granada
+    private float _direction; //Dirección donde se lanzará la granada
     private Animator _animator; //Será el componente Animator
     private bool _destruida = false; //Comprueba si explotó
-    private int _damageReduction;
-    private AudioSource _audioGranada;
+    private int _damageReduction; //Reducción de daño para el jugador
+    private AudioSource _audioGranada; //Audio granada
 
     #endregion
 
@@ -74,12 +73,12 @@ public class Explosion : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        VelIn.x *= _direction;
-        _rb.linearVelocity = VelIn;
+        _rb = GetComponent<Rigidbody2D>(); //Recoge su rigidbody
+        VelIn.x *= _direction; //Multiplica la velocidad inicial por la dirección
+        _rb.linearVelocity = VelIn; //Se aplica la velocidad a las físicas
         _tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
         _animator = GetComponent<Animator>(); // Recoge el Animator de la granada
-        _damageReduction = (int)(Damage * 0.5f);
+        _damageReduction = (int)(Damage * 0.5f); // Reduce el daño
 
         //Comprueba si la granada fue lanzada para iniciar la animación
         if (_animator != null)
@@ -115,6 +114,10 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
+    /// <summary>
+    /// Configura la dirección de la granada y le da un sonido a esta
+    /// </summary>
     public void SetDireccion(Vector3 dir, AudioSource sonido)
     {
         _audioGranada = sonido;
@@ -130,8 +133,10 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    //Explotar==Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada,
-    //solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
+    /// <summary>
+    /// Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada, 
+    /// solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
+    /// </summary>
     private void Explotar()
     {
         _destruida = true; //Explotó
@@ -168,12 +173,12 @@ public class Explosion : MonoBehaviour
                 {
                     if(VidaEnemigo != null)
                     {
-                        VidaEnemigo.EnemyHealthPoint(Damage);
+                        VidaEnemigo.EnemyHealthPoint(Damage); //Quita vida al enemigo
                         VidaEnemigo.RedFlash();
                     }
                     else if(Player != null && !GameManager.Instance.Invulnerabilidad())
                     {
-                        GameManager.Instance.RestarVida(_damageReduction);
+                        GameManager.Instance.RestarVida(_damageReduction); //Quita vida reducida al jugador
                         Player.RedFlash();
                     }
                 }
@@ -193,12 +198,14 @@ public class Explosion : MonoBehaviour
             _animator.SetTrigger("Explosion");
 
         }
-        _audioGranada.Play();
+        _audioGranada.Play(); //Audio de la granada (Explosión)
         Destroy(gameObject, TiempoAnimacionExplosion); //Se destruye la granada
 
     }
 
-    //Dibuja el radio de la granada en el inspector
+    /// <summary>
+    /// Dibuja el radio de la granada en el inspector
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
