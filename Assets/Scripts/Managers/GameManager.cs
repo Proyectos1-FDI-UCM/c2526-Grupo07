@@ -7,6 +7,7 @@
 //---------------------------------------------------------
 
 using System;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -81,7 +82,12 @@ public class GameManager : MonoBehaviour
 
     //Contador de diálogos vistos durante la partida
     private int _cinematicaSiguiente = 1;
-    
+
+    //cheat
+    private bool cheatMode = false;
+    private bool cheatModeAux;
+    private MenuManager menuManager;
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -133,9 +139,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        menuManager = FindAnyObjectByType<MenuManager>();
         TransferManagerSetup();
     }
-   
+
     /// <summary>
     /// Método llamado cuando se destruye el componente.
     /// </summary>
@@ -202,6 +209,14 @@ public class GameManager : MonoBehaviour
     /// destruído antes de tiempo.
     /// </summary>
     /// <returns>Cierto si hay instancia creada.</returns>
+  
+    // activa el modo cheat donde el jugador tendrá vida infinita, munición infinita y granadas infinita
+    
+    public bool GetCheatMode()
+    {
+        cheatMode = menuManager.GetCheat();
+        return cheatMode;
+    }
     public static bool HasInstance()
     {
         return _instance != null;
@@ -236,15 +251,18 @@ public class GameManager : MonoBehaviour
     //Método para restar la vida del personaje
     public void RestarVida(int Damage)
     {
-        if (!_invulnerable)    //Solo recibe daño si no es invulnerable
+        if (!cheatMode)
         {
-            _vidaActual -= Damage; // Restar la vida del jugador
-            _invulnerable = true;
-        }
-        if (_vidaActual <1)    // Si vida actual llega a 0, se llama a GameOver
-        {
-            _vidaActual = 0;   //Para que la vida no salga en negativo
-            LevelManager.Instance.GameOver();
+            if (!_invulnerable)    //Solo recibe daño si no es invulnerable
+            {
+                _vidaActual -= Damage; // Restar la vida del jugador
+                _invulnerable = true;
+            }
+            if (_vidaActual < 1)    // Si vida actual llega a 0, se llama a GameOver
+            {
+                _vidaActual = 0;   //Para que la vida no salga en negativo
+                LevelManager.Instance.GameOver();
+            }
         }
         TransferManagerSetup();
     }
@@ -265,9 +283,9 @@ public class GameManager : MonoBehaviour
     //Método llamado cuando se usan granadas
     public void UsarGranadas()
     {
-        if (_usandoGranadas)
+        if (_usandoGranadas && !cheatMode)
         {
-            _granadas--;
+             _granadas--;
             TransferManagerSetup();
         }
     }
@@ -319,6 +337,7 @@ public class GameManager : MonoBehaviour
     //Método que devuelve la cantidad de granadas actuales
     public int CantidadGranadas()
     {
+        if (cheatMode) { _granadas = MaxGranadas;}
         return _granadas;
     }
     //Método que devuelve la cantidad de botiquines actuales
@@ -380,6 +399,7 @@ public class GameManager : MonoBehaviour
         _granadas = _granadasAux;
         _botiquines = _botiquinesAux;
         _vidaActual = _vidaActualAux;
+        cheatMode = cheatModeAux;
     }
     //Metodo para guardar los datos del inicio del nivel
     public void GuardarDatos(int escena)
@@ -397,6 +417,7 @@ public class GameManager : MonoBehaviour
         _granadasAux = _granadas;
         _botiquinesAux = _botiquines;
         _vidaActualAux = _vidaActual;
+        cheatModeAux = cheatMode;
     }
 
     public int CinematicaActual()

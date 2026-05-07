@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System.Runtime.CompilerServices;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -29,6 +30,7 @@ public class MiniJefe : MonoBehaviour
     [SerializeField] private Transform _player;
     [SerializeField] private Vector2 _medioArena;
     [SerializeField] private AudioSource FuegoSFX; //Sonido lanzallamas
+    [SerializeField] private AudioSource RunSFX; //Sonido al correr
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -44,7 +46,8 @@ public class MiniJefe : MonoBehaviour
     private float _shootingTime = 0;
     private float _intervaloDisparos = 3f / 5f;
     private float _durationAtack = 4f;
-    private int _proyectilLanzado = 0;
+    private float _intervalShoot = 2f;
+    private float _now = 0;
     private bool _canAtack = false;
     private bool _isAtacking = false;
     private Rigidbody2D _rb;
@@ -73,6 +76,7 @@ public class MiniJefe : MonoBehaviour
     /// </summary>
     void Update()
     {
+        _now += Time.deltaTime;
         _lastTimeAction += Time.deltaTime;
         _canAtack = CondicionAtaque();
 
@@ -83,6 +87,11 @@ public class MiniJefe : MonoBehaviour
                 _isAtacking = true;
                 _startTimeAtack = 0;
                 Debug.Log("Inicia el ataque");
+            }
+            if (_now > _intervaloDisparos)
+            {
+                DisparoLejos();
+                _now = 0;
             }
         }
         else
@@ -173,9 +182,20 @@ public class MiniJefe : MonoBehaviour
         GameObject _proyectil = Instantiate(_fuego, transform.position, transform.localRotation);
         LogicaFuegoMiniBoss _fuegoLogic = _proyectil.GetComponent<LogicaFuegoMiniBoss>();
         Rigidbody2D _rbFuego = _proyectil.GetComponent<Rigidbody2D>();
-        _rbFuego.gravityScale = 1;
+        _rbFuego.gravityScale = 1.5f;
         _fuegoLogic.Dir(dir);
         _fuegoLogic.ModifyDestroyTime(3f);
+    }
+
+    private void DisparoLejos()
+    {
+        Vector3 offset = _player.transform.position - transform.position;
+        GameObject _proyectil = Instantiate(_fuego, transform.position, transform.localRotation);
+        LogicaFuegoMiniBoss _fuegoLogic = _proyectil.GetComponent<LogicaFuegoMiniBoss>();
+        Rigidbody2D _rbFuego = _proyectil.GetComponent<Rigidbody2D>();
+        _rbFuego.gravityScale = 0f;
+        _fuegoLogic.Dir(offset);
+        _fuegoLogic.ModifyDestroyTime(5f);
     }
     //Método para actualizar las animaciones del Mini Jefe
     private void Animaciones()
@@ -206,11 +226,31 @@ public class MiniJefe : MonoBehaviour
         //Animaciones para moverse y hacia donde se mueve
         _animator.SetBool("EnMovimiento", enMovimiento);
         _animator.SetBool("MueveDerecha", mueveDerecha);
+        
     }
-    private void Sonido()
+    private void SonidoFuego()
     {
-        FuegoSFX.Play();
+        if(FuegoSFX != null)
+        {
+            FuegoSFX.Play();
+        }
     }
+
+    private void SonidoRun()
+    {
+        if (RunSFX != null)
+        {
+            RunSFX.Play();
+        }
+    }
+    private void StopRun()
+    {
+        if (RunSFX != null)
+        {
+            RunSFX.Stop();
+        }
+    }
+
     #endregion
 }
 // class MiniJefe 

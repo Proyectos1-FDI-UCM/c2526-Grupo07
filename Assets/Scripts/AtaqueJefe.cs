@@ -47,7 +47,7 @@ public class AtaqueJefe : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float time=0; //tiempo para el siguiente ataque
+    private float time=1; //tiempo para el siguiente ataque
     private Animator anim;
 
     Vector2 offset; //Vector a donde apunta el lanzallams

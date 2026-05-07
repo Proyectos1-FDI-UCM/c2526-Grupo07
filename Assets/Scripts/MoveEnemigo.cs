@@ -30,6 +30,7 @@ public class MoveEnemigo : MonoBehaviour
 
     [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player; //jugador para realizar las acciones
+    [SerializeField] private GameObject pistola;
 
     [SerializeField] private AudioSource soundMove;
     [SerializeField] private Transform salidaBala;
@@ -94,8 +95,8 @@ public class MoveEnemigo : MonoBehaviour
              {
                  _direction *= -1;
                  CambioDireccion();
-            }
-            return;
+             }
+             return;
         }
         else if (_isChasing)
         {

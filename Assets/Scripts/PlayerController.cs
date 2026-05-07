@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
     private float _intervaloParpadeo = 0.2f;//El intervalo entre un parpadeo y otro
     private bool _parpadeando = false;      //Estado que indica si está parpadeando o no
     private float _tiempoInicioParpadeo;    //Tiempo para parpadear
+
     #endregion
 
     //Consumibles
@@ -212,16 +213,6 @@ public class PlayerController : MonoBehaviour
                     _parpadeando = false;
                 }
             }
-        }
-        if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
-        {
-            CambiarConsumible();
-        }
-
-        // Usar consumible con la acción 'UseObject' del InputManager
-        if (InputManager.Instance.UseObjectWasPressedThisFrame())
-        {
-            UsarConsumible();
         }
     }
     void FixedUpdate()
@@ -439,27 +430,6 @@ public class PlayerController : MonoBehaviour
     }
 
     // Usa el consumible equipado usando GameManager
-    private void UsarConsumible()
-    {
-        if (_consumibleActual == 0) // Granada
-        {
-            if (GameManager.Instance.CantidadGranadas() > 0)
-            {
-                GameManager.Instance.UsarGranadas();
-                // Aquí va tu código de lanzar la granada (ya lo tienes hecho)
-                Debug.Log("Granada lanzada");
-            }
-        }
-        else // Botiquín
-        {
-            if (GameManager.Instance.CantidadBotiquines() > 0)
-            {
-                GameManager.Instance.UsarBotiquin();
-                GameManager.Instance.CurarVida(GameManager.Instance.GetVidaMaxima());
-                Debug.Log("Botiquín usado - Vida restaurada");
-            }
-        }
-    }
     private void CambioParpadeo()
     {
         if (SpriteJugador.color == _transparency)

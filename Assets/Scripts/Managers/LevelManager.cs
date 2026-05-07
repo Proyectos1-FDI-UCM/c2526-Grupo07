@@ -286,6 +286,14 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = time;
     }
 
+    // metodo que pausa el tiempo
+    // sin activar el canvas
+    public void PauseTimeOnly()
+    {
+        _juegoPausado = true;
+        time = Time.timeScale;
+        Time.timeScale = 0f;
+    }
     public bool IsPaused()
     {
         return _juegoPausado || _juegoTerminado;

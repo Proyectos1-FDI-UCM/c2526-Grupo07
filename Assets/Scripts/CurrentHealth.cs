@@ -36,22 +36,25 @@ public class CurrentHealth : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private int PotionCount;    //cantidad de botiquin
+
+    //cheat
+    private bool cheatMode;
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
     void Start()
     {
-        
+        cheatMode = GameManager.Instance.GetCheatMode();
     }
 
     /// <summary>
@@ -61,7 +64,7 @@ public class CurrentHealth : MonoBehaviour
     {
         if(!LevelManager.Instance.IsPaused())
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && !cheatMode)
             {
                 UsePotion();
             }

@@ -28,6 +28,9 @@ public class MiniBossMarcasFuego : MonoBehaviour
     private float DamageTime; //Tiempo en que te vuelve a hacer daño el fuego
     [SerializeField]
     private float TiempoDelFuego; //Tiempo que dura el fuego
+    [SerializeField] 
+    private AudioSource FuegoSFX; //Sonido lanzallamas
+
 
     #endregion
 
@@ -62,6 +65,11 @@ public class MiniBossMarcasFuego : MonoBehaviour
     void Start()
     {
         tiempoFuego = TiempoDelFuego; //Se le asigna a tiempoFuego el tiempo que dura el fuego
+
+        if(FuegoSFX != null)
+        {
+            FuegoSFX.Play();
+        }
     }
 
     /// <summary>
