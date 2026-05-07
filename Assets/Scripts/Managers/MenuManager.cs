@@ -23,9 +23,9 @@ public class MenuManager : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-
-    #endregion
     [SerializeField] private TextMeshProUGUI textcheat; // texto para decir si esta activado el cheat 
+    #endregion
+
 
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)

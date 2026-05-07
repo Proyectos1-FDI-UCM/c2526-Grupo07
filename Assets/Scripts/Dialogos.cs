@@ -32,6 +32,8 @@ public class Dialogos : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI TextoFrase;
     [SerializeField] private float Smothness = 0.5f;
     [SerializeField] private float TimeToDialogueStart = 1f;
+    [SerializeField] private AudioSource ImpactoSound;
+    [SerializeField] private AudioSource GraciosoSound;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -42,8 +44,10 @@ public class Dialogos : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
+    private string[] _emociones;
     private string[] _emisor;
     private string[] _frases;
+    private string[] _sonido;
     private string _primerEmisor;
     private bool _playerTouched = false;
     private bool _dialogosActivos = false;
@@ -148,19 +152,24 @@ public class Dialogos : MonoBehaviour
 
     private void ProcesaArchivo()
     {
-        int _indiceDialogo = GameManager.Instance.CinematicaActual();
+        TextAsset archivoEmociones = Resources.Load<TextAsset>($"Dialogos/Emociones");
+        string textoEmociones = archivoEmociones.text;
+        _emociones = textoEmociones.Split('\n');
 
+        int _indiceDialogo = GameManager.Instance.CinematicaActual();
         if (_indiceDialogo > 3) Destroy(this.gameObject);
         TextAsset archivo = Resources.Load<TextAsset>($"Dialogos/Dialogo{_indiceDialogo}");
 
         string texto = archivo.text;
         string[] lineas = texto.Split("\n");
-        _emisor = new string[lineas.Length / 2];
-        _frases = new string[lineas.Length / 2];
-        for (int i = 0; i < lineas.Length; i += 2)
+        _emisor = new string[lineas.Length / 3];
+        _frases = new string[lineas.Length / 3];
+        _sonido = new string[lineas.Length / 3];
+        for (int i = 0; i < lineas.Length; i += 3)
         {
-            _emisor[i / 2] = lineas[i];
-            _frases[i / 2] = lineas[i + 1];
+            _sonido[i / 3] = lineas[i];
+            _emisor[i / 3] = lineas[i + 1];
+            _frases[i / 3] = lineas[i + 2];
         }
         _primerEmisor = _emisor[0];
         GameManager.Instance.CinematicaVista();
@@ -170,6 +179,8 @@ public class Dialogos : MonoBehaviour
     {
         if (_dialogosVistos < _emisor.Length)
         {
+            if (_sonido[_dialogosVistos] == _emociones[1]) ImpactoSound.Play();
+            else if (_sonido[_dialogosVistos] == _emociones[2]) GraciosoSound.Play();
             TextoNames.text = _emisor[_dialogosVistos];
             TextoFrase.text = _frases[_dialogosVistos];
             if (_emisor[_dialogosVistos] != _primerEmisor) _isLeft = true;

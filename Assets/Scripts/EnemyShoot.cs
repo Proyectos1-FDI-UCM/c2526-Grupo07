@@ -52,6 +52,8 @@ public class EnemyShoot : MonoBehaviour
     private float _now;
     Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
 
+    private MoveEnemigo move;
+
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -68,6 +70,7 @@ public class EnemyShoot : MonoBehaviour
     void Start()
     {
         minInterval = 1.0f / MaxBalasPorSeg;
+        move = GetComponent<MoveEnemigo>();
     }
 
     /// <summary>
@@ -111,7 +114,10 @@ public class EnemyShoot : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    private void CambioDir()
+    {
+        transform.position = new Vector2(-transform.position.x,transform.position.y);
+    }
     #endregion   
 } // class EnemyShoot 
 // namespace

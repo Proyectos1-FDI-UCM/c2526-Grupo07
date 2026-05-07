@@ -30,8 +30,10 @@ public class MoveEnemigo : MonoBehaviour
 
     [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player; //jugador para realizar las acciones
+    [SerializeField] private GameObject pistola;
 
     [SerializeField] private AudioSource soundMove;
+    [SerializeField] private Transform salidaBala;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -93,8 +95,8 @@ public class MoveEnemigo : MonoBehaviour
              {
                  _direction *= -1;
                  CambioDireccion();
-            }
-            return;
+             }
+             return;
         }
         else if (_isChasing)
         {
@@ -214,8 +216,16 @@ public class MoveEnemigo : MonoBehaviour
     private void CambioDireccion()
     {
         //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        if(_direction==1) _spriteRenderer.flipX = false;
-        else _spriteRenderer.flipX=true;
+        if (_direction == 1)
+        {
+            _spriteRenderer.flipX = false;
+            salidaBala.transform.position = new Vector2(transform.position.x + 0.7f, transform.position.y);
+        }
+        if (_direction == -1)
+        {
+            _spriteRenderer.flipX = true;
+            salidaBala.transform.position = new Vector2(transform.position.x - 0.8f, transform.position.y);
+        }
     }
     #endregion
 }
