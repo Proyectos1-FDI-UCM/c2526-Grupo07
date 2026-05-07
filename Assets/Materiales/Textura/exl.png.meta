@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 4632d1ea8a5189b47a24e8ffeda03c2d
+guid: ff9810f80e2ff2c42b893e28fd688901
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8152570590967808251
-    second: AK iddle_0
-  - first:
-      213: -8596737937879423833
-    second: AK iddle_1
-  - first:
-      213: 4210964967280564765
-    second: AK iddle_2
+      213: 7725701322422504822
+    second: exl_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 500
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -106,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AK iddle_0
+      name: exl_0
       rect:
         serializedVersion: 2
-        x: 63
-        y: 0
-        width: 1250
-        height: 1248
+        x: 44
+        y: 59
+        width: 392
+        height: 392
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,52 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf0cee022cfb32170800000000000000
-      internalID: 8152570590967808251
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AK iddle_1
-      rect:
-        serializedVersion: 2
-        x: 1343
-        y: 0
-        width: 1250
-        height: 1185
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7a4a299946042b880800000000000000
-      internalID: -8596737937879423833
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AK iddle_2
-      rect:
-        serializedVersion: 2
-        x: 2655
-        y: 0
-        width: 1250
-        height: 1248
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d1a5f5cb35a507a30800000000000000
-      internalID: 4210964967280564765
+      spriteID: 67d42c39b64373b60800000000000000
+      internalID: 7725701322422504822
       vertices: []
       indices: 
       edges: []
@@ -185,9 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AK iddle_0: 8152570590967808251
-      AK iddle_1: -8596737937879423833
-      AK iddle_2: 4210964967280564765
+      exl_0: 7725701322422504822
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
