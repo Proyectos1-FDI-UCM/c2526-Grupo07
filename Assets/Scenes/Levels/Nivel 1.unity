@@ -607,7 +607,6 @@ MonoBehaviour:
   Target: {fileID: 1846736254}
   PrefabBullet: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   MaxBalasPorSeg: 2
-  HoraDisparo: 10
   SalidaBala: {fileID: 574792726}
   SonidoDisparo: {fileID: 107783970}
 --- !u!114 &107783965
@@ -1358,7 +1357,6 @@ MonoBehaviour:
   Target: {fileID: 1846736254}
   PrefabBullet: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   MaxBalasPorSeg: 2
-  HoraDisparo: 10
   SalidaBala: {fileID: 826691611}
   SonidoDisparo: {fileID: 274604524}
 --- !u!114 &274604520
@@ -3012,7 +3010,6 @@ MonoBehaviour:
   Target: {fileID: 1846736254}
   PrefabBullet: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   MaxBalasPorSeg: 2
-  HoraDisparo: 10
   SalidaBala: {fileID: 1728556469}
   SonidoDisparo: {fileID: 713592990}
 --- !u!114 &713592986
@@ -5416,7 +5413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407cdd38237a293428b082b7bd3e7ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   DoorFX: {fileID: 1946283109}
 --- !u!61 &1481093235
 BoxCollider2D:
@@ -7166,7 +7162,6 @@ MonoBehaviour:
   Target: {fileID: 1846736254}
   PrefabBullet: {fileID: 3495812759742759153, guid: 72284aa998e4caa468af3cf8cd7cee18, type: 3}
   MaxBalasPorSeg: 2
-  HoraDisparo: 10
   SalidaBala: {fileID: 1509966352}
   SonidoDisparo: {fileID: 1775598180}
 --- !u!114 &1775598172

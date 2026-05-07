@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Este script dispara, lanza granadas, cambia de arma y recarga automaticamente, se usa a la entidad jugador.
+// Responsable de la creación de este archivo: Cristopher Jeremy 
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -11,8 +11,9 @@ using UnityEngine.Rendering;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// dispara, lanza granadas, cambia de arma y recarga automaticamente, se usa a la entidad jugador.
+/// Además rota la posición de la pistola segun donde mire el mouse
+/// Y ejecuta las animaciones para la pistola y el rifle si cambia de arma
 /// </summary>
 public class AimShoot : MonoBehaviour
 {
@@ -88,9 +89,6 @@ public class AimShoot : MonoBehaviour
     private bool _recargando = false;  //No está recargando, por ahora
     private float _recibirTiempoRecarga = 0f; //Tiempo que el jugador tarda en recargar, recibe el valor del TiempoRecarga, pero este se modifica
     #endregion
-    //angulo
-    private bool facingRight = false;
-
     //Granada
     private int _cantidadGranada;
     private bool _usandoGranada;
@@ -131,18 +129,26 @@ public class AimShoot : MonoBehaviour
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Modifica la rotacion de la entidad para apuntar donde debe
+    /// ejecuta el metodo recarga si presiona el boton correspondiente
+    /// Cooldown de pistola: no se podrá lanzar continuamente la pistola
+    /// Ejecuta método disparar si presiona el boton correspondiente
+    /// ejecuta lanza granada si presiona el boton correspondiente: crea la granada, lo lanza según la posicion del cursor y ejecuta el metodo de explosión
     /// </summary>
     void Update()
     {
+        //animaciones se incializa a false
         _anim.SetBool("RifleShoot", false);
         _anim.SetBool("GunShoot", false);
         if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
         {
             CambioObjetoSFX.Play();
         }
+
+        //Si el juego esta pausado no puede disparar
         if (!LevelManager.Instance.IsPaused())
         {
-            //Si el juego esta pausado no puede disparar
+            //si el jugador usa mando
             _mousePosition = InputManager.Instance.GetAimMouseValue();
             if (InputManager.Instance.AimControllerIsPressed())
             {
@@ -153,21 +159,22 @@ public class AimShoot : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, angle);
                 //booleano que determina si el raton esta mirando hacia la derecha o la izquierda
                 bool mouseRight;
+                //comprueba en que sentido mira (lo hace mediante angulos)
                 if (angle > -90 && angle <= 90) { mouseRight = true; }
                 else { mouseRight = false; }
                 // dependiendo de la posicion del raton cambia de un sentido a otro
-                if (mouseRight && !facingRight)
+                if (mouseRight) // derecha 
                 {
-                    transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
-                    facingRight = true;
+                    if (transform.localScale.y < 0)
+                    { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
                 }
-                else if (!mouseRight && facingRight)
+                else if (!mouseRight) // izquierda
                 {
-                    transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
-                    facingRight = false;
+                    if (transform.localScale.y > 0)
+                    { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
                 }
             }
-            else if (_mousePosition != _lastMousePos)
+            else if (_mousePosition != _lastMousePos) // si el jugador usa raton
             {
                 Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(_mousePosition);
 
@@ -177,15 +184,16 @@ public class AimShoot : MonoBehaviour
                 float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.Euler(0, 0, angle);
                 bool mouseRight;
+                //comprueba en que sentido mira (lo hace mediante angulos)
                 if (angle > -90 && angle <= 90) { mouseRight = true; }
                 else { mouseRight = false; }
-
-                if (mouseRight)
+                // dependiendo de la posicion del raton cambia de un sentido a otro
+                if (mouseRight) // derecha
                 {
                     if (transform.localScale.y < 0)
                     { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
                 }
-                else if (!mouseRight)
+                else if (!mouseRight) // izquierda
                 {
                     if (transform.localScale.y > 0)
                     { transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y); }
@@ -233,9 +241,10 @@ public class AimShoot : MonoBehaviour
             }
 
             // usando granada
-            _cantidadGranada = GameManager.Instance.CantidadGranadas();
-            _usandoGranada = GameManager.Instance.UsandoGranadas();
+            _cantidadGranada = GameManager.Instance.CantidadGranadas(); // dar la cantidad de granada
+            _usandoGranada = GameManager.Instance.UsandoGranadas(); // restar la cantidad de granada
 
+            //usar la granada
             if (InputManager.Instance.UseObjectWasPressedThisFrame())
             {
                 if (InputManager.Instance.UseObjectWasPressedThisFrame())
@@ -249,6 +258,7 @@ public class AimShoot : MonoBehaviour
                     }
                 }
             }
+            // cambiar de arma
             if (InputManager.Instance.ChangeWeaponWasPressedThisFrame())
             {
                 CambioDeArma();
@@ -265,16 +275,17 @@ public class AimShoot : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
-    public Vector3 AimDir()
-    {
-        return _direction;
-    }
-    public Vector3 MousePos()
+    /// <summary>
+    /// dar a la camara la posicion del raton
+    /// </summary>
+    public Vector3 MousePos() // dar a la camara la posicion del raton
     {
         return Camera.main.ScreenToWorldPoint(_mousePosition);
     }
 
-    //Método para cambiar de arma(lineal)
+    /// <summary>
+    /// Método para cambiar de arma(lineal)
+    /// </summary>
     public void CambioDeArma()
     {
         if (_armaActual == "Pistola")
@@ -297,24 +308,30 @@ public class AimShoot : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
+
+    /// <summary>
+    /// Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
+    /// ejecuta la animacion correspondiente
+    /// </summary>
     private void Disparar()
     {
         //Crea la bala en su posición de salida
         //Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
         if (_armaActual == "Pistola")
         {
-            PistolaSFX.Play();
-            _anim.SetBool("GunShoot", true);
+            PistolaSFX.Play(); // ejecutar sonido
+            _anim.SetBool("GunShoot", true); // ejecutar animacion
         }
         else if(_armaActual == "Rifle")
         {
-            RifleSFX.Play();
-            _anim.SetBool("RifleShoot", true);
+            RifleSFX.Play(); // ejecutar sonido
+            _anim.SetBool("RifleShoot", true); // ejecutar animacion
         }
-        GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation);
+        // crear bala
+        GameObject nuevaBala = Instantiate(Bala, SalidaBala.position, SalidaBala.rotation); 
         BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
         balaDir.Dir(_direction);
+
         // Restamos una bala al cargador
         if (!cheatMode)
         { _balasActuales--; }
@@ -325,7 +342,9 @@ public class AimShoot : MonoBehaviour
         _tiempoDisparo = 1f / Cadencia;
 
     }
-    //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+    /// <summary>
+    /// EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+    /// </summary>
     private void EmpezarRecarga()
     {
         _recargando = true;
@@ -342,7 +361,9 @@ public class AimShoot : MonoBehaviour
 
         SpriteRecarga.SetActive(true);
     }
-    //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
+    /// <summary>
+    /// TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
+    /// </summary>
     private void TerminarRecarga()
     {
             _recargando = false;
@@ -351,10 +372,15 @@ public class AimShoot : MonoBehaviour
             Debug.Log("Balas: " + _balasActuales);
             SpriteRecarga.SetActive(false);
     }
-    //Método llamado si se cambia a la pistola
+    /// <summary>
+    /// Método llamado si se cambia a la pistola
+    /// cambia la animación (desactivar la animación del rifle)
+    /// Cambiar las recargas a las que tenia en esa arma
+    /// modificar el hud para que aparezca el sprite de pistola
+    /// </summary>
     private void SetPistola()
     {
-        _anim.SetBool("Rifle", false); 
+        _anim.SetBool("Rifle", false); // desactivar la animacion del rifle para que se vea la animacion de pistola
         _balasActuales = _balasActualesPistola;
         Cargador = _cargadorPistola;
         Cadencia = _cadenciaPistola;
@@ -363,15 +389,21 @@ public class AimShoot : MonoBehaviour
         _armaActual = "Pistola";
         Debug.Log("Cambiado a pistola");
         GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+        // cambiar el arma en el hud
         SpritePistola.SetActive(true);
         SpriteRifle.SetActive(false);
     }
-    //Método llamado si se cambia al AK47
+    /// <summary>
+    /// Método llamado si se cambia al rifle
+    /// cambia la animación (activar la animación del rifle)
+    /// Cambiar las recargas a las que tenia en esa arma
+    /// modificar el hud para que aparezca el sprite de rifle
+    /// </summary>
     private void SetRifle()
     {
         if (GameManager.Instance.TieneAK47())
         {
-            _anim.SetBool("Rifle", true);
+            _anim.SetBool("Rifle", true); // activar la animacion del rifle
             _balasActuales = _balasActualesRifle;
             Cargador = _cargadorRifle;
             Cadencia = _cadenciaRifle;
@@ -380,6 +412,7 @@ public class AimShoot : MonoBehaviour
             _armaActual = "Rifle";
             Debug.Log("Cambiado a rifle");
             GameManager.Instance.SetMunicion(Cargador, _balasActuales);
+            // cambiar el arma en el hud
             SpritePistola.SetActive(false);
             SpriteRifle.SetActive(true);
         }
