@@ -62,16 +62,16 @@ public class GameManager : MonoBehaviour
     private int _balasMax = 0;   //Ver las balas maximas de esa arma
     private int _granadas = 0;   //Cantidad de granadas actuales
     private int _botiquines = 0; //Cantidad de botiquines actuales
-    private bool _usandoGranadas = false;
-    private bool _usandoBotiquines = false;
+    private bool _usandoGranadas = false;   //Indica si usando las granadas
+    private bool _usandoBotiquines = false; //Indica si usando los botiquines
 
     //Inventario armas
     private bool _AK47 = false; //Inventario interno para ver si tiene rifle o no
 
     //Invulnerabilidad
-    private bool _invulnerable = false;       //True si el jugador es invulnerable a daños
+    private bool _invulnerable = false;         //True si el jugador es invulnerable a daños
     private float _invulnerableDuracion = 1.5f; //Tiempo que es invulnerable
-    private float _invulnerableTiempoInicial; //Tiempo inicial al ser invulnerable
+    private float _invulnerableTiempoInicial;   //Tiempo inicial al ser invulnerable
 
     //Atributos auxiliares para controlar los objetos durante el cambio de escena
     private int _vidaActualAux;
@@ -83,10 +83,8 @@ public class GameManager : MonoBehaviour
     //Contador de diálogos vistos durante la partida
     private int _cinematicaSiguiente = 1;
 
-    //cheat
+    //Cheat
     private bool cheatMode;
-    private bool cheatModeAux;
-    private MenuManager menuManager;
 
     #endregion
 
@@ -140,7 +138,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        menuManager = FindAnyObjectByType<MenuManager>();
         TransferManagerSetup();
     }
 
@@ -157,6 +154,7 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
+        //Si es invulnerable, pasa un tiempo y deja de serlo
         if (_invulnerable)
         {
             _invulnerableTiempoInicial += Time.deltaTime; 
@@ -167,6 +165,7 @@ public class GameManager : MonoBehaviour
                 _invulnerable = false;
             }
         }
+        //Cuando se cambia de objeto se intercambian entre las grandas y botiquines
         if (InputManager.Instance)
         {
             if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
@@ -212,12 +211,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns>Cierto si hay instancia creada.</returns>
 
-    // activa el modo cheat donde el jugador tendrá vida infinita, munición infinita y granadas infinita
 
+
+    /// <summary>
+    /// Activa el cheat
+    /// </summary>
     public bool GetCheatMode()
     {
         return cheatMode; 
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void SetCheatFromMM(bool cheat)
     {
         cheatMode = cheat;
@@ -253,7 +258,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     } // ChangeScene
 
-    //Método para restar la vida del personaje
+    /// <summary>
+    /// Método para restar la vida del personaje
+    /// </summary>
     public void RestarVida(int Damage)
     {
         if (!cheatMode)
@@ -271,21 +278,27 @@ public class GameManager : MonoBehaviour
         }
         TransferManagerSetup();
     }
-    //Método para curar la vida del personaje
+    /// <summary>
+    /// Método para curar la vida del personaje
+    /// </summary>
     public void CurarVida(int vida)
     {
         _vidaActual += vida;
         if (_vidaActual > MaxVidaInicial) _vidaActual = MaxVidaInicial;
         TransferManagerSetup();
     }
-    //Método llamado por script "AimShoot" para las balas
+    /// <summary>
+    /// Método llamado por script "AimShoot" para las balas
+    /// </summary>
     public void SetMunicion(int balasMax, int balasAct)
     {
         _cargador = balasAct;
         _balasMax = balasMax;
         TransferManagerSetup();
     }
-    //Método llamado cuando se usan granadas
+    /// <summary>
+    /// Método llamado cuando se usan granadas
+    /// </summary>
     public void UsarGranadas()
     {
         if (_usandoGranadas && !cheatMode)
@@ -294,13 +307,17 @@ public class GameManager : MonoBehaviour
             TransferManagerSetup();
         }
     }
-    //Método llamado cuando se guardan granadas
+    /// <summary>
+    /// Método llamado cuando se guardan granadas
+    /// </summary>
     public void GuardarGranadas()
     {
         _granadas++;
         TransferManagerSetup();
     }
-    //Método llamado cuando se usan botiquines
+    /// <summary>
+    /// Método llamado cuando se usan botiquines
+    /// </summary>
     public void UsarBotiquin()
     {
         if (_usandoBotiquines)
@@ -309,13 +326,17 @@ public class GameManager : MonoBehaviour
             TransferManagerSetup();
         }
     }
-    //Método llamado cuando se guardan botiquines
+    /// <summary>
+    /// Método llamado cuando se guardan botiquines
+    /// </summary>
     public void GuardarBotiquines()
     {
         _botiquines++;
         TransferManagerSetup();
     }
-    //Método que devuelve true si el inventario de granadas esta lleno
+    /// <summary>
+    /// Método que devuelve true si el inventario de granadas esta lleno
+    /// </summary>
     public bool GranadasFull()
     {
         if (_granadas == MaxGranadas)
@@ -327,7 +348,9 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-    //Método que devuelve true si el inventario de botiquines esta lleno
+    /// <summary>
+    /// Método que devuelve true si el inventario de botiquines esta lleno
+    /// </summary>
     public bool BotiquinesFull()
     {
         if (_botiquines == MaxBotiquin)
@@ -339,56 +362,81 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-    //Método que devuelve la cantidad de granadas actuales
+    /// <summary>
+    /// Método que devuelve la cantidad de granadas actuales
+    /// </summary>
     public int CantidadGranadas()
     {
         if (cheatMode) { _granadas = MaxGranadas;}
         return _granadas;
     }
-    //Método que devuelve la cantidad de botiquines actuales
+    /// <summary>
+    /// Método que devuelve la cantidad de botiquines actuales
+    /// </summary>
     public int CantidadBotiquines()
     {
         return _botiquines;
     }
+    /// <summary>
+    /// Método que indica si se estan usando granadas
+    /// </summary>
     public bool UsandoGranadas()
     {
         return _usandoGranadas;
     }
+    /// <summary>
+    /// Método que indica si se estan usando botiquines
+    /// </summary>
     public bool UsandoBotiquines()
     {
         return _usandoBotiquines;
     }
-    //Método que guarda el ak47 al inventario
+    /// <summary>
+    /// Método que guarda el ak47 al inventario
+    /// </summary>
     public void RecogerAK47()
     {
         _AK47 = true;
     }
-    //Método que confirma que hay ak47
+    /// <summary>
+    /// Método que confirma que hay ak47
+    /// </summary>
     public bool TieneAK47()
     {
         return _AK47;
     }
+    /// <summary>
+    /// Indica si el jugador esta invulnerable o no
+    /// </summary>
     public bool Invulnerabilidad()
     {
         return _invulnerable;
     }
-    //Método para reiniciar la escena
+    /// <summary>
+    /// Método para reiniciar la escena
+    /// </summary>
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    //Metodo para poder acceder a la vida maxima desde otro script
+    /// <summary>
+    /// Metodo para poder acceder a la vida maxima desde otro script
+    /// </summary>
     public int GetVidaMaxima()
     {
         return MaxVidaInicial;
     }
-    //Metodo para poder acceder a la vida actual desde otro script
+    /// <summary>
+    /// Metodo para poder acceder a la vida actual desde otro script
+    /// </summary>
     public int GetVidaActual()
     {
         return _vidaActual;
     }
-    //Metodo para mandar el estado del nivel al LevelManager
+    /// <summary>
+    /// Metodo para mandar el estado del nivel al LevelManager
+    /// </summary>
     public void TransferManagerSetup()
     {
         if (LevelManager.Instance != null)
@@ -396,7 +444,9 @@ public class GameManager : MonoBehaviour
             LevelManager.Instance.RecogerEstado(_cargador, _balasMax);
         }
     }
-    //Metodo para retomar los datos que habian al inicio del nivel
+    /// <summary>
+    /// Metodo para retomar los datos que habian al inicio del nivel
+    /// </summary>
     public void RestableceDatos()
     {
         _cargador = _cargadorAux;
@@ -405,7 +455,9 @@ public class GameManager : MonoBehaviour
         _botiquines = _botiquinesAux;
         _vidaActual = _vidaActualAux;
     }
-    //Metodo para guardar los datos del inicio del nivel
+    /// <summary>
+    /// Metodo para guardar los datos del inicio del nivel
+    /// </summary>
     public void GuardarDatos(int escena)
     {
         if (escena == 1)
@@ -423,12 +475,16 @@ public class GameManager : MonoBehaviour
         _botiquinesAux = _botiquines;
         _vidaActualAux = _vidaActual;
     }
-
+    /// <summary>
+    /// Cuando termina la cinemática lleva a la siguiente
+    /// </summary>
     public int CinematicaActual()
     {
         return _cinematicaSiguiente;
     }
-
+    /// <summary>
+    /// Cuando se termina de ver una cinemática
+    /// </summary>
     public void CinematicaVista()
     {
         _cinematicaSiguiente++;
