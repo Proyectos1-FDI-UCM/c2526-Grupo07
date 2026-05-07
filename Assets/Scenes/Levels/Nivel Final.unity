@@ -417,6 +417,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 18, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &96473108 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 150534167962763713, guid: 05a609f20d379254ea7c561416abc8fc, type: 3}
+  m_PrefabInstance: {fileID: 2130172535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &107973082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2474,6 +2479,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1068897366}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
+      propertyPath: BotonPausa
+      value: 
+      objectReference: {fileID: 96473108}
+    - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: PanelPausa
       value: 
       objectReference: {fileID: 1067491173}
@@ -2501,6 +2510,14 @@ PrefabInstance:
       propertyPath: TiempoLimite
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
+      propertyPath: BotonGameOver
+      value: 
+      objectReference: {fileID: 1859565492}
+    - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
+      propertyPath: BotonVictoria
+      value: 
+      objectReference: {fileID: 1532785058}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: GameOverPanel
       value: 
@@ -3322,6 +3339,11 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485226559}
   m_Enabled: 1
+--- !u!1 &1532785058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6135741494815932060, guid: 05a609f20d379254ea7c561416abc8fc, type: 3}
+  m_PrefabInstance: {fileID: 2130172535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1557106385 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 617878397565935619, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
@@ -3731,6 +3753,11 @@ CanvasRenderer:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1004769480525766507, guid: e18ad164fe699874d89763322ac5a694, type: 3}
   m_PrefabInstance: {fileID: 1219940891}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1859565492 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3400598206557338929, guid: 05a609f20d379254ea7c561416abc8fc, type: 3}
+  m_PrefabInstance: {fileID: 2130172535}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1887069587 stripped
 Transform:
