@@ -64,12 +64,12 @@ public class MenuManager : MonoBehaviour
     public void SwitchCheatMode()
     {
         cheatMode = !cheatMode;
-        GameManager.Instance.SetCheatFromMM();
+        GameManager.Instance.SetCheatFromMM(cheatMode);
     }
-    public bool GetCheat()
-    {
-        return cheatMode;
-    }
+    //public bool GetCheat()
+    //{
+    //    return cheatMode;
+    //}
 
     #endregion
 

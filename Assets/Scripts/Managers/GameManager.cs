@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        if (menuManager != null) { SetCheatFromMM(); }
+        
     }
     #endregion
 
@@ -219,9 +219,9 @@ public class GameManager : MonoBehaviour
     {
         return cheatMode; 
     }
-    public void SetCheatFromMM()
+    public void SetCheatFromMM(bool cheat)
     {
-        cheatMode = menuManager.GetCheat();
+        cheatMode = cheat;
     }
     public static bool HasInstance()
     {
