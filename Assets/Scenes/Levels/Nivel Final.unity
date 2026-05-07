@@ -500,6 +500,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &234724179 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5621551336970876325, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+  m_PrefabInstance: {fileID: 826559198}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &274958165
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,6 +1664,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 468360000}
+    - target: {fileID: 2668880245451603930, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 16.000006
+      objectReference: {fileID: 0}
     - target: {fileID: 3822101480862295447, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1747,6 +1756,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8655206063088204987, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -146
+      objectReference: {fileID: 0}
     - target: {fileID: 9136414696611449476, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -1766,11 +1779,6 @@ PrefabInstance:
 --- !u!1 &842415511 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5639884994800072415, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
-  m_PrefabInstance: {fileID: 826559198}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &842415513 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 8145168413479798964, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
   m_PrefabInstance: {fileID: 826559198}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &843141153 stripped
@@ -2741,7 +2749,7 @@ PrefabInstance:
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: SpriteGranada
       value: 
-      objectReference: {fileID: 842415513}
+      objectReference: {fileID: 234724179}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: gameOverPanel
       value: 
@@ -2757,7 +2765,7 @@ PrefabInstance:
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: SpriteBotiquin
       value: 
-      objectReference: {fileID: 1448930992}
+      objectReference: {fileID: 2092844604}
     - target: {fileID: 8465184721782687556, guid: fbe03a89882f0464ea0db47ac939f8aa, type: 3}
       propertyPath: TextBotiquines
       value: 
@@ -3208,6 +3216,7 @@ MonoBehaviour:
   RecargaPistolaSFX: {fileID: 843141154}
   RifleSFX: {fileID: 1289241275}
   RecargaRifleSFX: {fileID: 1379118228}
+  CambioObjetoSFX: {fileID: 0}
   SpritePistola: {fileID: 695294057}
   SpriteRifle: {fileID: 1007537163}
   Cargador: 10
@@ -3310,11 +3319,6 @@ Animator:
 --- !u!1 &1448930991 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3561019157475799881, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
-  m_PrefabInstance: {fileID: 826559198}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &1448930992 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6024986483833291400, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
   m_PrefabInstance: {fileID: 826559198}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1485226556
@@ -4543,6 +4547,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054496105}
   m_CullTransparentMesh: 1
+--- !u!1 &2092844604 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4842631172274466460, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}
+  m_PrefabInstance: {fileID: 826559198}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2098923855 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7552417278573027765, guid: 9382b0655e1ce53409627fbfc7ca4171, type: 3}

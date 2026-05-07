@@ -38,10 +38,12 @@ public class AimShoot : MonoBehaviour
     [SerializeField] private AudioSource RecargaPistolaSFX; //Sonido recarga pistola
     [SerializeField] private AudioSource RifleSFX; //Sonido del disparo rifle
     [SerializeField] private AudioSource RecargaRifleSFX; //Sonido recarga pistola
+    [SerializeField] private AudioSource CambioObjetoSFX; //Sonido al cambiar de objetos
 
     //Sprites armas
     [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
     [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
+
     //Recarga
     [SerializeField] private int Cargador = 10;                 //Número de balas que se pueden disparar
     [SerializeField] private float TiempoRecargaPistola = 0.1f; //Tiempo que tarda la pistola en recargar
@@ -134,6 +136,10 @@ public class AimShoot : MonoBehaviour
     {
         _anim.SetBool("RifleShoot", false);
         _anim.SetBool("GunShoot", false);
+        if (InputManager.Instance.ChangeObjectWasPressedThisFrame())
+        {
+            CambioObjetoSFX.Play();
+        }
         if (!LevelManager.Instance.IsPaused())
         {
             //Si el juego esta pausado no puede disparar
