@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using TMPro;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -13,7 +14,7 @@ using UnityEngine;
 /// Antes de cada class, descripción de qué es y para qué sirve,
 /// usando todas las líneas que sean necesarias.
 /// </summary>
-public class CurrentHealth : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
     // ---- ATRIBUTOS DEL INSPECTOR ----
     #region Atributos del Inspector (serialized fields)
@@ -22,10 +23,9 @@ public class CurrentHealth : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private int health;    //cantidad de vida que cura
-    [SerializeField] private GameObject ParticulasCura;
-    [SerializeField] private GameObject botiquin; 
+
     #endregion
+    [SerializeField] private TextMeshProUGUI textcheat; // texto para decir si esta activado el cheat 
 
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
@@ -35,10 +35,7 @@ public class CurrentHealth : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private int PotionCount;    //cantidad de botiquin
-
-    //cheat
-    private bool cheatMode;
+    private bool cheatMode = false;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -47,29 +44,9 @@ public class CurrentHealth : MonoBehaviour
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
-    /// </summary>
-    void Start()
+    public void Update()
     {
-        cheatMode = GameManager.Instance.GetCheatMode();
-    }
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void Update()
-    {
-        if(!LevelManager.Instance.IsPaused())
-        {
-            if (Input.GetKeyDown(KeyCode.F) && !cheatMode)
-            {
-                UsePotion();
-            }
-            PotionCount = GameManager.Instance.CantidadBotiquines();
-        }
+        updateGUI();
     }
     #endregion
 
@@ -80,6 +57,16 @@ public class CurrentHealth : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    public void SwitchCheatMode()
+    {
+        cheatMode = !cheatMode;
+       
+    }
+    public bool GetCheat()
+    {
+        return cheatMode;
+    }
+
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -88,27 +75,17 @@ public class CurrentHealth : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void UsePotion()
+    private void updateGUI()
     {
-        //jugador utiliza el botiquín
-        //cura una cantidad de vida determinada
-        //desaparece el botiquin utilizado
-        if (PotionCount > 0 && GameManager.Instance.UsandoBotiquines())
+        Debug.Log(cheatMode);
+        if (cheatMode == true)
         {
-            PotionCount--;
-            GameManager.Instance.CurarVida(health);
-            GameManager.Instance.UsarBotiquin();
-            if (ParticulasCura != null)
-            {
-                Instantiate(ParticulasCura, transform.position, Quaternion.identity, transform);
-            }
+            textcheat.text = "Cheat on";
         }
-        else Debug.Log("ERROR: no hay consumible para utilizar");
+        else { textcheat.text = "Cheat off"; }
     }
-    private void OnTriggerEnter2D (Collider2D collision)
-    {
-    }
-    #endregion   
 
-}// class CurrentHealth 
+    #endregion
+
+} // class MenuManager 
 // namespace
