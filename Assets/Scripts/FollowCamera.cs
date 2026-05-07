@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Script para la cámara que sigue el punto central entre el jugador y el mouse (horizontalmente)
+// Responsable de la creación de este archivo: Izan Vázquez
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -66,18 +66,22 @@ public class FollowCamera : MonoBehaviour
     /// </summary>
     private void LateUpdate()
     {
+        //si no esta en una escena con un boss
         if (!SalaDeBoss)
         {
-            Vector3 Apunt = Apuntado.MousePos();
+            //calculo para determinar la posicion de la camara
+            Vector3 Apunt = Apuntado.MousePos(); // posicion del mouse
             Vector3 direccionRaton = Apunt - target.position;
             Vector3 late = (Apunt - transform.position) / 2;
             Vector3 offset = Vector3.ClampMagnitude(direccionRaton / 2f, DistanciaMaxima); //Clampea la camara a una distancia del jugador
             Vector3 Objetivo = new Vector3(target.position.x + offset.x, PosY + 3.6f, PosZ);
+            //Suavizar el movimiento de la cámara
             transform.position = Vector3.Lerp(transform.position, Objetivo, Suavidad);
         }
+        // si esta en una escana con un boss (minijefe)
         else
         {
-            Vector3 ObjetivoBoss = LugarBoss.position;
+            //Vector3 ObjetivoBoss = LugarBoss.position;
             Vector3 Pos = transform.position;
             Pos.x = LugarBoss.position.x;
             transform.position = Vector3.Lerp(transform.position, Pos, 0.05f);
@@ -92,16 +96,14 @@ public class FollowCamera : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void ShakeCamera()
-    {
-        transform.position += Vector3.Lerp(transform.position, new Vector3(1, 0, 0), Suavidad);
-        transform.position += Vector3.Lerp(transform.position, new Vector3(-1, 0, 0), Suavidad);
-    }
+   
+    //deterina si es una sala con el boss (minijefe)
     public void SalaBoss(Transform ZonaDeBoss)
     {
         SalaDeBoss = true;
         LugarBoss = ZonaDeBoss;
     }
+    // deeactivar / transformar en false la SalaDeBoss (otro script llama a este metodo)
     public void UnableSalaBoss()
     {
         SalaDeBoss = false;

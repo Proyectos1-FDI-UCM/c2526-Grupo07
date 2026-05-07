@@ -1,6 +1,6 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
+// Es uno de los ataques del jefe, en la cual cada cierto tiempo hace dash de una esquina a otra
+// Responsable de la creación de este archivo: Xinying Xu
 // Nombre del juego
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
@@ -27,10 +27,9 @@ public class BossDash : MonoBehaviour
     [SerializeField] private float DashPower = 20f; // fuerza o velocidad del dash
     [SerializeField] private float DashTime = 0.8f; // duracion del dash
     [SerializeField] private float DashColdDown = 3f; // duracion entre cada dash 
-    [SerializeField] private int DashDamage = 10;
 
-    [SerializeField] private Transform player;
-    [SerializeField] private AudioSource sonidoDash;
+    [SerializeField] private Transform player;  // posicion del player
+    [SerializeField] private AudioSource sonidoDash; // sonido que hace al ejecutar el dash
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -44,9 +43,8 @@ public class BossDash : MonoBehaviour
     private float Timer; // tiempo que empieza desde 0
     private float Timer2;
     private Rigidbody2D rb;
-    private BoxCollider2D col;
     private int dir = -1;
-    private bool isDashing = false;
+    private bool isDashing = false; // determina si el jugador esta dasheando o no (este es util para la animacion)
 
     private Animator _anim; //animacion de dash
     #endregion
@@ -66,7 +64,6 @@ public class BossDash : MonoBehaviour
     {
         Timer = 0;
         rb = GetComponent<Rigidbody2D>();
-        col = rb.GetComponent<BoxCollider2D>();
         _anim = GetComponent<Animator>();
     }
 
@@ -75,6 +72,7 @@ public class BossDash : MonoBehaviour
     /// </summary>
     void Update()
     {
+        // hacer que el jefe mire al jugador
         Vector2 offset = player.transform.position - transform.position;
         if(offset.x < 0 && dir!= 1)
         {
@@ -86,8 +84,9 @@ public class BossDash : MonoBehaviour
             dir *= -1;
             CambioDireccion();
         }
+        //ejecutar la ación
         Dash();
-        //_anim.SetFloat("attackDash", rb.linearVelocity.x);
+        //ejecutar la animación
         _anim.SetBool("IsDashing", isDashing);
         return;
     }
@@ -111,31 +110,37 @@ public class BossDash : MonoBehaviour
     private void Dash()
     {
         float InitialG = rb.gravityScale;
-        Timer += Time.deltaTime;
+        Timer += Time.deltaTime; // contar el tiempo
         isDashing = false;
-        Debug.Log("im not dashing");
+        
         if (Timer > DashColdDown) //ColdDown
         {
-            Timer2 += Time.deltaTime;
-            rb.linearVelocity = Vector2.zero;
-            Debug.Log("im dashing");
+            Timer2 += Time.deltaTime; // contar el tiempo
+            rb.linearVelocity = Vector2.zero; // entidad no se moverá si no esta dasheando
+            
             if (Timer2 > DashTime) //Duración del Dash
             {
                 isDashing = true;
 
                 sonidoDash.Play();
 
-                rb.gravityScale = 0;
-                dir *= -1;    //cambio de direccion, invertir
+                rb.gravityScale = 0; // entidad no tendrá gravedad al ejecutar el dash
+
+                //cambio de direccion, invertir
+                dir *= -1;   
+                //dashear
                 rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
+                //cambiar de sentido
                 Vector2 scale = transform.localScale;
                 scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
                 transform.localScale = scale;
-                Timer = 0;
-                Timer2 = 0;   //vuelve a sincronizar el tiempo
+
+                //vuelve a sincronizar el tiempo
+                Timer = 0; Timer2 = 0;   
             }
         }
     }
+    //metodo que hace que la entidad cambie de sentido 
     private void CambioDireccion()
     {
         transform.localScale = new Vector3(dir*-1, 1, 1);

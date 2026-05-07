@@ -6,6 +6,7 @@
 //---------------------------------------------------------
 
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 // Añadir aquí el resto de directivas using
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float CooldownChuchillo = 3f; //Enfriamiento del uso del cuchillo
     [SerializeField] private GameObject HitboxCuchillo;    //Area donde se puede hacer daño con el cuchillo
     [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
+    [SerializeField] private SpriteRenderer SpriteCuchillo;//Sprite del cuchillo
+    [SerializeField] private TextMeshProUGUI TextCuchillo; //Couldown de cuchillo
 
     //Sonido
     [SerializeField] private AudioSource[] soundMove;
@@ -85,6 +88,7 @@ public class PlayerController : MonoBehaviour
     //Cuchillo
     private float _coolDownCuchillo;    //Enfriamiento del uso del cuchillo
     private float _cuchillo = 5f;
+    private Color _originalKnifeColor;  //Color de inicio del cuchillo
 
     //Sprites y animación
     private Animator _anim;             //Animación del personaje
@@ -121,6 +125,8 @@ public class PlayerController : MonoBehaviour
         SpriteJugador = GetComponent<SpriteRenderer>();
         _transparency.a = 0.1f;
         _originalColor = SpriteJugador.color; //Guardar color original
+        _originalKnifeColor = SpriteCuchillo.color; //Guardar color original
+        
     }
 
     /// <summary>
@@ -142,6 +148,7 @@ public class PlayerController : MonoBehaviour
                     if (_cuchillo < CooldownChuchillo)
                     {
                         _cuchillo += Time.deltaTime;
+                        TextCuchillo.text = "" + Mathf.Round(CooldownChuchillo - _cuchillo + 0.5f);
                     }
                 }
                 else
@@ -352,6 +359,12 @@ public class PlayerController : MonoBehaviour
     //Si el boton se presiona y se puede se activa la hitbox del cuchillo 
     private void Cuchillo() 
     {
+        if (_cuchillo >= CooldownChuchillo && SpriteCuchillo.color != _originalKnifeColor)
+        {
+            TextCuchillo.text = "Ready";
+            SpriteCuchillo.color = _originalKnifeColor;
+        }
+
         if (InputManager.Instance.KnifeWasPressedThisFrame() && _cuchillo >= CooldownChuchillo && !_anim.GetBool("isAttacking"))
         {
             //Activar hitbox PRIMERO
@@ -359,6 +372,7 @@ public class PlayerController : MonoBehaviour
             {
                 HitboxCuchillo.SetActive(true);
             }
+            SpriteCuchillo.color = new Color32(255, 80, 80, 255);
             soundCuchillo.Play();
             //Activar animación
             _anim.SetBool("isAttacking", true);
