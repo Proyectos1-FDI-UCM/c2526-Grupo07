@@ -9,6 +9,7 @@
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -37,10 +38,10 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI TextAmmo; //Cantidad de balas
 
-    [SerializeField] private SpriteRenderer SpriteGranada;     //Sprite de la granada
+    [SerializeField] private GameObject SpriteGranada;     //Sprite de la granada
     [SerializeField] private TextMeshProUGUI TextGranadas; //Número de granadas
 
-    [SerializeField] private SpriteRenderer SpriteBotiquin;      //Sprite del botiquín
+    [SerializeField] private GameObject SpriteBotiquin;      //Sprite del botiquín
     [SerializeField] private TextMeshProUGUI TextBotiquines; //Número de botiquines
 
     [SerializeField] private Slider BarraDeVida;             //Sprite de barra de vida
@@ -95,11 +96,6 @@ public class LevelManager : MonoBehaviour
     private bool _juegoTerminado = false; //True si el juego termina
     private bool _juegoPausado = false;   //True si está en pausa
 
-    //BORRAR
-    private Color _transparency1;
-    private Color _originalSpriteGranada;
-    private Color _originalSpriteBotiquin;
-
     // pause
     private float time; 
     #endregion
@@ -119,9 +115,6 @@ public class LevelManager : MonoBehaviour
             GameOverPanel.SetActive(false);
             PanelVictoria.SetActive(false);
             PanelPausa.SetActive(false);
-            _transparency1.a = 0.5f;
-            _originalSpriteBotiquin = SpriteBotiquin.color;
-            _originalSpriteGranada = SpriteGranada.color;
         }
     }
 
@@ -150,13 +143,13 @@ public class LevelManager : MonoBehaviour
         }
         if (GameManager.Instance.UsandoBotiquines())
         {
-            SpriteGranada.color = _transparency1;
-            SpriteBotiquin.color = _originalSpriteBotiquin;
+            SpriteGranada.SetActive(false);
+            SpriteBotiquin.SetActive(true);
         }
         if (GameManager.Instance.UsandoGranadas())
         {
-            SpriteBotiquin.color = _transparency1;
-            SpriteGranada.color = _originalSpriteGranada;
+            SpriteBotiquin.SetActive(false);
+            SpriteGranada.SetActive(true);
         }
         timeSec += Time.deltaTime;
         timeTotal += Time.deltaTime;

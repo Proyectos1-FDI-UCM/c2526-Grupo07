@@ -416,6 +416,7 @@ public class GameManager : MonoBehaviour
             _cargador = _balasMax;
             _granadas = 0;
             _botiquines = 0;
+            _AK47 = false;
         }
         _cargadorAux = _cargador;
         _balasMaxAux = _balasMax;
