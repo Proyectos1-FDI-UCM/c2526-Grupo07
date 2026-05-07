@@ -64,7 +64,7 @@ public class CurrentHealth : MonoBehaviour
     {
         if(!LevelManager.Instance.IsPaused())
         {
-            if (Input.GetKeyDown(KeyCode.F) && !cheatMode)
+            if (InputManager.Instance.UseObjectWasPressedThisFrame() && !cheatMode)
             {
                 UsePotion();
             }
