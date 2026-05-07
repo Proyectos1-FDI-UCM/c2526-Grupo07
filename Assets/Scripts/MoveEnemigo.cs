@@ -34,6 +34,7 @@ public class MoveEnemigo : MonoBehaviour
 
     [SerializeField] private AudioSource soundMove;
     [SerializeField] private Transform salidaBala;
+    [SerializeField] private Transform exl;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -220,12 +221,15 @@ public class MoveEnemigo : MonoBehaviour
         {
             _spriteRenderer.flipX = false;
             salidaBala.transform.position = new Vector2(transform.position.x + 0.7f, transform.position.y);
+            exl.transform.position = new Vector2(transform.position.x + 0.7f, transform.position.y + 0.6f);
         }
         if (_direction == -1)
         {
             _spriteRenderer.flipX = true;
             salidaBala.transform.position = new Vector2(transform.position.x - 0.8f, transform.position.y);
+            exl.transform.position = new Vector2(transform.position.x - 0.8f, transform.position.y + 0.6f);
         }
+
     }
     #endregion
 }
