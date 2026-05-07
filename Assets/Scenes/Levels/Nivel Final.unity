@@ -2208,6 +2208,8 @@ MonoBehaviour:
   DashColdDown: 5
   player: {fileID: 1451857245}
   sonidoDash: {fileID: 30547576}
+  SpriteJefe: {fileID: 960067419}
+  salidaBala: {fileID: 274958166}
 --- !u!212 &960067419
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2254,7 +2256,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 6045948276396263042, guid: 59f91fbe379cb5b469e681d6f6937091, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}

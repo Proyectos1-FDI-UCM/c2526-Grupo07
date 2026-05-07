@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Permite al prefab fuego hacer daño al jugador, le da la velocidad y todas las caracteristcas 
+// Izan Vázquez Sánchez
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -11,8 +11,7 @@ using UnityEngine.Animations;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Permite al fuego hacer un daño ajustable al jugador, moverse hacia el con una velocidad ajustable y eliminarse cuando cumpla las condiciones necesarias
 /// </summary>
 public class LogicaFuego : MonoBehaviour
 {
@@ -23,9 +22,9 @@ public class LogicaFuego : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private float Velocidad;
-    [SerializeField] private int Daño;
-    [SerializeField] private float TiempoEnDestruirse;
+    [SerializeField] private float Velocidad; // la velocidad a la que se movera el fuego
+    [SerializeField] private int Daño; // el daño que hara el fuego
+    [SerializeField] private float TiempoEnDestruirse; // el tiempo que tarda en destruirse
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -36,8 +35,8 @@ public class LogicaFuego : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float TiempoConVida;
-    private Vector3 posicionJugador;
+    private float TiempoConVida; //Una variable que almacena el tiempo que ha permanecido activo
+    private Vector3 posicionJugador; //Un vector con la posicion actual del jugador
     private Vector2 dir2D;
     Rigidbody2D rb;
     #endregion
@@ -53,12 +52,12 @@ public class LogicaFuego : MonoBehaviour
     /// </summary>
     void Start()
     {
-        dir2D = new Vector2(posicionJugador.x, posicionJugador.y).normalized;
-        TiempoConVida = Time.time;
+        dir2D = new Vector2(posicionJugador.x, posicionJugador.y).normalized; // Le da la velocidad en la direccion del jugador
+        TiempoConVida = Time.time; // Inicializa a 0 el tiempo con vida
     }
     void Update()
     {
-        if (Time.time - TiempoConVida > TiempoEnDestruirse)
+        if (Time.time - TiempoConVida > TiempoEnDestruirse)//Actualiza el tiempo con vida y lo destruye si pasa el tiempo maximo con vida lo destruye
         {
             Destroy(gameObject);
         }
@@ -68,7 +67,7 @@ public class LogicaFuego : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-        if (player != null)
+        if (player != null)// Cuando detecta al jugador llama al game manager y le hace daño
         {
             //Llama al GameManager para bajar vida
             GameManager.Instance.RestarVida(Daño);
@@ -84,13 +83,16 @@ public class LogicaFuego : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    /// <summary>
+    /// Le da al rigidbody una direccion y una fuerza hacia dir
+    /// </summary>
     public void Dir(Vector2 dir)
     {
         rb = GetComponent<Rigidbody2D>();
         transform.right = dir;
         rb.linearVelocity = dir.normalized * Velocidad;
     }
-
+    
     public void ModifyDestroyTime(float newTime)
     {
         TiempoEnDestruirse = newTime;

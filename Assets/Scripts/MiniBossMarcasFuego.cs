@@ -10,8 +10,8 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Permite que el objeto (marcas de fuego que dejará el mini jefe) cause daño, al entrar en contacto con el jugador, y cada cierto tiempo 
+/// le vuelve a causar daño. Pasado cierto tiempo, este se destruye. Tambié tiene un efecto de sonido
 /// </summary>
 public class MiniBossMarcasFuego : MonoBehaviour
 {
@@ -68,7 +68,7 @@ public class MiniBossMarcasFuego : MonoBehaviour
 
         if(FuegoSFX != null)
         {
-            FuegoSFX.Play();
+            FuegoSFX.Play(); //Efecto de sonido
         }
     }
 
@@ -124,7 +124,9 @@ public class MiniBossMarcasFuego : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    //El jugador entra en el fuego, lo que le causa daño e inicia un contador que cada cierto tiempo le causará daño
+    /// <summary>
+    /// Cuando el jugador entra en el fuego, este le causa daño e inicia un contador que cada cierto tiempo le causará daño
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerController Player = collision.gameObject.GetComponent<PlayerController>(); //Busca al jugador cuando entra en el fuego
@@ -141,7 +143,9 @@ public class MiniBossMarcasFuego : MonoBehaviour
             
         }
     }
-    //Cuando sale del fuego, el jugador ya no recibirá daño
+    /// <summary>
+    /// Cuando sale del fuego, el jugador ya no recibirá daño
+    /// </summary>
     private void OnTriggerExit2D(Collider2D collision)
     {
 

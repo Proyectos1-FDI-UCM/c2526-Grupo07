@@ -1,18 +1,16 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Ataques del minijefe
+// Cristopher Jeremy Villacís Galindo
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using System.Runtime.CompilerServices;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Gestiona los dos patrones de ataque que tiene el Minijefe
 /// </summary>
 public class MiniJefe : MonoBehaviour
 {
@@ -23,14 +21,14 @@ public class MiniJefe : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private GameObject _fuego;
-    [SerializeField] private float _timeBtwActions = 5f;
-    [SerializeField] private float _runSpeed = 0.5f;
-    [SerializeField] private float _restShootingTime = 0.2f;
-    [SerializeField] private Transform _player;
-    [SerializeField] private Vector2 _medioArena;
-    [SerializeField] private AudioSource FuegoSFX; //Sonido lanzallamas
-    [SerializeField] private AudioSource RunSFX; //Sonido al correr
+    [SerializeField] private GameObject _fuego;                 //Prefab que se va a instanciar
+    [SerializeField] private float _timeBtwActions = 5f;        //Tiempo de enfriamiento entre acciones
+    [SerializeField] private float _runSpeed = 0.5f;            //Suavizado para el Vector.Lerp
+    [SerializeField] private float _restShootingTime = 0.2f;    //Tiempo entre disparos
+    [SerializeField] private Transform _player;                 //Posición del jugador
+    [SerializeField] private Vector2 _medioArena;               //Posición central de la zona de combate
+    [SerializeField] private AudioSource FuegoSFX;              //Sonido lanzallamas
+    [SerializeField] private AudioSource RunSFX;                //Sonido al correr
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -41,17 +39,16 @@ public class MiniJefe : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float _lastTimeAction = 0;
-    private float _startTimeAtack = 0;
-    private float _shootingTime = 0;
-    private float _intervaloDisparos = 3f / 5f;
-    private float _durationAtack = 4f;
-    private float _intervalShoot = 2f;
-    private float _now = 0;
-    private bool _canAtack = false;
-    private bool _isAtacking = false;
-    private Rigidbody2D _rb;
-    private Animator _animator; //Será el componente Animator
+    private float _lastTimeAction = 0;          //Tiempo transcurrido tras la última acción
+    private float _startTimeAtack = 0;          //Tiempo transcurrido tras el inicio del ataque
+    private float _shootingTime = 0;            //Tiempo transcurrido tras haber empezado a disparar
+    private float _intervaloDisparos = 3f / 5f; //Tiempo que dura cada disparo
+    private float _durationAtack = 4f;          //Duración total del ataque
+    private float _now = 0;                     //Tiempo actual
+    private bool _canAtack = false;             //Booleano que marca si puede o no atacar
+    private bool _isAtacking = false;           //Booleano que determina si se está atacando
+    private Rigidbody2D _rb;                    //Variable que adoptará el componente Rigidbody2D
+    private Animator _animator;                 //Será el componente Animator
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -67,8 +64,8 @@ public class MiniJefe : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>(); //Asigna el componente Animator a _animator
+        _rb = GetComponent<Rigidbody2D>();      //Asigna el componente Rigidbody2D a _rb
+        _animator = GetComponent<Animator>();   //Asigna el componente Animator a _animator
     }
 
     /// <summary>
@@ -80,6 +77,7 @@ public class MiniJefe : MonoBehaviour
         _lastTimeAction += Time.deltaTime;
         _canAtack = CondicionAtaque();
 
+        //Si no está atacando entra y comprueba la condición de ataque y de tiempo
         if (!_isAtacking)
         {
             if (_lastTimeAction >= _timeBtwActions && _canAtack)
@@ -105,6 +103,7 @@ public class MiniJefe : MonoBehaviour
                     _animator.SetBool("Ataque", true); //El parámetro "Ataque" se vuelve true
                 }
                 _shootingTime += Time.deltaTime;
+                //Ataca disparando proyectiles a 5 direcciones en lo que resta de ataque
                 if (_shootingTime < _intervaloDisparos - _restShootingTime)
                 {
                     Lanzallamas(new Vector2(-2, 1));
@@ -124,9 +123,9 @@ public class MiniJefe : MonoBehaviour
                 else if (_shootingTime >= 4f *_intervaloDisparos && _shootingTime < 5f * _intervaloDisparos - _restShootingTime)
                 {
                     Lanzallamas(new Vector2(2, 1));
-
                 }
             }
+            //Una vez terminado el ataque se aleja y se reinicia todo
             if (_startTimeAtack >= _durationAtack)
             {
                 _animator.SetBool("Ataque", false); //El parámetro "Ataque" se vuelve false
@@ -159,17 +158,24 @@ public class MiniJefe : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+
+    /// <summary>
+    /// Devuelve true si la condición de ataque se cumple
+    /// </summary>
+    /// <returns></returns>
     private bool CondicionAtaque()
     {
         bool _ataca = false;
         if (Mathf.Abs(transform.position.x - _player.transform.position.x) >= 8f)
         {
             _ataca = true;
-
         }
         return _ataca;
     }
 
+    /// <summary>
+    /// Impulsa al mini jefe a la dirección contraria a la que se encuentre el jugador
+    /// </summary>
     private void Alejarse()
     {
         int dir = 1;
@@ -177,6 +183,11 @@ public class MiniJefe : MonoBehaviour
         _rb.AddForceX(8f * dir, ForceMode2D.Impulse);
     } 
 
+    /// <summary>
+    /// Dispara un proyectil en la dirección dada
+    /// y se modifican ciertos parámetros
+    /// </summary>
+    /// <param name="dir"></param>
     private void Lanzallamas(Vector2 dir)
     {
         GameObject _proyectil = Instantiate(_fuego, transform.position, transform.localRotation);
@@ -187,6 +198,10 @@ public class MiniJefe : MonoBehaviour
         _fuegoLogic.ModifyDestroyTime(3f);
     }
 
+    /// <summary>
+    /// Dispara un proyectil con dirección al jugador
+    /// y se modifican ciertos parámetros
+    /// </summary>
     private void DisparoLejos()
     {
         Vector3 offset = _player.transform.position - transform.position;
@@ -198,7 +213,10 @@ public class MiniJefe : MonoBehaviour
         _fuegoLogic.ModifyDestroyTime(5f);
         SonidoFuego();
     }
-    //Método para actualizar las animaciones del Mini Jefe
+
+    /// <summary>
+    /// Método para actualizar las animaciones del Mini Jefe
+    /// </summary>
     private void Animaciones()
     {
         bool miraDerecha = (_player.position.x - transform.position.x) > 0; //El jefe mira hacia el jugador
@@ -229,6 +247,7 @@ public class MiniJefe : MonoBehaviour
         _animator.SetBool("MueveDerecha", mueveDerecha);
         
     }
+
     private void SonidoFuego()
     {
         if(FuegoSFX != null)
@@ -237,6 +256,9 @@ public class MiniJefe : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sonido del mini jefe al correr
+    /// </summary>
     private void SonidoRun()
     {
         if (RunSFX != null)
@@ -244,6 +266,10 @@ public class MiniJefe : MonoBehaviour
             RunSFX.Play();
         }
     }
+
+    /// <summary>
+    /// Sonido del mini jefe al dejar de correr
+    /// </summary>
     private void StopRun()
     {
         if (RunSFX != null)

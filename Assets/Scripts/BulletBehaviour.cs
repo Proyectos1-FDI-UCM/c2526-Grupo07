@@ -58,7 +58,7 @@ public class BulletBehaviour : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D colision)
     {
         //Si colisiona con algo comprueba si es jugador u otra cosa
-        if (colision != null)
+        if (colision != null && colision.gameObject.layer != LayerMask.NameToLayer("Fuego"))
         {
             Destruccion(colision);
         }

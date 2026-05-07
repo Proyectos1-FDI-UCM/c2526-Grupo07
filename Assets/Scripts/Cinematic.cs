@@ -1,20 +1,19 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Gestión de la cinemática permitiendo pausarla y reanudarla desde fuera. Cambia de escena al terminar la cinemática.
+// Cristopher Jeremy Villacís Galindo
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.Categorization;
 using UnityEngine.Playables;
-using UnityEngine.Rendering;
 // Añadir aquí el resto de directivas using
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Inicia una cinemática asignada al iniciar la escena.
+/// Una vez terminada la cinemática se cambiará a la escena cuyo índice que establece desde el inspector.
+/// La clase tiene métodos que permiten pausar y reanudar la escena desde fuera.
 /// </summary>
 public class Cinematic : MonoBehaviour
 {
@@ -25,9 +24,7 @@ public class Cinematic : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private int _nextScene;
-    [SerializeField] private Animator _playerAnimator;
-
+    [SerializeField] private int _nextScene;    //Índice de la escena a la que se irá tras terminar la cinemática
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -38,7 +35,7 @@ public class Cinematic : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private PlayableDirector cinematic;
+    private PlayableDirector _cinematic; //Variable que adoptará el componente que tiene la TimeLine
     #endregion
     
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -54,13 +51,17 @@ public class Cinematic : MonoBehaviour
     /// </summary>
     void Start()
     {
-        cinematic = GetComponent<PlayableDirector>();
-        cinematic.Play();
+        _cinematic = GetComponent<PlayableDirector>();   //_cinematic adopta el componente PlayableDirector
+        _cinematic.Play();                               //Inicia la cinemática
     }
 
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
     private void Update()
     {
-        if (cinematic.time >= cinematic.duration)
+        //Cambia la escena una vez termina la cinemática
+        if (_cinematic.time >= _cinematic.duration)
         {
             GameManager.Instance.ChangeScene(_nextScene);
         }
@@ -75,14 +76,20 @@ public class Cinematic : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
+    /// <summary>
+    /// Método que pausa la cinemática.
+    /// </summary>
     public void CinematicPause()
     {
-        cinematic.Pause();
+        _cinematic.Pause();
     }
 
+    /// <summary>
+    /// Método que reanuda la cinemática.
+    /// </summary>
     public void CinematicResume()
     {
-        cinematic.Resume();
+        _cinematic.Resume();
     }
     #endregion
 

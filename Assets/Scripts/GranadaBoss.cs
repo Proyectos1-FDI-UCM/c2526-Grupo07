@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Granada que usa el jefe y que causa daño al jugador y al jefe dentro de su radio de explosión (Mismo código de la granada, pero con ligeros cambios)
+// Carlos Alberto Ovando Barrios
+// Clear the Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -28,11 +28,9 @@ public class GranadaBoss : MonoBehaviour
 
     [SerializeField] private int Damage; //El daño que causa
 
-    [SerializeField] private FollowCamera Camara;
-
     [SerializeField] private float TiempoAnimacionExplosion = 0.15f; //Tiempo de la animación de la explosión
 
-    [SerializeField] private GameObject Particulas;
+    [SerializeField] private GameObject Particulas; //Particulas de la explosión de la granada
 
     #endregion
 
@@ -46,12 +44,12 @@ public class GranadaBoss : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     private float _tiempo; //El tiempo que se reducirá para que explote la granada
-    private Rigidbody2D _rb;
-    private float _direction;
+    private Rigidbody2D _rb; //Rigidbody de la granada
+    private float _direction; //Dirección donde se lanzará la granada
     private Animator _animator; //Será el componente Animator
     private bool _destruida = false; //Comprueba si explotó
-    private int _damageReduction;
-    private AudioSource _audioGranada;
+    private int _damageReduction; //Reducción de daño para el jugador
+    private AudioSource _audioGranada; //Audio granada
 
     #endregion
 
@@ -68,10 +66,10 @@ public class GranadaBoss : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>(); //Recoge su rigidbody
         _tiempo = TiempoGranada; //El tiempo que se reducirá, es el mismo que el tiempo en que explota la granada, para no reducir directamente el tiempo de la granada
         _animator = GetComponent<Animator>(); // Recoge el Animator de la granada
-        _damageReduction = (int)(Damage * 0.5f);
+        _damageReduction = (int)(Damage * 0.5f); // Reduce el daño
 
         //Comprueba si la granada fue lanzada para iniciar la animación
         if (_animator != null)
@@ -110,6 +108,10 @@ public class GranadaBoss : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
+    /// <summary>
+    /// Configura la dirección de la granada y le da un sonido a esta
+    /// </summary>
     public void SetDireccion(Vector3 dir, AudioSource Sonido)
     {
         //Sonido pertenece a la escena, entonces cuando el AtaqueJefe llama a este metodo lleva con él el audio
@@ -126,8 +128,10 @@ public class GranadaBoss : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    //Explotar==Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada,
-    //solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
+    /// <summary>
+    /// Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada, 
+    /// solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
+    /// </summary>
     private void Explotar()
     {
         _destruida = true; //Explotó
@@ -164,12 +168,12 @@ public class GranadaBoss : MonoBehaviour
                 {
                     if (VidaEnemigo != null)
                     {
-                        VidaEnemigo.EnemyHealthPoint(Damage);
+                        VidaEnemigo.EnemyHealthPoint(_damageReduction); //Quita vida reducida al jefe
                         VidaEnemigo.RedFlash();
                     }
                     else if (Player != null && !GameManager.Instance.Invulnerabilidad())
                     {
-                        GameManager.Instance.RestarVida(_damageReduction);
+                        GameManager.Instance.RestarVida(Damage); //Quita vida al jugador
                         Player.RedFlash();
                     }
                 }
@@ -193,7 +197,9 @@ public class GranadaBoss : MonoBehaviour
 
     }
 
-    //Dibuja el radio de la granada en el inspector
+    /// <summary>
+    /// Dibuja el radio de la granada en el inspector
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

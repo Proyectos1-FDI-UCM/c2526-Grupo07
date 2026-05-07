@@ -98,7 +98,7 @@ public class LevelManager : MonoBehaviour
     private bool _juegoPausado = false;   //True si está en pausa
 
     // pause
-    private float time; 
+    private float time; //Tiempo
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -119,6 +119,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before 
+    /// any of the Update methods are called the first time.
+    /// </summary>
     void Start()
     {
         _isRunning = true;
@@ -129,6 +133,10 @@ public class LevelManager : MonoBehaviour
         UpdateGUI();
         GameManager.Instance.TransferManagerSetup();
     }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
     private void Update()
     {
         if (InputManager.Instance.PauseWasPressedThisFrame())
@@ -195,7 +203,13 @@ public class LevelManager : MonoBehaviour
     /// destruído antes de tiempo.
     /// </summary>
     /// <returns>Cierto si hay instancia creada.</returns>
-    
+
+
+    /// <summary>
+    /// Recoge el estado actual del juego y lo muestra en pantalla
+    /// </summary>
+    /// <param name="Cargador"></param>
+    /// <param name="BalasMax"></param>
     public void RecogerEstado(int Cargador, int BalasMax)
     {
         _cargador = Cargador;
@@ -205,10 +219,18 @@ public class LevelManager : MonoBehaviour
         _botiquines = GameManager.Instance.CantidadBotiquines();
         UpdateGUI();
     }
+
+    /// <summary>
+    /// Resta un rehen a la cantidad total una vez se salva
+    /// </summary>
     public void RehenSalvado()
     {
         numRehenes -= 1;
     }
+
+    /// <summary>
+    /// Activa el panel de GameOver y lo relacionado con el fin de partida
+    /// </summary>
     public void GameOver()
     {
         Time.timeScale = 0f;
@@ -220,6 +242,10 @@ public class LevelManager : MonoBehaviour
             UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(BotonGameOver);
         }
     }
+
+    /// <summary>
+    /// Activa el panel de Victoria y muestra las estrellas conseguidas
+    /// </summary>
     public void Victoria()
     {
         Time.timeScale = 0;     //detener el tiempo
@@ -257,20 +283,31 @@ public class LevelManager : MonoBehaviour
             UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(BotonVictoria);
         }
     }
+
+    /// <summary>
+    /// Reinicia la escena actual
+    /// </summary>
     public void Reiniciar()
     {
         Time.timeScale = 1;
         GameManager.Instance.RestableceDatos();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    /// <summary>
+    /// Cambia la escena a la del menú principal
+    /// </summary>
     public void MenuInicial()
     {
         Time.timeScale = 1;
         GameManager.Instance.RestableceDatos();
         SceneManager.LoadScene("Menu");
     }
-    // metodo que hace pausar la escena
-    // usarlo cuando demos al esc, cuando aparece el panel de victoria o de derrota
+
+    /// <summary>
+    /// metodo que hace pausar la escena
+    /// usarlo cuando demos al esc, cuando aparece el panel de victoria o de derrota
+    /// </summary>
     public void Pause() 
     {
         _juegoPausado = true;
@@ -282,8 +319,11 @@ public class LevelManager : MonoBehaviour
         time = Time.timeScale;
         Time.timeScale = 0f;
     }
-    // metodo que hace continuar el juego despues de la pausa
-    // usarlo para el boton de continue
+
+    /// <summary>
+    /// metodo que hace continuar el juego despues de la pausa
+    /// usarlo para el boton de continue
+    /// </summary>
     public void Continue()
     {
         _juegoPausado = false;
@@ -291,14 +331,21 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = time;
     }
 
-    // metodo que pausa el tiempo
-    // sin activar el canvas
+    /// <summary>
+    /// Método que pausa el tiempo
+    /// sin activar el canvas
+    /// </summary>
     public void PauseTimeOnly()
     {
         _juegoPausado = true;
         time = Time.timeScale;
         Time.timeScale = 0f;
     }
+
+    /// <summary>
+    /// Devuelve true si el juego está pausado o si se ha terminado
+    /// </summary>
+    /// <returns></returns>
     public bool IsPaused()
     {
         return _juegoPausado || _juegoTerminado;
