@@ -4,8 +4,6 @@
 // Nombre del juego
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
-
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Rendering;
 // Añadir aquí el resto de directivas using

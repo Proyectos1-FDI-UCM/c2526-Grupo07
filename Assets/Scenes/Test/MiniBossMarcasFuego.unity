@@ -173,6 +173,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3573603354514524001, guid: 211b95f8adcea5e48b606836ff3d3d1b, type: 3}
+      propertyPath: RunSFX
+      value: 
+      objectReference: {fileID: 1236461598}
+    - target: {fileID: 3573603354514524001, guid: 211b95f8adcea5e48b606836ff3d3d1b, type: 3}
       propertyPath: _player
       value: 
       objectReference: {fileID: 1161329364}
@@ -740,6 +744,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
+      propertyPath: textCheat
+      value: 
+      objectReference: {fileID: 1947345830}
     - target: {fileID: 7836153480745420393, guid: 689186f763b0f9c48a23184cd735e6fa, type: 3}
       propertyPath: MaxBotiquin
       value: 3
@@ -2226,11 +2234,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!82 &1155762421 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4232516595989804789, guid: 08889b12369dc2d49942f35569508076, type: 3}
-  m_PrefabInstance: {fileID: 1161329363}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1161329363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2295,6 +2298,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5688316522780766351, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: SpriteRifle
+      value: 
+      objectReference: {fileID: 554282150}
+    - target: {fileID: 5688316522780766351, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: SpritePistola
+      value: 
+      objectReference: {fileID: 1103465942}
     - target: {fileID: 6137850962127380698, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.7
@@ -2350,7 +2361,7 @@ PrefabInstance:
     - target: {fileID: 7610240024358841394, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: AudioGranada
       value: 
-      objectReference: {fileID: 1155762421}
+      objectReference: {fileID: 0}
     - target: {fileID: 7610240024358841394, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: SpritePistola
       value: 
@@ -2516,6 +2527,11 @@ Transform:
   - {fileID: 895297475}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1236461598 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3501091248144116307, guid: 211b95f8adcea5e48b606836ff3d3d1b, type: 3}
+  m_PrefabInstance: {fileID: 166988480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1244824816
 GameObject:
   m_ObjectHideFlags: 0

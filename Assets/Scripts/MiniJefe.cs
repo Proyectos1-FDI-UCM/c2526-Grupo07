@@ -29,6 +29,7 @@ public class MiniJefe : MonoBehaviour
     [SerializeField] private Transform _player;
     [SerializeField] private Vector2 _medioArena;
     [SerializeField] private AudioSource FuegoSFX; //Sonido lanzallamas
+    [SerializeField] private AudioSource RunSFX; //Sonido al correr
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -206,11 +207,31 @@ public class MiniJefe : MonoBehaviour
         //Animaciones para moverse y hacia donde se mueve
         _animator.SetBool("EnMovimiento", enMovimiento);
         _animator.SetBool("MueveDerecha", mueveDerecha);
+        
     }
-    private void Sonido()
+    private void SonidoFuego()
     {
-        FuegoSFX.Play();
+        if(FuegoSFX != null)
+        {
+            FuegoSFX.Play();
+        }
     }
+
+    private void SonidoRun()
+    {
+        if (RunSFX != null)
+        {
+            RunSFX.Play();
+        }
+    }
+    private void StopRun()
+    {
+        if (RunSFX != null)
+        {
+            RunSFX.Stop();
+        }
+    }
+
     #endregion
 }
 // class MiniJefe 
