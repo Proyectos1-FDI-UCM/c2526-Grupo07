@@ -646,6 +646,7 @@ MonoBehaviour:
   pistola: {fileID: 574792725}
   soundMove: {fileID: 3345639315741366185, guid: af6912cf1da9f1140a6578d46f6b5e1b, type: 3}
   salidaBala: {fileID: 574792726}
+  exl: {fileID: 1119008428}
 --- !u!50 &107783967
 Rigidbody2D:
   serializedVersion: 5
@@ -1396,6 +1397,7 @@ MonoBehaviour:
   pistola: {fileID: 826691610}
   soundMove: {fileID: 3345639315741366185, guid: af6912cf1da9f1140a6578d46f6b5e1b, type: 3}
   salidaBala: {fileID: 826691611}
+  exl: {fileID: 1548170292}
 --- !u!50 &274604522
 Rigidbody2D:
   serializedVersion: 5
@@ -2939,6 +2941,7 @@ MonoBehaviour:
   pistola: {fileID: 1728556468}
   soundMove: {fileID: 3345639315741366185, guid: af6912cf1da9f1140a6578d46f6b5e1b, type: 3}
   salidaBala: {fileID: 1728556469}
+  exl: {fileID: 2122437852}
 --- !u!50 &713592988
 Rigidbody2D:
   serializedVersion: 5
@@ -6809,6 +6812,7 @@ MonoBehaviour:
   pistola: {fileID: 1509966351}
   soundMove: {fileID: 3345639315741366185, guid: af6912cf1da9f1140a6578d46f6b5e1b, type: 3}
   salidaBala: {fileID: 1509966352}
+  exl: {fileID: 1004325531}
 --- !u!50 &1775598174
 Rigidbody2D:
   serializedVersion: 5
