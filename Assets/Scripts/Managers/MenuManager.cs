@@ -80,7 +80,6 @@ public class MenuManager : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void updateGUI()
     {
-        Debug.Log(cheatMode);
         if (cheatMode == true)
         {
             textcheat.text = "Cheat on";

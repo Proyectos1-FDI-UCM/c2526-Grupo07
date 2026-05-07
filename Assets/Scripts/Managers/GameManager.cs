@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     //cheat
     private bool cheatMode = false;
-    private bool cheatModeAux = false;
+    private bool cheatModeAux;
     private MenuManager menuManager;
 
     #endregion
