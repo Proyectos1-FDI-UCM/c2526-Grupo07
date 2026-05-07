@@ -219,6 +219,12 @@ public class AimShoot : MonoBehaviour
             {
                 Disparar();
             }
+            //4 Comprueba si se dispara y si no puede disparar por no tener balas disponibles
+            if (InputManager.Instance.FireIsPressed() && _tiempoDisparo <= 0f && _balasActuales <= 0)
+            {
+                EmpezarRecarga(); //Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+                return; //Sale del Update para que no dispare
+            }
 
             // usando granada
             _cantidadGranada = GameManager.Instance.CantidadGranadas();
