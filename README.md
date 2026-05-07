@@ -16,6 +16,7 @@ El jugador podrá obtener objetos durante el juego y usarlos, como puede ser la 
 Estos objetos son limitados, con lo cual el jugador solo podrá tener como máximo 3 de cada uno de los objetos, si el jugador carece de los objetos no los podrá usar.
 ## KNOWN ISSUES
 Es posible ver que los marcos de la barra de vida y algunos sprites aparezcan sobre los paneles de vicotoria derrota o pausa y también sobre el HUD.
+Las marcas de fuego que deja el mini jefe con sus ataques no se generan correctamente en el suelo.
 ## CRÉDITOS
 ### Miembros del grupo
 - Zimin Chen
