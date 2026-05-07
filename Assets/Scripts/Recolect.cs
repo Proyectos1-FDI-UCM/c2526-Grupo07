@@ -11,14 +11,14 @@ using UnityEngine;
 
 // Los enums se declaran FUERA de la clase para que Unity los serialice
 // correctamente y el inspector los reconozca sin ambigüedad.
-public enum TipoObjeto
+public enum TipoObjeto  //tipo de objeto que se recoge
 {
     None,
     Granada,
     Botiquin
 }
 
-public enum TipoArma
+public enum TipoArma    //tipo de arma que se recoge
 {
     None,
     AK47,
@@ -41,10 +41,10 @@ public class Recolect : MonoBehaviour
     // Ejemplo: MaxHealthPoints
 
     /// <summary>Tipo de consumible que representa este pickup (None si es un arma).</summary>
-    [SerializeField] private TipoObjeto Objeto;
+    [SerializeField] private TipoObjeto Objeto;     //para ver el objeto seleccionado
 
     /// <summary>Tipo de arma que representa este pickup (None si es un consumible).</summary>
-    [SerializeField] private TipoArma Arma;
+    [SerializeField] private TipoArma Arma;     //para ver el arma seleccionado
 
     #endregion
 

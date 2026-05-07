@@ -30,11 +30,11 @@ public class MoveEnemigo : MonoBehaviour
 
     [SerializeField] private float vel;        //velocidad para el movimiento del enemigo
     [SerializeField] private Transform player; //jugador para realizar las acciones
-    [SerializeField] private GameObject pistola;
+    [SerializeField] private GameObject pistola;    //objeto que ataca al jugador, donde salen las balas
 
-    [SerializeField] private AudioSource soundMove;
-    [SerializeField] private Transform salidaBala;
-    [SerializeField] private Transform exl;
+    [SerializeField] private AudioSource soundMove;     //sonido del movimiento
+    [SerializeField] private Transform salidaBala;  //posición de salida de las balas
+    [SerializeField] private Transform exl;     //posicion del objeto de aviso
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -51,9 +51,9 @@ public class MoveEnemigo : MonoBehaviour
     private int _direction = 1;       //direccion del enemigo
     private float _tiempoInicio = 0;  //tiempo iniciado para el movimiento
     private float _tiempoQuieto = 0;  //tiempo inicial en que va a estar quieto
-    private Rigidbody2D _rb;
-    private Animator _anim;
-    private SpriteRenderer _spriteRenderer;
+    private Rigidbody2D _rb;    //fisica que realiza
+    private Animator _anim;     //control de animacion para move o iddle
+    private SpriteRenderer _spriteRenderer;     //control sprite para cambiar direccion
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -68,6 +68,7 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Start()
     {
+        //obtener la funcion de cada componente
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -77,29 +78,29 @@ public class MoveEnemigo : MonoBehaviour
     /// </summary>
     void Update()
     {
-        Vector2 offset = player.transform.position - transform.position;
-        if (_isShooting)
+        Vector2 offset = player.transform.position - transform.position;    //calcular la posicion del jugador
+        if (_isShooting)        //caso de disparo paramos el sonido de movimiento
         {
             if (soundMove != null)
             {
-                soundMove.Pause();
+                soundMove.Pause();  
             }
             //cuando dispara se deja de mover
             _isChasing = false;
 
-             if (offset.x > 0 && _direction != 1)
+             if (offset.x > 0 && _direction != 1)   //jugador zona izq
              {
-                 _direction *= -1;
-                 CambioDireccion();
+                 _direction *= -1;      //cambiamos direccion que mira
+                 CambioDireccion();     //cambiar la dir del sprite 
              }
-             if (offset.x < 0 && _direction != -1)
+             if (offset.x < 0 && _direction != -1)  //jugador zona derecha
              {
-                 _direction *= -1;
-                 CambioDireccion();
+                 _direction *= -1;      //cambiamos direccion que mira
+                 CambioDireccion();     //cambiar la dir del sprite
              }
              return;
         }
-        else if (_isChasing)
+        else if (_isChasing)        //en caso de perseguir inicializamos el sonio de movimiento
         {
             if (soundMove != null)
             {
@@ -109,17 +110,17 @@ public class MoveEnemigo : MonoBehaviour
             {
                 Debug.Log("No hay sonido (soundMove) en MoveEnemigo");
             }
-            if (offset.x > 0 && _direction != 1)
+            if (offset.x > 0 && _direction != 1)        //jugador zona izq
             {
-                _direction *= -1;
-                CambioDireccion();
+                _direction *= -1;      //cambiamos direccion que mira
+                CambioDireccion();     //cambiar la dir del sprite 
             }
-            else if (offset.x < 0 && _direction != -1)
+            else if (offset.x < 0 && _direction != -1)  //jugador zona derecha
             {
-                _direction *= -1;
-                CambioDireccion();
+                _direction *= -1;      //cambiamos direccion que mira
+                CambioDireccion();     //cambiar la dir del sprite 
             }
-            _tiempoInicio = 0;
+            _tiempoInicio = 0;      //reiniciamos el tiempo del movimiento
         }
     }
     void FixedUpdate()
@@ -129,15 +130,15 @@ public class MoveEnemigo : MonoBehaviour
            float speed = Mathf.Abs(_rb.linearVelocity.x); //Valor absoluto de la velocidad en el eje x
            _anim.SetFloat("enemySpeed", speed); //Para la transicion
         }
-        if (_isShooting)
+        if (_isShooting)    //caso disparo no se mueve
         {
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
         }
-        else if (_isChasing)
+        else if (_isChasing)    //caso persigue al jugador
         {
             Perseguir();
         }
-        else MovAuto();
+        else MovAuto();     //si no movimiento automatico
     }
      void OnCollisionEnter2D(Collision2D collision)
      {
@@ -185,26 +186,26 @@ public class MoveEnemigo : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void Perseguir()
     {
-         _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+         _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);  //velocidad y direccion cuando persigue al jugador
     }
     private void MovAuto()
     {
         _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
-        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
-        if (_tiempoInicio > duracion)
+        _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);   //velocidad y direccion que mueve
+        if (_tiempoInicio > duracion)   //cada cuanto tiempo se para y cambia de direccion
         {
-            _tiempoQuieto += Time.deltaTime;
-            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
-            if (_tiempoQuieto > duracionQuieto)
+            _tiempoQuieto += Time.deltaTime;    //tiempo sin mov para iddle
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);  //velocidad null
+            if (_tiempoQuieto > duracionQuieto)     //si pasa de tiempo quieto se cambia de direccion
             {
                 _direction *= -1;    //cambio de direccion, invertir
                 CambioDireccion();
-                _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);
+                _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);   //velocidad y direccion del mov
                 _tiempoQuieto = 0;
                 _tiempoInicio = 0;   //vuelve a sincronizar el tiempo
                 if (soundMove != null)
                 {
-                    soundMove.Play();
+                    soundMove.Play();   //vuelve a reiniciar el sonido del mov
                 }
                 else
                 {

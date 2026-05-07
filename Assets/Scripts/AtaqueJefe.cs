@@ -48,7 +48,7 @@ public class AtaqueJefe : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float time=1; //tiempo para el siguiente ataque
-    private Animator anim;
+    private Animator anim;  //animación de ataque
 
     Vector2 offset; //Vector a donde apunta el lanzallams
     private float TiempoEntreBalas; // Cadencia del lanzallamas
@@ -84,24 +84,23 @@ public class AtaqueJefe : MonoBehaviour
         anim.SetBool("attackLan", false); //desactivar la animacion de lanzallamas
         anim.SetBool("attackGran", false);    //desactivar la animacion de lanzar granada
 
-        //si el jugador está lejos lanza granada
-        if (Time.time >= time)
+        if (Time.time >= time)      //tiempo pasado para cambiar el ataque
         {
-            if(distancia > rangoAtaque)
+            if(distancia > rangoAtaque)        //si el jugador está lejos lanza granada
             {
-                anim.SetBool("attackGran", true);
+                anim.SetBool("attackGran", true);   //activar la animación de lanzar granada
                 anim.SetBool("attackLan", false); 
 
-                LanzarGranada();
+                LanzarGranada();    //lanzar granada al jugador
 
-                time = Time.time + cooldown;
+                time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
             else
             {
-                anim.SetBool("attackLan", true);
+                anim.SetBool("attackLan", true);    //activar la animacón de lanzallamas
                 anim.SetBool("attackGran", false);
 
-                Lanzallamas();
+                Lanzallamas();  //ataque lanzallamas
                 time = Time.time + cooldown;    //añadir un tiempo de enfriamiento para el siguiente ataque
             }
             return;
@@ -116,10 +115,10 @@ public class AtaqueJefe : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void FinGran()
+    /*public void FinGran()
     {
-        anim.SetBool("attackGran", false);
-    }
+        anim.SetBool("attackGran", false);      //terminar la animacion de granada para empezar otro ataque
+    }*/
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -135,7 +134,7 @@ public class AtaqueJefe : MonoBehaviour
             //añadir un origen y posicion del punto de ataque para granada
             GameObject granada = Instantiate(granadaPrefab, puntoAtaque.position, Quaternion.identity);
 
-            Rigidbody2D rb= granada.GetComponent<Rigidbody2D>();
+            Rigidbody2D rb= granada.GetComponent<Rigidbody2D>();    //poner una fisica a granada
 
             if (rb != null)
             {
@@ -143,23 +142,21 @@ public class AtaqueJefe : MonoBehaviour
                 float fuerzaX = direccion.x * vel;    //aplicar fuerza x
                 float fuerzaY = fuerzaVertical;     //fuerza vertical fija 
 
-            //arco de movimiento
-            rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
+                //arco de movimiento
+                rb.linearVelocity = new Vector2(fuerzaX, fuerzaY);
                 GranadaBoss explosion = granada.GetComponent<GranadaBoss>();    //aplicar direccion de granada tirada
-                explosion.SetDireccion(direccion, AudioGranada);
-        }
+                explosion.SetDireccion(direccion, AudioGranada);    //explosion y sonido para granada
+            }
     }
 
     private void Lanzallamas()
     {
-        offset = player.position - transform.position;
-        GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);
-        FuegoSFX.Play();
-        LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();
+        offset = player.position - transform.position;  //distancia entre jugador y jefe 
+        GameObject Fueguito = Instantiate(Fuego, puntoAtaque.position, puntoAtaque.rotation);       //aplicar el ataque
+        FuegoSFX.Play();    //activar el sonido para ataqe lanzallamas
+        LogicaFuego DireccionFuego = Fueguito.GetComponent<LogicaFuego>();      //asignar una dirrecion donde ataca
         DireccionFuego.Dir(offset);
     }
-    
-
     #endregion   
 
 } // class DisparoJefe 

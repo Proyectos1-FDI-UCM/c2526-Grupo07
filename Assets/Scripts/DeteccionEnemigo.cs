@@ -30,8 +30,8 @@ public class DeteccionEnemigo : MonoBehaviour
     [SerializeField] private float ChaseDis;    //distancia para perseguir
     [SerializeField] private float ShootDis;  //distancia para disparo
     [SerializeField] private float alturaMax; //altura max para detectar al jugador
-    [SerializeField] private GameObject excl;
-    [SerializeField] private LayerMask Interferencias;
+    [SerializeField] private GameObject excl;       //objeto que avisa la deteccion
+    [SerializeField] private LayerMask Interferencias;      //el objeto que separa para no detectar
 
     #endregion
 
@@ -44,7 +44,7 @@ public class DeteccionEnemigo : MonoBehaviour
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
     private float forgetTime = 3;   //tiempo para dejar de perseguir
-    private float time = 0;
+    private float time = 0;     //tiempo que está persiguiendo
     private MoveEnemigo move;   //script de movimiento de enemigo
     private EnemyShoot shoot;   //script de disparo de enemigo
     #endregion
@@ -69,15 +69,15 @@ public class DeteccionEnemigo : MonoBehaviour
     {
         move = GetComponent<MoveEnemigo>();
         shoot = GetComponent<EnemyShoot>();
-        excl.SetActive(false);
+        excl.SetActive(false);  //desactivar el objeto
     }
     void Update()
     {
-        float DirToPlayer = player.position.x - transform.position.x;   //dirección hacia el jugador
+        float DirToPlayer = player.position.x - transform.position.x;   //calcular la dirección donde está el jugador
 
-        float distanceX = Mathf.Abs(DirToPlayer);     //distancia entre jugador y enemigo
+        float distanceX = Mathf.Abs(DirToPlayer);     //valor absoluto de la distancia entre jugador y enemigo
         float distanciaY = Mathf.Abs(player.position.y - transform.position.y);  //altura entre jugador y enemigo
-        Vector2 offset = player.position - transform.position;
+        //Vector2 offset = player.position - transform.position;
         // Solo actúa si el jugador está en la dirección que mira
         //devolver la direccion correcta del jugador
         bool dirCambiada = (move.GetDirection() == 1 && DirToPlayer > 0) ||
@@ -90,26 +90,28 @@ public class DeteccionEnemigo : MonoBehaviour
         shoot.SetCanShoot(false);
         if (distanceX < ShootDis && !HayPared())   //jugador dentro de la "caja" pequeña
         {
+            //emieza a atacar al jugador
+            //deja de mover
             move.SetShooting(true);
             shoot.SetCanShoot(true);
 
-            excl.SetActive(true);
-            time = forgetTime;
+            excl.SetActive(true);   //se activa la señal de aviso, jugador detectada
+            time = forgetTime;  //se reinicia el tiempo en movimiento
         }
-        else if (distanceX < ChaseDis && distanceX > ShootDis && canSeePlayer)    //"caja" grande
+        else if (distanceX < ChaseDis && distanceX > ShootDis && canSeePlayer)    //jugador en "caja" grande
         {
-            move.SetChasing(true);
+            move.SetChasing(true);              //empieza a perseguir al jugador
 
-            excl.SetActive(true);
-            time = forgetTime;
+            excl.SetActive(true);       //se activa la señal de aviso, jugador detectada
+            time = forgetTime;      //cada vez se reinicia el tiempo en movimiento
         }
-        else //fuera de la distancia
+        else //fuera de la distancia, no ataca ni persigue, mueve automáticamente
         {
             excl.SetActive(true);
             time -= Time.deltaTime;     //si pasa el tiempo más de 3 segundos, deja de perseguir al jugador
             if (time <= 0)
             {
-                move.SetShooting(false);
+                move.SetShooting(false);    //desactivamos las acciones de deteccion
                 move.SetChasing(false);
                 shoot.SetCanShoot(false);
                 excl.SetActive(false);
@@ -119,9 +121,9 @@ public class DeteccionEnemigo : MonoBehaviour
     void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis * 2, ShootDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ShootDis * 2, ShootDis, 0));    //rojo en caja pequeña, desde la posicion central del enemigo
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis * 2, ChaseDis, 0));
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChaseDis * 2, ChaseDis, 0));    //amarillo en caja grande, tmb desde la posicion central del enemigo
     }
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -141,15 +143,15 @@ public class DeteccionEnemigo : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    private bool HayPared()
+    private bool HayPared()     //detectar si hay una pared que separa entre enemigo y jugador
     {
-        Vector2 direccion = (player.position - transform.position);
-        float distancia = Vector2.Distance(transform.position, player.position);
-        bool hayInterferencia = false;
+        Vector2 direccion = (player.position - transform.position);     //calculamos la direccion del jugador
+        float distancia = Vector2.Distance(transform.position, player.position);    //calcular distancia entre jugador y enemigo
+        bool hayInterferencia = false;      //hacemos un raycast con los datos anteriores para averiguar si hay una "pared"
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direccion, distancia, Interferencias);
         if (hit.collider != null)
         {
-            hayInterferencia = true;
+            hayInterferencia = true;    //si se colisiona con un objeto que no sea jugador, es una pared
         }
 
         return hayInterferencia;
