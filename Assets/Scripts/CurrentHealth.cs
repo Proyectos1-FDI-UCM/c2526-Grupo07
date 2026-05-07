@@ -88,6 +88,9 @@ public class CurrentHealth : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    /// <summary>
+    /// UsePotion is called to current health
+    /// </summary>
     private void UsePotion()
     {
         //jugador utiliza el botiquín
@@ -104,9 +107,6 @@ public class CurrentHealth : MonoBehaviour
         }
         else Debug.Log("ERROR: no hay consumible para utilizar");
     }
-    //private void OnTriggerEnter2D (Collider2D collision)
-    //{
-    //}
     #endregion   
 
 }// class CurrentHealth 

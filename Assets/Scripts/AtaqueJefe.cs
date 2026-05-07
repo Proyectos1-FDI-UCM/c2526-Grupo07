@@ -115,10 +115,6 @@ public class AtaqueJefe : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    /*public void FinGran()
-    {
-        anim.SetBool("attackGran", false);      //terminar la animacion de granada para empezar otro ataque
-    }*/
     #endregion
 
     // ---- MÉTODOS PRIVADOS ----
@@ -127,6 +123,9 @@ public class AtaqueJefe : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    /// <summary>
+    /// LanzarGranada is called to perform a parabolic launch and explode attack
+    /// </summary>
     private void LanzarGranada()
     {
             if (granadaPrefab == null || puntoAtaque == null || player == null) return;
@@ -148,7 +147,9 @@ public class AtaqueJefe : MonoBehaviour
                 explosion.SetDireccion(direccion, AudioGranada);    //explosion y sonido para granada
             }
     }
-
+    /// <summary>
+    /// Lanzallamas is called to perform a fire-throwing attack
+    /// </summary>
     private void Lanzallamas()
     {
         offset = player.position - transform.position;  //distancia entre jugador y jefe 

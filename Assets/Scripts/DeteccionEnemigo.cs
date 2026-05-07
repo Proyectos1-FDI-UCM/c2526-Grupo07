@@ -60,10 +60,6 @@ public class DeteccionEnemigo : MonoBehaviour
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
     /// </summary>
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
     #endregion
     void Start()
     {
@@ -71,6 +67,10 @@ public class DeteccionEnemigo : MonoBehaviour
         shoot = GetComponent<EnemyShoot>();
         excl.SetActive(false);  //desactivar el objeto
     }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
     void Update()
     {
         float DirToPlayer = player.position.x - transform.position.x;   //calcular la dirección donde está el jugador
@@ -118,6 +118,9 @@ public class DeteccionEnemigo : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// OnDrawGizmos implement if you want to draww gizmos that can also be selected and drawn automatically
+    /// </summary>
     void OnDrawGizmos()    // Visualización de distancias
     {
         Gizmos.color = Color.red;
@@ -142,7 +145,10 @@ public class DeteccionEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-
+    /// <summary>
+    /// HayPared is called to perform a raycast to see if there is a wall between the enemy and the player
+    /// </summary>
+    /// <returns></returns>
     private bool HayPared()     //detectar si hay una pared que separa entre enemigo y jugador
     {
         Vector2 direccion = (player.position - transform.position);     //calculamos la direccion del jugador

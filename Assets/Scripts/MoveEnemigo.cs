@@ -123,6 +123,9 @@ public class MoveEnemigo : MonoBehaviour
             _tiempoInicio = 0;      //reiniciamos el tiempo del movimiento
         }
     }
+    /// <summary>
+    /// MonoBehaviour class is enabled, if this function is called on every frame rate slide.
+    /// </summary>
     void FixedUpdate()
     {
         if (_anim != null)
@@ -140,6 +143,10 @@ public class MoveEnemigo : MonoBehaviour
         }
         else MovAuto();     //si no movimiento automatico
     }
+    /// <summary>
+    /// OnCollisionEnter2D is called when this collider 2D or rigidbody 2D starts touching another rigidbody
+    /// </summary>
+    /// <param name="collision"></param>
      void OnCollisionEnter2D(Collision2D collision)
      {
          //si se colisiona con un objeto(pared)
@@ -162,16 +169,26 @@ public class MoveEnemigo : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+    /// <summary>
+    /// GetDirection is called when return the direction of this enemy
+    /// </summary>
+    /// <returns></returns>
     public int GetDirection()
     {
         return _direction;   //devolver la direccion del enemigo para detectar con el jugador
     }
-
-    //devolver el valor booleano si está realizando esta acción
+    /// <summary>
+    /// SetChasing is called when return the boolean value if this action is being performed
+    /// </summary>
+    /// <param name="chasing"></param>
     public void SetChasing(bool chasing)
     {
         _isChasing = chasing;
     }
+    /// <summary>
+    /// SetShooting is called when return the boolean value if this action is being performed
+    /// </summary>
+    /// <param name="shooting"></param>
     public void SetShooting(bool shooting)
     {
         _isShooting = shooting;
@@ -184,10 +201,16 @@ public class MoveEnemigo : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    /// <summary>
+    /// Perseguir is called to perform a chasing movement
+    /// </summary>
     private void Perseguir()
     {
          _rb.linearVelocity = new Vector2(_direction * vel, _rb.linearVelocity.y);  //velocidad y direccion cuando persigue al jugador
     }
+    /// <summary>
+    /// MovAuto is called to perform an automatic movement
+    /// </summary>
     private void MovAuto()
     {
         _tiempoInicio += Time.deltaTime; //tiempo en movimiento para cambiar de sentido
@@ -214,7 +237,9 @@ public class MoveEnemigo : MonoBehaviour
             }
          }
     }
-
+    /// <summary>
+    /// CambioDireccion is called to change direction when looking elsewhere
+    /// </summary>
     private void CambioDireccion()
     {
         //cambiar la direccion del sprite del enemigo
