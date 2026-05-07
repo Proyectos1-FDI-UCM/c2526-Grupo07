@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     //cheat
     private bool cheatMode = false;
-    private bool cheatModeAux;
+    private bool cheatModeAux = false;
     private MenuManager menuManager;
 
     #endregion
@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
+        Debug.Log(cheatMode);
         if (_invulnerable)
         {
             _invulnerableTiempoInicial += Time.deltaTime; 
@@ -209,13 +210,17 @@ public class GameManager : MonoBehaviour
     /// destruído antes de tiempo.
     /// </summary>
     /// <returns>Cierto si hay instancia creada.</returns>
-  
+
     // activa el modo cheat donde el jugador tendrá vida infinita, munición infinita y granadas infinita
-    
+
+    public bool GetCheatModeForMenu()
+    {
+        return cheatMode;
+    }
     public bool GetCheatMode()
     {
         cheatMode = menuManager.GetCheat();
-        return cheatMode;
+        return cheatMode; 
     }
     public static bool HasInstance()
     {

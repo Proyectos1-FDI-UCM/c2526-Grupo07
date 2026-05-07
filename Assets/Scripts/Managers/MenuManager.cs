@@ -44,6 +44,10 @@ public class MenuManager : MonoBehaviour
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
+    public void Start()
+    {
+        cheatMode = GameManager.Instance.GetCheatModeForMenu();
+    }
     public void Update()
     {
         updateGUI();
@@ -60,7 +64,6 @@ public class MenuManager : MonoBehaviour
     public void SwitchCheatMode()
     {
         cheatMode = !cheatMode;
-       
     }
     public bool GetCheat()
     {

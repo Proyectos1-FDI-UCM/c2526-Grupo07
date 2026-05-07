@@ -234,18 +234,27 @@ public class LevelManager : MonoBehaviour
         if (IsFinalLevel)
         {
             SpriteEstrellas[2].SetActive(true);
-        }
-        else if (numRehenes == 0)
-        {
-            SpriteEstrellas[2].SetActive(true);
-        }
-        if (numRehenes < 2)
-        {
             SpriteEstrellas[1].SetActive(true);
+
+            if (timeTotal < TiempoLimite)
+            {
+                SpriteEstrellas[0].SetActive(true);
+            }
         }
-        if (timeTotal < TiempoLimite)
+        else
         {
-            SpriteEstrellas[0].SetActive(true);
+            if (numRehenes == 0)
+            {
+                SpriteEstrellas[2].SetActive(true);
+            }
+            if (numRehenes < 2)
+            {
+                SpriteEstrellas[1].SetActive(true);
+            }
+            if (timeTotal < TiempoLimite)
+            {
+                SpriteEstrellas[0].SetActive(true);
+            }
         }
 
         //Time.timeScale = 0;     //detener el tiempo
