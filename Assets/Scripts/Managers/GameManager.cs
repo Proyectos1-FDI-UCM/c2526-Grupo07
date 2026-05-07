@@ -446,11 +446,12 @@ public class GameManager : MonoBehaviour
     }
     private void updateGUI()
     {
+        /*
         if (cheatMode)
         {
             textCheat.text = "Cheat on";
         }
-        else { textCheat.text = "Cheat off"; }
+        else { textCheat.text = "Cheat off"; }*/
     }
     #endregion
 } // class GameManager 

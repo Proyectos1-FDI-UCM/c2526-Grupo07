@@ -54,6 +54,7 @@ public class TriggerCameraBlock : MonoBehaviour
     void Start()
     {
         Pared.gameObject.SetActive(false);
+        Boss.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -74,6 +75,7 @@ public class TriggerCameraBlock : MonoBehaviour
         {
             Camara.SalaBoss(ZonaBoss);
             Pared.gameObject.SetActive(true);
+            Boss.gameObject.SetActive(true);
         }
     }
     #endregion
