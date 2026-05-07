@@ -217,16 +217,17 @@ public class MoveEnemigo : MonoBehaviour
 
     private void CambioDireccion()
     {
-        //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        if (_direction == 1)
+        //cambiar la direccion del sprite del enemigo
+        //cambiando tambien la posicion de la salida de bala y el objeto de aviso
+        if (_direction == 1)    //en este caso no se cambia
         {
-            _spriteRenderer.flipX = false;
+            _spriteRenderer.flipX = false;  //no cambia si mira a la derecha
             salidaBala.transform.position = new Vector2(transform.position.x + 0.7f, transform.position.y);
             exl.transform.position = new Vector2(transform.position.x + 0.7f, transform.position.y + 0.6f);
         }
-        if (_direction == -1)
+        if (_direction == -1)   //cuando mira a la izq, se invierte la posicion de salidaBala y exls
         {
-            _spriteRenderer.flipX = true;
+            _spriteRenderer.flipX = true;   //cambia cuando mira a la izq
             salidaBala.transform.position = new Vector2(transform.position.x - 0.8f, transform.position.y);
             exl.transform.position = new Vector2(transform.position.x - 0.8f, transform.position.y + 0.6f);
         }
