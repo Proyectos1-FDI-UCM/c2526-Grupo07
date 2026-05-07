@@ -10,8 +10,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// la cámara que sigue el punto central entre el jugador y el mouse (horizontalmente), menos en las escenas con el boss
 /// </summary>
 public class FollowCamera : MonoBehaviour
 {
@@ -63,6 +62,9 @@ public class FollowCamera : MonoBehaviour
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Si no es una escena con el jefe, calcula la posición central entre el jugador (target) y el mouse (Apuntado)
+    /// Y desplaza su posición
+    /// En el otro caso, no se desplaza, se queda fijo en una posición donde se pueda ver el jefe y el jugador
     /// </summary>
     private void LateUpdate()
     {
@@ -96,14 +98,18 @@ public class FollowCamera : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-   
-    //deterina si es una sala con el boss (minijefe)
+
+    /// <summary>
+    /// deterina si es una sala con el boss (minijefe)
+    /// </summary>
     public void SalaBoss(Transform ZonaDeBoss)
     {
         SalaDeBoss = true;
         LugarBoss = ZonaDeBoss;
     }
-    // deeactivar / transformar en false la SalaDeBoss (otro script llama a este metodo)
+    /// <summary>
+    /// deeactivar / transformar en false la SalaDeBoss (otro script llama a este metodo)
+    /// </summary>
     public void UnableSalaBoss()
     {
         SalaDeBoss = false;

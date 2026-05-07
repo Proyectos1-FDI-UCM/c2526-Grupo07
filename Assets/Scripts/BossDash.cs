@@ -69,6 +69,9 @@ public class BossDash : MonoBehaviour
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Ejecuta el metodo Dash
+    /// Ejecuta la animacion del dash con las condiciones (estar dasheando)
+    /// Cambia la dirección del jefe para que mire al jugador todo el tiempo
     /// </summary>
     void Update()
     {
@@ -107,6 +110,14 @@ public class BossDash : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+
+    /// <summary>
+    /// Dash tiene dos temporizadores (los dos inicializados a 0), el primero es el cooldown, en ese tiempo no se mueve,
+    /// el segundo temporizador hace la acion de dash, moverse rápidamente a la otra esquina
+    /// al acabar la ación los temporizadores vuelven a ser igual a 0
+    /// Cambia la dirección del jefe para que mire al jugador todo el tiempo
+    /// tiene un booleando isDashing que determinasi esta en cooldown o en dash (estas variables serán utiles para la animación)
+    /// </summary>
     private void Dash()
     {
         float InitialG = rb.gravityScale;
@@ -140,7 +151,9 @@ public class BossDash : MonoBehaviour
             }
         }
     }
-    //metodo que hace que la entidad cambie de sentido 
+    /// <summary>
+    /// Método que hace que la entidad cambie de sentido 
+    /// </summary>
     private void CambioDireccion()
     {
         transform.localScale = new Vector3(dir*-1, 1, 1);

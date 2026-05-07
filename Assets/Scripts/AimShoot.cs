@@ -11,8 +11,9 @@ using UnityEngine.Rendering;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// dispara, lanza granadas, cambia de arma y recarga automaticamente, se usa a la entidad jugador.
+/// Además rota la posición de la pistola segun donde mire el mouse
+/// Y ejecuta las animaciones para la pistola y el rifle si cambia de arma
 /// </summary>
 public class AimShoot : MonoBehaviour
 {
@@ -127,6 +128,11 @@ public class AimShoot : MonoBehaviour
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Modifica la rotacion de la entidad para apuntar donde debe
+    /// ejecuta el metodo recarga si presiona el boton correspondiente
+    /// Cooldown de pistola: no se podrá lanzar continuamente la pistola
+    /// Ejecuta método disparar si presiona el boton correspondiente
+    /// ejecuta lanza granada si presiona el boton correspondiente: crea la granada, lo lanza según la posicion del cursor y ejecuta el metodo de explosión
     /// </summary>
     void Update()
     {
@@ -264,12 +270,17 @@ public class AimShoot : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
+    /// <summary>
+    /// dar a la camara la posicion del raton
+    /// </summary>
     public Vector3 MousePos() // dar a la camara la posicion del raton
     {
         return Camera.main.ScreenToWorldPoint(_mousePosition);
     }
 
-    //Método para cambiar de arma(lineal)
+    /// <summary>
+    /// Método para cambiar de arma(lineal)
+    /// </summary>
     public void CambioDeArma()
     {
         if (_armaActual == "Pistola")
@@ -292,8 +303,11 @@ public class AimShoot : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    
-    //Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
+
+    /// <summary>
+    /// Disparar==Crea una bala, resta la bala del cargador y reinicia el tiempo de disparo
+    /// ejecuta la animacion correspondiente
+    /// </summary>
     private void Disparar()
     {
         //Crea la bala en su posición de salida
@@ -323,7 +337,9 @@ public class AimShoot : MonoBehaviour
         _tiempoDisparo = 1f / Cadencia;
 
     }
-    //EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+    /// <summary>
+    /// EmpezarRecarga==Vuelve true a recargando y asigna el tiempo de recarga a "tiempoRecarga"
+    /// </summary>
     private void EmpezarRecarga()
     {
         _recargando = true;
@@ -340,7 +356,9 @@ public class AimShoot : MonoBehaviour
 
         SpriteRecarga.SetActive(true);
     }
-    //TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
+    /// <summary>
+    /// TerminarRecarga==Vuelve false a recargando y las balas actuales se llenan
+    /// </summary>
     private void TerminarRecarga()
     {
             _recargando = false;
@@ -349,7 +367,12 @@ public class AimShoot : MonoBehaviour
             Debug.Log("Balas: " + _balasActuales);
             SpriteRecarga.SetActive(false);
     }
-    //Método llamado si se cambia a la pistola
+    /// <summary>
+    /// Método llamado si se cambia a la pistola
+    /// cambia la animación (desactivar la animación del rifle)
+    /// Cambiar las recargas a las que tenia en esa arma
+    /// modificar el hud para que aparezca el sprite de pistola
+    /// </summary>
     private void SetPistola()
     {
         _anim.SetBool("Rifle", false); // desactivar la animacion del rifle para que se vea la animacion de pistola
@@ -365,7 +388,12 @@ public class AimShoot : MonoBehaviour
         SpritePistola.SetActive(true);
         SpriteRifle.SetActive(false);
     }
-    //Método llamado si se cambia al AK47
+    /// <summary>
+    /// Método llamado si se cambia al rifle
+    /// cambia la animación (activar la animación del rifle)
+    /// Cambiar las recargas a las que tenia en esa arma
+    /// modificar el hud para que aparezca el sprite de rifle
+    /// </summary>
     private void SetRifle()
     {
         if (GameManager.Instance.TieneAK47())

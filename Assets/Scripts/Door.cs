@@ -10,8 +10,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+///  Este script se ha creado para la entidad puerta, en la cual si el jugador colisiona con él llama al LM para saltar el panel de victoria
 /// </summary>
 public class Door : MonoBehaviour
 {
@@ -55,8 +54,12 @@ public class Door : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
-    // cuando el jugador colisiona con la puerta aparece el panel de victoria
+
+    /// <summary>
+    ///  Puerta es un trigger, se ejecuta cuando colisiona con una entidad con tag "player"
+    ///  Ejecuta el sonido de la puerta 
+    ///  // llama al gameManager para que aparezca el panel de victoria
+    /// </summary>
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player")) // Tag Typing
