@@ -5,6 +5,7 @@
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
+using System.Globalization;
 using UnityEngine;
 // Añadir aquí el resto de directivas using
 
@@ -24,6 +25,8 @@ public class ColisionDamage : MonoBehaviour
     // Ejemplo: MaxHealthPoints
     [SerializeField]
     private int Damage; //Daño que recibe el jugador al chocar
+    [SerializeField]
+    private LayerMask Jugador; //Capa de jugador
 
     #endregion
 
@@ -63,10 +66,14 @@ public class ColisionDamage : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController player = collision.GetComponent<PlayerController>();
-        if (player != null)
+        PlayerController Player = collision.gameObject.GetComponent<PlayerController>();
+        if (collision.gameObject.layer == Jugador)
         {
-            GameManager.Instance.RestarVida(Damage);
+            if (Player != null && !GameManager.Instance.Invulnerabilidad())
+            {
+                Player.RedFlash();
+                GameManager.Instance.RestarVida(Damage);
+            }
         }
     }
     #endregion

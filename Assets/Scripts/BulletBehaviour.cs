@@ -37,7 +37,7 @@ public class BulletBehaviour : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     private float _createBulletMoment; //Cuanto tiempo lleva la bala x creada
-    private Rigidbody2D _rb; //RigidBody para manipular la velocidad de la bala
+    private Rigidbody2D _rb;           //RigidBody para manipular la velocidad de la bala
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -54,28 +54,10 @@ public class BulletBehaviour : MonoBehaviour
     void Start()
     {
         _createBulletMoment = Time.time;
-
-        /*
-        if (aimVector != null)
-        {
-            Vector3 dir = aimVector.AimDir(); // Usa tu método existente
-            Vector2 dir2D = new Vector2(dir.x, dir.y).normalized;
-            rb.linearVelocity = dir2D * speed;
-
-            float length = Mathf.Sqrt(dir.x * dir.x + dir.y * dir.y);
-
-            // Evitar división por cero si el cursor esta encima del jugador, porque la magnitud es 0
-            if (length > 0.01f)
-            {
-                // Escalar para que la velocidad sea siempre sea la misma
-                float factor = speed / length;
-                Vector2 velocity = new Vector2(dir.x * factor, dir.y * factor);
-                rb.linearVelocity = velocity;
-            }
-        }*/
     }
     private void OnTriggerEnter2D(Collider2D colision)
     {
+        //Si colisiona con algo comprueba si es jugador u otra cosa
         if (colision != null)
         {
             Destruccion(colision);
@@ -87,6 +69,7 @@ public class BulletBehaviour : MonoBehaviour
     /// </summary>
     void Update()
     {
+        //Si pasa un tiempo determinado, la bala desaparece
         if (Time.time - _createBulletMoment > DestroyTime) //Destruccion si la bala pasa un tiempo determinado, si el Time.time - el momento creacion bala es mayor que su vida
         {
             Destroy(gameObject);
@@ -103,7 +86,9 @@ public class BulletBehaviour : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
-    //Método llamado por disparo y apuntado para determinar la dirección de la bala
+    /// <summary>
+    /// Método llamado por disparo y apuntado para determinar la dirección de la bala
+    /// </summary>
     public void Dir(Vector2 dir)
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -118,15 +103,17 @@ public class BulletBehaviour : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    
-    //Método llamado cuando hay colision, si choca con Player le resta vida y después destruye la bala
+
+    /// <summary>
+    /// Método llamado cuando hay colision, si choca con Player le resta vida y después destruye la bala
+    /// </summary>
     private void Destruccion(Collider2D colision)
     {
         PlayerController player = colision.gameObject.GetComponent<PlayerController>();
         EnemyHealth enemy = colision.gameObject.GetComponent<EnemyHealth>();
         if (player != null)
         {
-            //jugador no se puede disparar a si mismo
+            //Jugador no se puede disparar a si mismo
             if (gameObject.layer == LayerMask.NameToLayer("bala") && player.gameObject.layer == LayerMask.NameToLayer("Jugador"))
             { return; }
             else
@@ -139,6 +126,7 @@ public class BulletBehaviour : MonoBehaviour
                 }
             }
         }
+        //Si bala colisiona con enemigo, le resta vida
         else if (enemy != null)
         {
             enemy.EnemyHealthPoint(Damage);

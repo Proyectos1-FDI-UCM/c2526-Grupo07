@@ -85,6 +85,7 @@ public class HacerDaño : MonoBehaviour
         if (enemy != null)
         {
             enemy.EnemyHealthPoint(Daño);
+            enemy.RedFlash();
             cuchillo.SetActive(false);
         }
     }

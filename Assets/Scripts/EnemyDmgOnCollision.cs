@@ -24,6 +24,7 @@ public class EnemyDmgOnCollision : MonoBehaviour
     // Ejemplo: MaxHealthPoints
 
     [SerializeField] private int Damage; //Cantidad de daño que va a hacer
+    [SerializeField] private LayerMask playerLayer; //Capa de jugador
 
     #endregion
 
@@ -65,10 +66,13 @@ public class EnemyDmgOnCollision : MonoBehaviour
     {
         //Cuando colisiona (trigger) le inflige daño al jugador
         PlayerController Player = collision.gameObject.GetComponent<PlayerController>();
-        if (Player != null && !GameManager.Instance.Invulnerabilidad())
+        if (collision.gameObject.layer == playerLayer)
         {
-            Player.RedFlash();
-            GameManager.Instance.RestarVida(Damage);
+            if (Player != null && !GameManager.Instance.Invulnerabilidad())
+            {
+                Player.RedFlash();
+                GameManager.Instance.RestarVida(Damage);
+            }
         }
     }
     #endregion

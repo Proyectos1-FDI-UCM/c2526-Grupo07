@@ -88,7 +88,7 @@ public class MiniJefe : MonoBehaviour
                 _startTimeAtack = 0;
                 Debug.Log("Inicia el ataque");
             }
-            if (_now > _intervaloDisparos)
+            if (_now > _intervaloDisparos + 0.3f)
             {
                 DisparoLejos();
                 _now = 0;
@@ -196,6 +196,7 @@ public class MiniJefe : MonoBehaviour
         _rbFuego.gravityScale = 0f;
         _fuegoLogic.Dir(offset);
         _fuegoLogic.ModifyDestroyTime(5f);
+        SonidoFuego();
     }
     //Método para actualizar las animaciones del Mini Jefe
     private void Animaciones()

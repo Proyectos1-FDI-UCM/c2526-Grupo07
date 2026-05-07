@@ -2056,6 +2056,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 20
+  Jugador:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!61 &371554883
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4167,6 +4170,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 20
+  Jugador:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!61 &1061502702
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5795,6 +5801,10 @@ PrefabInstance:
       propertyPath: "Da\xF1o"
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 4018755460147447942, guid: 08889b12369dc2d49942f35569508076, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5130568479498740769, guid: 08889b12369dc2d49942f35569508076, type: 3}
       propertyPath: m_Name
       value: Player
@@ -6595,6 +6605,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 20
+  Jugador:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!61 &1634911750
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8271,6 +8284,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 20
+  Jugador:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!61 &1977443785
 BoxCollider2D:
   m_ObjectHideFlags: 0
