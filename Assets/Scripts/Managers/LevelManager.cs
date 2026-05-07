@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngineInternal;
 
 /// <summary>
 /// Componente que se encarga de la gestión de un nivel concreto.
@@ -259,11 +260,13 @@ public class LevelManager : MonoBehaviour
     public void Reiniciar()
     {
         Time.timeScale = 1;
+        GameManager.Instance.RestableceDatos();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void MenuInicial()
     {
         Time.timeScale = 1;
+        GameManager.Instance.RestableceDatos();
         SceneManager.LoadScene("Menu");
     }
     // metodo que hace pausar la escena
