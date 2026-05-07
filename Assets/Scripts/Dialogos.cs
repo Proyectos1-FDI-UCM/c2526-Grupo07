@@ -122,7 +122,6 @@ public class Dialogos : MonoBehaviour
     {
         _player = collision.gameObject.GetComponent<Animator>();
         _playerTouched = true;
-        Debug.Log("Fui brutalmente tocado");
     }
     #endregion
 
