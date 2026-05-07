@@ -157,7 +157,6 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
-        Debug.Log(cheatMode);
         if (_invulnerable)
         {
             _invulnerableTiempoInicial += Time.deltaTime; 
