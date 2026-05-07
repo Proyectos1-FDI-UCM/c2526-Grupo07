@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Manager que solo existe en el menu, esto solo da datos del cheat y los da al GM.
+// Responsable de la creación de este archivo: Xinying Xu
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -35,7 +35,7 @@ public class MenuManager : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private bool cheatMode;
+    private bool cheatMode; // booleano que determina y usa el cheat
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -46,10 +46,12 @@ public class MenuManager : MonoBehaviour
     // - Hay que borrar los que no se usen 
     public void Start()
     {
-        cheatMode = GameManager.Instance.GetCheatMode();
+        // dal el valor que tiene el gameManager
+        cheatMode = GameManager.Instance.GetCheatMode(); 
     }
     public void Update()
     {
+        // cambiar la letra del boton
         updateGUI();
     }
     #endregion
@@ -61,15 +63,15 @@ public class MenuManager : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+   
+    // cambia el valor del cheatMode
+    // este metodo se usará para el boton
     public void SwitchCheatMode()
     {
-        cheatMode = !cheatMode;
+        cheatMode = !cheatMode; 
+        //llamada al gameManager para dar el valor del CheatMode
         GameManager.Instance.SetCheatFromMM(cheatMode);
     }
-    //public bool GetCheat()
-    //{
-    //    return cheatMode;
-    //}
 
     #endregion
 
@@ -83,9 +85,9 @@ public class MenuManager : MonoBehaviour
     {
         if (cheatMode == true)
         {
-            textcheat.text = "Cheat on";
+            textcheat.text = "Cheat on"; // si esta activado
         }
-        else { textcheat.text = "Cheat off"; }
+        else { textcheat.text = "Cheat off"; } // si no esta activado
     }
 
     #endregion
