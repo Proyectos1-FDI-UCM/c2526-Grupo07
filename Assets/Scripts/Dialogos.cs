@@ -34,6 +34,7 @@ public class Dialogos : MonoBehaviour
     [SerializeField] private float TimeToDialogueStart = 1f;
     [SerializeField] private AudioSource ImpactoSound;
     [SerializeField] private AudioSource GraciosoSound;
+    [SerializeField] private AudioSource Beep;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -179,6 +180,7 @@ public class Dialogos : MonoBehaviour
     {
         if (_dialogosVistos < _emisor.Length)
         {
+            if (Beep != null) Beep.Play();
             if (_sonido[_dialogosVistos] == _emociones[1]) ImpactoSound.Play();
             else if (_sonido[_dialogosVistos] == _emociones[2]) GraciosoSound.Play();
             TextoNames.text = _emisor[_dialogosVistos];
