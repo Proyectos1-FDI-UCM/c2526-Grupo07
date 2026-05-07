@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3230102790133190997}
   - component: {fileID: 2315549344003700901}
   - component: {fileID: 5012920556556885833}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FuegoMiniBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
