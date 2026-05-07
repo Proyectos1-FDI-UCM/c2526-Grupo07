@@ -30,6 +30,8 @@ public class BossDash : MonoBehaviour
 
     [SerializeField] private Transform player;  // posicion del player
     [SerializeField] private AudioSource sonidoDash; // sonido que hace al ejecutar el dash
+    [SerializeField] private SpriteRenderer SpriteJefe;
+    [SerializeField] private Transform salidaBala;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -43,7 +45,7 @@ public class BossDash : MonoBehaviour
     private float Timer; // tiempo que empieza desde 0
     private float Timer2;
     private Rigidbody2D rb;
-    private int dir = -1;
+    private int dir = 1;
     private bool isDashing = false; // determina si el jugador esta dasheando o no (este es util para la animacion)
 
     private Animator _anim; //animacion de dash
@@ -65,6 +67,7 @@ public class BossDash : MonoBehaviour
         Timer = 0;
         rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
+        SpriteJefe = GetComponent<SpriteRenderer>();
     }
 
     /// <summary>
@@ -142,9 +145,7 @@ public class BossDash : MonoBehaviour
                 //dashear
                 rb.linearVelocity = new Vector2(dir * DashPower, rb.linearVelocity.y);
                 //cambiar de sentido
-                Vector2 scale = transform.localScale;
-                scale.x = Mathf.Sign(dir) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
+                CambioDireccion();
 
                 //vuelve a sincronizar el tiempo
                 Timer = 0; Timer2 = 0;   
@@ -152,11 +153,21 @@ public class BossDash : MonoBehaviour
         }
     }
     /// <summary>
-    /// Método que hace que la entidad cambie de sentido 
+    /// Método que hace que la entidad cambie de sentido (no la entidad sino solo el sprite)
     /// </summary>
     private void CambioDireccion()
     {
-        transform.localScale = new Vector3(dir*-1, 1, 1);
+        if (dir == -1)    //en este caso no se cambia
+        {
+            SpriteJefe.flipX = false;  //no cambia si mira a la derecha
+            salidaBala.transform.position = new Vector2(transform.position.x + 0.7f, transform.position.y);
+        }
+        if (dir == 1)   //cuando mira a la izq, se invierte la posicion de salidaBala y exls
+        {
+            SpriteJefe.flipX = true;   //cambia cuando mira a la izq
+            salidaBala.transform.position = new Vector2(transform.position.x - 0.8f, transform.position.y);
+            
+        }
     }
     #endregion   
 
