@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int MaxGranadas;    //Cantidad máx de granadas
     [SerializeField] private int MaxBotiquin;    //Cantidad máx de botiquines
     [SerializeField] private int MaxVidaInicial; //Vida máxima del jugador
-    [SerializeField] private TextMeshProUGUI textCheat; // texto para decir si esta activado el cheat 
 
     #endregion
 
@@ -87,6 +86,7 @@ public class GameManager : MonoBehaviour
     //cheat
     private bool cheatMode = false;
     private bool cheatModeAux;
+    private MenuManager menuManager;
 
     #endregion
 
@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        menuManager = FindAnyObjectByType<MenuManager>();
         TransferManagerSetup();
     }
 
@@ -181,7 +182,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        updateGUI();
     }
     #endregion
 
@@ -211,12 +211,10 @@ public class GameManager : MonoBehaviour
     /// <returns>Cierto si hay instancia creada.</returns>
   
     // activa el modo cheat donde el jugador tendrá vida infinita, munición infinita y granadas infinita
-    public void ActivateCheatMode()
-    {
-        cheatMode = !cheatMode;
-    }
+    
     public bool GetCheatMode()
     {
+        cheatMode = menuManager.GetCheat();
         return cheatMode;
     }
     public static bool HasInstance()
@@ -443,14 +441,6 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         // De momento no hay nada que inicializar
-    }
-    private void updateGUI()
-    {
-        if (cheatMode)
-        {
-            textCheat.text = "Cheat on";
-        }
-        else { textCheat.text = "Cheat off"; }
     }
     #endregion
 } // class GameManager 
