@@ -235,7 +235,6 @@ public class AimShoot : MonoBehaviour
                         GameObject newGranada = Instantiate(Granada, transform.position, transform.rotation);
                         Explosion bomba = newGranada.GetComponent<Explosion>();
                         bomba.SetDireccion(_direction, AudioGranada);
-                        AudioGranada.Play();
                     }
                 }
             }
