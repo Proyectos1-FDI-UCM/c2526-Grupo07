@@ -14,6 +14,8 @@ Al principio del juego el jugador puede usar armas como la pistola, que tiene l�
 ### Uso de objetos
 El jugador podrá obtener objetos durante el juego y usarlos, como puede ser la granada, que al pulsar la tecla “f” se podrá lanzar parabolicamente una granada o el botiquín que recupera la vida del jugador mediante el teclado de cambiar la selección de objetos.
 Estos objetos son limitados, con lo cual el jugador solo podrá tener como máximo 3 de cada uno de los objetos, si el jugador carece de los objetos no los podrá usar.
+## KNOWN ISSUES
+Es posible ver que los marcos de la barra de vida y algunos sprites aparezcan sobre los paneles de vicotoria derrota o pausa y también sobre el HUD.
 ## CRÉDITOS
 ### Miembros del grupo
 - Zimin Chen
