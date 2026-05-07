@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer SpriteJugador; //Sprite del jugador
     [SerializeField] private SpriteRenderer SpriteCuchillo;//Sprite del cuchillo
     [SerializeField] private TextMeshProUGUI TextCuchillo; //Couldown de cuchillo
+    [SerializeField] private Animator CuchilloAnimation;   //Animación del cuchillo
+    [SerializeField] private SpriteRenderer CuchilloSprite;//Sprite del cuchillo
 
     //Sonido
     [SerializeField] private AudioSource[] soundMove; //Sonido Movimiento
@@ -106,7 +108,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    private int _consumibleActual = 0; //En que consumible se esta
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
 
@@ -143,7 +144,7 @@ public class PlayerController : MonoBehaviour
             //Activar animación de cuchillo
             if (_anim != null)
             {
-                if (!_anim.GetBool("isAttacking"))
+                if (!CuchilloAnimation.GetBool("isAttacking"))
                 {
                     if (_cuchillo < CooldownChuchillo)
                     {
@@ -318,7 +319,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Moverse()
     {
-        if (_anim == null || !_anim.GetBool("isAttacking"))
+        if (_anim == null || !CuchilloAnimation.GetBool("isAttacking"))
         {
             float horizontalInput = InputManager.Instance.MovementVector.x;
 
@@ -337,8 +338,8 @@ public class PlayerController : MonoBehaviour
             if (SpriteJugador != null && horizontalInput != 0)
             {
                 SpriteJugador.flipX = horizontalInput < 0;
+                CuchilloSprite.flipX = horizontalInput < 0;
                 _lookingRight = horizontalInput > 0;
-
             }
             if (_isDashing == false)
             {
@@ -378,7 +379,7 @@ public class PlayerController : MonoBehaviour
             SpriteCuchillo.color = _originalKnifeColor;
         }
 
-        if (InputManager.Instance.KnifeWasPressedThisFrame() && _cuchillo >= CooldownChuchillo && !_anim.GetBool("isAttacking"))
+        if (InputManager.Instance.KnifeWasPressedThisFrame() && _cuchillo >= CooldownChuchillo && !CuchilloAnimation.GetBool("isAttacking"))
         {
             //Activar hitbox PRIMERO
             if (HitboxCuchillo != null)
@@ -388,7 +389,7 @@ public class PlayerController : MonoBehaviour
             SpriteCuchillo.color = new Color32(255, 80, 80, 255);
             soundCuchillo.Play();
             //Activar animación
-            _anim.SetBool("isAttacking", true);
+            CuchilloAnimation.SetBool("isAttacking", true);
             _coolDownCuchillo = 0f;
         }
     }
@@ -397,7 +398,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void DesCuchillo() 
     {
-        if (_anim != null && _anim.GetBool("isAttacking"))
+        if (_anim != null && CuchilloAnimation.GetBool("isAttacking"))
         {
             _coolDownCuchillo += Time.deltaTime;
 
@@ -411,7 +412,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 //Desactivar animación de ataque
-                _anim.SetBool("isAttacking", false);
+                CuchilloAnimation.SetBool("isAttacking", false);
                 _coolDownCuchillo = 0f;
             }
         }

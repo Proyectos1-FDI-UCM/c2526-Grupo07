@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Este script se ha creado para la entidad puerta, en la cual si el jugador colisiona con él llama al LM para saltar el panel de victoria
+// Responsable de la creación de este archivo: Xinying Xu
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -10,8 +10,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+///  Este script se ha creado para la entidad puerta, en la cual si el jugador colisiona con él llama al LM para saltar el panel de victoria
 /// </summary>
 public class Door : MonoBehaviour
 {
@@ -22,8 +21,8 @@ public class Door : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] GameObject player;
-    [SerializeField]public AudioSource DoorFX;
+   
+    [SerializeField] public AudioSource DoorFX; // sonido de la puerta
 
     #endregion
 
@@ -44,23 +43,6 @@ public class Door : MonoBehaviour
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before 
-    /// any of the Update methods are called the first time.
-    /// </summary>
-    void Start()
-    {
-        
-    }
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void Update()
-    {
-        
-    }
     #endregion
 
     // ---- MÉTODOS PÚBLICOS ----
@@ -72,21 +54,18 @@ public class Door : MonoBehaviour
     // Ejemplo: GetPlayerController
 
     #endregion
-    
+
+    /// <summary>
+    ///  Puerta es un trigger, se ejecuta cuando colisiona con una entidad con tag "player"
+    ///  Ejecuta el sonido de la puerta 
+    ///  // llama al gameManager para que aparezca el panel de victoria
+    /// </summary>
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        //player = collision.gameObject;
-        //PlayerController PC = player.GetComponent<PlayerController>();
-        //LevelManager LM = GetComponent<LevelManager>();
-        /*if (PC != null)
+        if (collision.CompareTag("Player")) // Tag Typing
         {
-            LM.Victoria();
-            Debug.Log("entrar");
-        }*/
-        if (collision.CompareTag("Player"))
-        {
-            DoorFX.Play();
-            LevelManager.Instance.Victoria();
+            DoorFX.Play(); // ejecutar sonido
+            LevelManager.Instance.Victoria(); // llamada a LevelManager para que salte el panel de victoria
         }
     }
     // ---- MÉTODOS PRIVADOS ----

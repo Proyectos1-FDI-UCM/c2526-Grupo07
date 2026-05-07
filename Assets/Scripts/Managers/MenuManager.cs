@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Manager que solo existe en el menu, esto solo da datos del cheat y los da al GM (gameManager).
+// Responsable de la creación de este archivo: Xinying Xu
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -11,8 +11,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// Manager que solo existe en el menu, esto solo da datos del cheat para que los reciva el GM.
 /// </summary>
 public class MenuManager : MonoBehaviour
 {
@@ -35,7 +34,7 @@ public class MenuManager : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private bool cheatMode;
+    private bool cheatMode; // booleano que determina y usa el cheat
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -44,13 +43,23 @@ public class MenuManager : MonoBehaviour
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before 
+    /// any of the Update methods are called the first time.
+    /// </summary>
     public void Start()
     {
-        cheatMode = GameManager.Instance.GetCheatMode();
+        // dal el valor que tiene el gameManager
+        cheatMode = GameManager.Instance.GetCheatMode(); 
     }
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Ejecuta el método updateGUI
+    /// </summary>
     public void Update()
     {
-        updateGUI();
+        // cambiar la letra del boton
+        UpdateGUI();
     }
     #endregion
 
@@ -61,15 +70,18 @@ public class MenuManager : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
+    /// <summary>
+    /// cambia el valor del cheatMode
+    /// este método se usará para el botón
+    /// Además se llamará al gameManager para que tenga el booleano CheatMode
+    /// </summary>
     public void SwitchCheatMode()
     {
-        cheatMode = !cheatMode;
+        cheatMode = !cheatMode; 
+        //llamada al gameManager para dar el valor del CheatMode
         GameManager.Instance.SetCheatFromMM(cheatMode);
     }
-    //public bool GetCheat()
-    //{
-    //    return cheatMode;
-    //}
 
     #endregion
 
@@ -79,13 +91,18 @@ public class MenuManager : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void updateGUI()
+    /// <summary>
+    /// Cambia la letra del botón
+    /// Si cheatMode es true la letra cambia a "Cheat on"
+    /// Y lo contrarion, si cheatMode es false en el botón pondrá "Cheat off"
+    /// </summary>
+    private void UpdateGUI()
     {
         if (cheatMode == true)
         {
-            textcheat.text = "Cheat on";
+            textcheat.text = "Cheat on"; // si esta activado
         }
-        else { textcheat.text = "Cheat off"; }
+        else { textcheat.text = "Cheat off"; } // si no esta activado
     }
 
     #endregion

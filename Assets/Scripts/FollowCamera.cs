@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Script para la cámara que sigue el punto central entre el jugador y el mouse (horizontalmente)
+// Responsable de la creación de este archivo: Izan Vázquez
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -10,8 +10,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Antes de cada class, descripción de qué es y para qué sirve,
-/// usando todas las líneas que sean necesarias.
+/// la cámara que sigue el punto central entre el jugador y el mouse (horizontalmente), menos en las escenas con el boss
 /// </summary>
 public class FollowCamera : MonoBehaviour
 {
@@ -63,21 +62,28 @@ public class FollowCamera : MonoBehaviour
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Si no es una escena con el jefe, calcula la posición central entre el jugador (target) y el mouse (Apuntado)
+    /// Y desplaza su posición
+    /// En el otro caso, no se desplaza, se queda fijo en una posición donde se pueda ver el jefe y el jugador
     /// </summary>
     private void LateUpdate()
     {
+        //si no esta en una escena con un boss
         if (!SalaDeBoss)
         {
-            Vector3 Apunt = Apuntado.MousePos();
+            //calculo para determinar la posicion de la camara
+            Vector3 Apunt = Apuntado.MousePos(); // posicion del mouse
             Vector3 direccionRaton = Apunt - target.position;
             Vector3 late = (Apunt - transform.position) / 2;
             Vector3 offset = Vector3.ClampMagnitude(direccionRaton / 2f, DistanciaMaxima); //Clampea la camara a una distancia del jugador
             Vector3 Objetivo = new Vector3(target.position.x + offset.x, PosY + 3.6f, PosZ);
+            //Suavizar el movimiento de la cámara
             transform.position = Vector3.Lerp(transform.position, Objetivo, Suavidad);
         }
+        // si esta en una escana con un boss (minijefe)
         else
         {
-            Vector3 ObjetivoBoss = LugarBoss.position;
+            //Vector3 ObjetivoBoss = LugarBoss.position;
             Vector3 Pos = transform.position;
             Pos.x = LugarBoss.position.x;
             transform.position = Vector3.Lerp(transform.position, Pos, 0.05f);
@@ -92,16 +98,18 @@ public class FollowCamera : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
-    public void ShakeCamera()
-    {
-        transform.position += Vector3.Lerp(transform.position, new Vector3(1, 0, 0), Suavidad);
-        transform.position += Vector3.Lerp(transform.position, new Vector3(-1, 0, 0), Suavidad);
-    }
+
+    /// <summary>
+    /// deterina si es una sala con el boss (minijefe)
+    /// </summary>
     public void SalaBoss(Transform ZonaDeBoss)
     {
         SalaDeBoss = true;
         LugarBoss = ZonaDeBoss;
     }
+    /// <summary>
+    /// deeactivar / transformar en false la SalaDeBoss (otro script llama a este metodo)
+    /// </summary>
     public void UnableSalaBoss()
     {
         SalaDeBoss = false;

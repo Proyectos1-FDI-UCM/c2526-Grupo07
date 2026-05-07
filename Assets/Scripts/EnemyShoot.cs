@@ -1,13 +1,12 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Se enfoca en buscar al jugador y disparar balas contra él en su posición
+// Zimin Chen
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
-using System.Diagnostics.CodeAnalysis;
+
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 // Añadir aquí el resto de directivas using
 
 
@@ -24,18 +23,16 @@ public class EnemyShoot : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private Transform Target; //La posición del jugador
-    [SerializeField]
-    private GameObject PrefabBullet;
-    [SerializeField]
-    private float MaxBalasPorSeg = 3;
-    [SerializeField]
-    private float HoraDisparo;
-    [SerializeField]
-    private Transform SalidaBala;
-    [SerializeField]
-    private AudioSource SonidoDisparo;
+
+    //Jugador
+    [SerializeField] private Transform Target; //La posición del jugador
+
+    //Bala
+    [SerializeField] private GameObject PrefabBullet;  //Prefab de bala
+    [SerializeField] private float MaxBalasPorSeg = 3; //Máxima cantidad de balas que dispara por segundo
+    [SerializeField] private Transform SalidaBala;     //Sitio por donde sala la bala
+    [SerializeField] private AudioSource SonidoDisparo;//Sonido de disparo
+
 
     #endregion
 
@@ -47,12 +44,11 @@ public class EnemyShoot : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private float minInterval;
-    private bool _canShoot;
-    private float _now;
-    Vector2 offset; //Calcula el vector entre la posición del jugador y la del enemigo
 
-    private MoveEnemigo move;
+    private float _now;        //Registra el tiempo actual
+    private Vector2 _offset;   //Calcula el vector hacia el jugador
+    private float minInterval; //Intervalo minimo entre un disparo de bala y otra
+    private bool _canShoot;    //Indica cuando se puede disparar
 
     #endregion
 
@@ -69,8 +65,8 @@ public class EnemyShoot : MonoBehaviour
     /// </summary>
     void Start()
     {
+        //Se indica el intervalo minimo en función de las balas máximas por segundo
         minInterval = 1.0f / MaxBalasPorSeg;
-        move = GetComponent<MoveEnemigo>();
     }
 
     /// <summary>
@@ -81,14 +77,20 @@ public class EnemyShoot : MonoBehaviour
         if (_canShoot)
         {
             _now += Time.deltaTime;
+            //Dispara bala si supera el intervalo
             if (_now > minInterval)
             {
                 //Guardo en offset la direccion entre el objeto y el target
-                offset = Target.position - transform.position;
+                _offset = Target.position - transform.position; 
+
+                //Instancia una bala hacia el offset
                 GameObject nuevaBala = Instantiate(PrefabBullet, SalidaBala.position, transform.rotation);
                 BulletBehaviour balaDir = nuevaBala.GetComponent<BulletBehaviour>();
-                balaDir.Dir(offset);
+                balaDir.Dir(_offset);
+
+                //Sonido
                 SonidoDisparo.Play();
+
                 _now = 0;
             }
         }
@@ -103,6 +105,9 @@ public class EnemyShoot : MonoBehaviour
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
 
+    /// <summary>
+    /// Activa y desactiva el poder disparar.
+    /// </summary>
     public void SetCanShoot(bool canShoot)
     {
         _canShoot = canShoot; 
@@ -114,10 +119,6 @@ public class EnemyShoot : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
-    private void CambioDir()
-    {
-        transform.position = new Vector2(-transform.position.x,transform.position.y);
-    }
     #endregion   
 } // class EnemyShoot 
 // namespace

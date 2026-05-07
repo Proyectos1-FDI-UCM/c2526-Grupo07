@@ -23,8 +23,8 @@ public class CurrentHealth : MonoBehaviour
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
     [SerializeField] private int health;    //cantidad de vida que cura
-    [SerializeField] private GameObject ParticulasCura;
-    [SerializeField] private GameObject botiquin; 
+    [SerializeField] private GameObject ParticulasCura;     //particula cuando cura de vida
+    [SerializeField] private GameObject botiquin;       //objeto para la curacion de vida
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -62,13 +62,13 @@ public class CurrentHealth : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(!LevelManager.Instance.IsPaused())
+        if(!LevelManager.Instance.IsPaused())   //cuando está jugando y utilizas el botiquin de cura vida
         {
             if (InputManager.Instance.UseObjectWasPressedThisFrame() && !cheatMode)
             {
                 UsePotion();
             }
-            PotionCount = GameManager.Instance.CantidadBotiquines();
+            PotionCount = GameManager.Instance.CantidadBotiquines();    //al recoger suma la cantidad de botiquin
         }
     }
     #endregion
@@ -88,25 +88,24 @@ public class CurrentHealth : MonoBehaviour
     // El convenio de nombres de Unity recomienda que estos métodos
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
+    /// <summary>
+    /// UsePotion is called to current health
+    /// </summary>
     private void UsePotion()
     {
         //jugador utiliza el botiquín
-        //cura una cantidad de vida determinada
         //desaparece el botiquin utilizado
         if (PotionCount > 0 && GameManager.Instance.UsandoBotiquines())
         {
-            PotionCount--;
-            GameManager.Instance.CurarVida(health);
-            GameManager.Instance.UsarBotiquin();
-            if (ParticulasCura != null)
+            PotionCount--;  //se quita la cantidad de botiquin utilizado
+            GameManager.Instance.CurarVida(health); //llama al metodo que cura una cantidad de vida determinada
+            GameManager.Instance.UsarBotiquin();    //llama al método que controla el uso de botiquin
+            if (ParticulasCura != null)     //aparece las partículas de curación
             {
                 Instantiate(ParticulasCura, transform.position, Quaternion.identity, transform);
             }
         }
         else Debug.Log("ERROR: no hay consumible para utilizar");
-    }
-    private void OnTriggerEnter2D (Collider2D collision)
-    {
     }
     #endregion   
 

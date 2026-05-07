@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Script que convierte la camara y prepara una escena para combate de boss
+// Zimin Chen
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -22,10 +22,10 @@ public class TriggerCameraBlock : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField] private FollowCamera Camara;
-    [SerializeField] private Transform ZonaBoss;
-    [SerializeField] private Transform Pared;
-    [SerializeField] private GameObject Boss;
+    [SerializeField] private FollowCamera Camara; //Recoge la camara para que esta se bloquee y dejé de seguir al jugador
+    [SerializeField] private Transform ZonaBoss;  //Asigna una posición para que la camara permanezca ahi
+    [SerializeField] private Transform Pared;     //Poner paredes en los laterales para que el jugador no se salga
+    [SerializeField] private GameObject Boss;     //Quitar las paredes si el boss muere
 
     #endregion
 
@@ -62,6 +62,7 @@ public class TriggerCameraBlock : MonoBehaviour
     /// </summary>
     void Update()
     {
+        //Cuando muere el boss la pared desaparece y la camara se desbloquea
         if (Boss == null)
         {
             Pared.gameObject.SetActive(false);
@@ -70,6 +71,7 @@ public class TriggerCameraBlock : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Si el jugador cruza por el trigger se activa la zona de boss
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null)
         {

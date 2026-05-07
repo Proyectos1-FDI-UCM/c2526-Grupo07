@@ -1,7 +1,7 @@
 //---------------------------------------------------------
-// Breve descripción del contenido del archivo
-// Responsable de la creación de este archivo
-// Nombre del juego
+// Cuando el objeto con este script y el jugador colisionan, inflige daño al jugador
+// Zimin Chen
+// Clear The Building
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
 
@@ -22,10 +22,11 @@ public class EnemyDmgOnCollision : MonoBehaviour
     // públicos y de inspector se nombren en formato PascalCase
     // (palabras con primera letra mayúscula, incluida la primera letra)
     // Ejemplo: MaxHealthPoints
-    [SerializeField]
-    private int Damage;
+
+    [SerializeField] private int Damage; //Cantidad de daño que va a hacer
+
     #endregion
-    
+
     // ---- ATRIBUTOS PRIVADOS ----
     #region Atributos Privados (private fields)
     // Documentar cada atributo que aparece aquí.
@@ -36,14 +37,14 @@ public class EnemyDmgOnCollision : MonoBehaviour
     // Ejemplo: _maxHealthPoints
 
     #endregion
-    
+
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
     #region Métodos de MonoBehaviour
-    
+
     // Por defecto están los típicos (Update y Start) pero:
     // - Hay que añadir todos los que sean necesarios
     // - Hay que borrar los que no se usen 
-    
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before 
     /// any of the Update methods are called the first time.
@@ -62,6 +63,7 @@ public class EnemyDmgOnCollision : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
+        //Cuando colisiona (trigger) le inflige daño al jugador
         PlayerController Player = collision.gameObject.GetComponent<PlayerController>();
         if (Player != null && !GameManager.Instance.Invulnerabilidad())
         {
