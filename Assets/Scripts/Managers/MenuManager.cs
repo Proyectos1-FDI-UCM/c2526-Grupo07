@@ -35,7 +35,7 @@ public class MenuManager : MonoBehaviour
     // primera palabra en minúsculas y el resto con la 
     // primera letra en mayúsculas)
     // Ejemplo: _maxHealthPoints
-    private bool cheatMode = false;
+    private bool cheatMode;
     #endregion
 
     // ---- MÉTODOS DE MONOBEHAVIOUR ----
@@ -46,7 +46,7 @@ public class MenuManager : MonoBehaviour
     // - Hay que borrar los que no se usen 
     public void Start()
     {
-        cheatMode = GameManager.Instance.GetCheatModeForMenu();
+        cheatMode = GameManager.Instance.GetCheatMode();
     }
     public void Update()
     {
@@ -64,11 +64,12 @@ public class MenuManager : MonoBehaviour
     public void SwitchCheatMode()
     {
         cheatMode = !cheatMode;
+        GameManager.Instance.SetCheatFromMM(cheatMode);
     }
-    public bool GetCheat()
-    {
-        return cheatMode;
-    }
+    //public bool GetCheat()
+    //{
+    //    return cheatMode;
+    //}
 
     #endregion
 
@@ -80,7 +81,6 @@ public class MenuManager : MonoBehaviour
     // mayúscula, incluida la primera letra)
     private void updateGUI()
     {
-        Debug.Log(cheatMode);
         if (cheatMode == true)
         {
             textcheat.text = "Cheat on";

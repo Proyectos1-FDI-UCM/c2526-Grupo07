@@ -84,8 +84,8 @@ public class GameManager : MonoBehaviour
     private int _cinematicaSiguiente = 1;
 
     //cheat
-    private bool cheatMode = false;
-    private bool cheatModeAux = false;
+    private bool cheatMode;
+    private bool cheatModeAux;
     private MenuManager menuManager;
 
     #endregion
@@ -131,6 +131,7 @@ public class GameManager : MonoBehaviour
         } // if-else somos instancia nueva o no. 
         _vidaActual = MaxVidaInicial;
         _usandoGranadas = true;
+        cheatMode = false;
     }
 
     /// <summary>
@@ -183,6 +184,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        
     }
     #endregion
 
@@ -213,14 +215,13 @@ public class GameManager : MonoBehaviour
 
     // activa el modo cheat donde el jugador tendrá vida infinita, munición infinita y granadas infinita
 
-    public bool GetCheatModeForMenu()
-    {
-        return cheatMode;
-    }
     public bool GetCheatMode()
     {
-        cheatMode = menuManager.GetCheat();
         return cheatMode; 
+    }
+    public void SetCheatFromMM(bool cheat)
+    {
+        cheatMode = cheat;
     }
     public static bool HasInstance()
     {
@@ -404,7 +405,6 @@ public class GameManager : MonoBehaviour
         _granadas = _granadasAux;
         _botiquines = _botiquinesAux;
         _vidaActual = _vidaActualAux;
-        cheatMode = cheatModeAux;
     }
     //Metodo para guardar los datos del inicio del nivel
     public void GuardarDatos(int escena)
@@ -422,7 +422,6 @@ public class GameManager : MonoBehaviour
         _granadasAux = _granadas;
         _botiquinesAux = _botiquines;
         _vidaActualAux = _vidaActual;
-        cheatModeAux = cheatMode;
     }
 
     public int CinematicaActual()
