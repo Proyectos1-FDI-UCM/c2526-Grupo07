@@ -1,6 +1,6 @@
 //---------------------------------------------------------
 // Es uno de los ataques del jefe, en la cual cada cierto tiempo hace dash de una esquina a otra
-// Responsable de la creación de este archivo
+// Responsable de la creación de este archivo: Xinying Xu
 // Nombre del juego
 // Proyectos 1 - Curso 2025-26
 //---------------------------------------------------------
