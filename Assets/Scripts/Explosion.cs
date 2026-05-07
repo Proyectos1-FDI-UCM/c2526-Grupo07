@@ -115,6 +115,12 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
     // Ejemplo: GetPlayerController
+
+    /// <summary>
+    /// Guarda el AudioSource dado y determina la dirección según el dir ofrecido
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="sonido"></param>
     public void SetDireccion(Vector3 dir, AudioSource sonido)
     {
         _audioGranada = sonido;
@@ -130,8 +136,10 @@ public class Explosion : MonoBehaviour
     // se nombren en formato PascalCase (palabras con primera letra
     // mayúscula, incluida la primera letra)
 
-    //Explotar==Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada,
-    //solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
+    /// <summary>
+    /// Explotar==Crea una lista con los objetos dentro del radio de la granada, si estos tiene EnemyHealth o PlayerController, les causará el daño de la granada,
+    /// solo si el RayCast no detecta algún objeto con el tag "Pared" antes que al enemigo
+    /// </summary>
     private void Explotar()
     {
         _destruida = true; //Explotó
@@ -198,7 +206,9 @@ public class Explosion : MonoBehaviour
 
     }
 
-    //Dibuja el radio de la granada en el inspector
+    /// <summary>
+    /// Dibuja el radio de la granada en el inspector
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
