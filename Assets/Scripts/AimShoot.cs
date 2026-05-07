@@ -42,7 +42,6 @@ public class AimShoot : MonoBehaviour
     //Sprites armas
     [SerializeField] private GameObject SpritePistola; //Sprite para la pistola
     [SerializeField] private GameObject SpriteRifle;   //Sprite para el rifle
-
     //Recarga
     [SerializeField] private int Cargador = 10;                 //Número de balas que se pueden disparar
     [SerializeField] private float TiempoRecargaPistola = 0.1f; //Tiempo que tarda la pistola en recargar
