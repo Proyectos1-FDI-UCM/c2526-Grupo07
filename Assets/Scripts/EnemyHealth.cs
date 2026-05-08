@@ -33,6 +33,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private GameObject ObjetoDrop; //Objeto que suelta el enemigo
     [SerializeField] private bool IsBoss;
+    [SerializeField] GameObject DialogoFinal;
 
     #endregion
 
@@ -113,10 +114,11 @@ public class EnemyHealth : MonoBehaviour
             }
             if (IsBoss)
             {
-                LevelManager.Instance.Victoria();
+                GameManager.Instance.CinematicaVista();
+                DialogoFinal.SetActive(true);
             }
             Destroy(gameObject);
-        } // destruye el enemigo a la que esta asignado la barra de vida
+        } //destruye el enemigo a la que esta asignado la barra de vida
     }
     public void RedFlash()
     {

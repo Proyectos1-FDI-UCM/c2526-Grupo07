@@ -38,6 +38,7 @@ public class Dialogos : MonoBehaviour
     [SerializeField] private AudioSource ImpactoSound;          //Audio que sonará al requerír la emoción Impacto
     [SerializeField] private AudioSource GraciosoSound;         //Audio que sonará al requerír la emoción Gracioso
     [SerializeField] private AudioSource Beep;                  //Audio que sonará al avanzar en cada frase
+    [SerializeField] private bool LastDialogo = false;
     #endregion
 
     // ---- ATRIBUTOS PRIVADOS ----
@@ -186,9 +187,11 @@ public class Dialogos : MonoBehaviour
         _emociones = textoEmociones.Split('\n');
 
         //Determina el archivo a procesar y destrulle el GameObject antes de procesar si ya no hay más
+        TextAsset archivo;
         int _indiceDialogo = GameManager.Instance.CinematicaActual();
-        if (_indiceDialogo > 3) Destroy(this.gameObject);
-        TextAsset archivo = Resources.Load<TextAsset>($"Dialogos/Dialogo{_indiceDialogo}");
+        if (_indiceDialogo > 3 && !LastDialogo) Destroy(this.gameObject);
+        if (LastDialogo) archivo = Resources.Load<TextAsset>($"Dialogos/DialogoFinal");
+        else archivo = Resources.Load<TextAsset>($"Dialogos/Dialogo{_indiceDialogo}");
 
         //Se guardan las lineas del documento de texto en un Array
         string texto = archivo.text;
@@ -231,6 +234,7 @@ public class Dialogos : MonoBehaviour
         {
             _dialogosActivos = false;
             ResumeCinema();
+            if (LastDialogo) LevelManager.Instance.Victoria();
         }
     }
     #endregion
